@@ -1,0 +1,540 @@
+<section
+  class="tw-w-screen tw-h-screen tw-relative tw-pl-[200px] tw-flex tw-flex-row"
+>
+  <div
+    *ngIf="showModal"
+    class="tw-absolute tw-flex tw-flex-col tw-py-4 tw-px-6 tw-top-[50%] tw-left-[50%] tw-z-[100] tw--translate-x-[50%] tw--translate-y-[50%] tw-h-[720px] tw-w-[800px] tw-bg-gray-100 tw-rounded-2xl tw-gap-2"
+  >
+    <div
+      class="tw-flex tw-flex-row tw-justify-between tw-items-center tw-w-full tw-h-auto tw-mb-3 tw-border-b-2 tw-border-black/40"
+    >
+      <h2 class="tw-text-xl tw-text-black tw-font-bold">Add Task</h2>
+
+      <button
+        (click)="showModal = false"
+        class="tw-w-10 tw-h-10 tw-self-end tw-shadow-2xl tw-rounded-full tw-flex tw-justify-center tw-items-center hover:tw-bg-white tw-p-3"
+      >
+        <i class="material-icons tw-cursor-pointer tw-rounded-full tw-text-4xl"
+          >close</i
+        >
+      </button>
+    </div>
+
+    <form class="tw-w-full">
+      <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
+        <div class="tw-flex tw-items-center tw-gap-2">
+          <h2 class="tw-text-lg tw-font-black">Task Name</h2>
+          <span
+            class="tw-text-red-800 tw-bg-rose-200 tw-text-xs tw-font-semibold tw-px-3 tw-py-1 tw-rounded-lg"
+            >Required</span
+          >
+
+          <div class="tw-relative">
+            <div
+              class="tw-w-5 tw-h-5 tw-p-2 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-cursor-pointer tw-bg-gray-600 hover:tw-bg-sky-600"
+              (mouseenter)="isInfoBoxVisible = true"
+              (mouseleave)="isInfoBoxVisible = false"
+            >
+              <i class="tw-invert material-icons tw-text-base">question_mark</i>
+            </div>
+            <div
+              *ngIf="isInfoBoxVisible"
+              class="tw-absolute tw-left-full tw-ml-2 tw-mt-[-30px] tw-text-white tw-w-[300px] tw-py-2 tw-px-3 tw-bg-sky-600 tw-rounded-lg tw-shadow-lg tw-text-sm tw-flex tw-justify-center tw-items-center"
+            >
+              It should be descriptive and clear.
+            </div>
+          </div>
+        </div>
+
+        <mat-form-field class="tw-w-full">
+          <input
+            class="tw-px-2 tw-h-[45px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
+            type="email"
+            matInput
+            [formControl]="emailFormControl"
+            placeholder="Feed my dog named Peterson"
+          />
+        </mat-form-field>
+      </div>
+    </form>
+
+    <form class="tw-w-full">
+      <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
+        <div class="tw-flex tw-items-center tw-gap-2">
+          <h2 class="tw-text-lg tw-font-black">Task Description</h2>
+          <span
+            class="tw-text-blue-800 tw-bg-sky-200 tw-text-xs tw-font-semibold tw-px-3 tw-py-1 tw-rounded-lg"
+            >Optional</span
+          >
+
+          <div class="tw-relative tw-flex tw-flex-row">
+            <div
+              class="tw-w-5 tw-h-5 tw-p-2 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-cursor-pointer tw-bg-gray-600 hover:tw-bg-sky-600"
+              (mouseenter)="isInfoBox2Visible = true"
+              (mouseleave)="isInfoBox2Visible = false"
+            >
+              <i class="tw-invert material-icons tw-text-base">question_mark</i>
+            </div>
+            <div
+              *ngIf="isInfoBox2Visible"
+              class="tw-absolute tw-left-full tw-ml-2 tw-mt-[-30px] tw-text-white tw-w-[300px] tw-py-2 tw-px-3 tw-bg-sky-600 tw-rounded-lg tw-shadow-lg tw-text-sm tw-flex tw-justify-center tw-items-center"
+            >
+              A detailed description helps others understand your task better.
+            </div>
+          </div>
+        </div>
+
+        <mat-form-field class="tw-w-full">
+          <input
+            class="tw-px-2 tw-h-[75px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
+            type="email"
+            matInput
+            [formControl]="emailFormControl"
+            placeholder="My dog Peterson is"
+          />
+        </mat-form-field>
+      </div>
+    </form>
+    <form class="tw-w-full">
+      <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
+        <div class="tw-flex tw-items-center tw-gap-2">
+          <h2 class="tw-text-lg tw-font-black">Assigner</h2>
+          <span
+            class="tw-text-blue-800 tw-bg-sky-200 tw-text-xs tw-font-semibold tw-px-3 tw-py-1 tw-rounded-lg"
+            >Optional</span
+          >
+
+          <div class="tw-relative tw-flex tw-flex-row">
+            <div
+              class="tw-w-5 tw-h-5 tw-p-2 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-cursor-pointer tw-bg-gray-600 hover:tw-bg-sky-600"
+              (mouseenter)="isInfoBox3Visible = true"
+              (mouseleave)="isInfoBox3Visible = false"
+            >
+              <i class="tw-invert material-icons tw-text-base">question_mark</i>
+            </div>
+            <div
+              *ngIf="isInfoBox3Visible"
+              class="tw-absolute tw-left-full tw-ml-2 tw-mt-[-50%] tw-text-white tw-w-[300px] tw-py-2 tw-px-3 tw-bg-sky-600 tw-rounded-lg tw-shadow-lg tw-text-sm tw-flex tw-justify-center tw-items-center"
+            >
+              You can skip this field if self-assigning.
+            </div>
+          </div>
+        </div>
+
+        <mat-form-field class="tw-w-full">
+          <input
+            class="tw-px-2 tw-h-[45px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
+            type="email"
+            matInput
+            [formControl]="emailFormControl"
+            placeholder="Dr. Ratio"
+          />
+        </mat-form-field>
+      </div>
+    </form>
+    <form class="tw-w-full">
+      <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
+        <div class="tw-flex tw-items-center tw-gap-2">
+          <h2 class="tw-text-lg tw-font-black">Project</h2>
+          <span
+            class="tw-text-red-800 tw-bg-rose-200 tw-text-xs tw-font-semibold tw-px-3 tw-py-1 tw-rounded-lg"
+            >Required</span
+          >
+
+          <div class="tw-relative tw-flex tw-flex-row">
+            <div
+              class="tw-w-5 tw-h-5 tw-p-2 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-cursor-pointer tw-bg-gray-600 hover:tw-bg-sky-600"
+              (mouseenter)="isInfoBox4Visible = true"
+              (mouseleave)="isInfoBox4Visible = false"
+            >
+              <i class="tw-invert material-icons tw-text-base">question_mark</i>
+            </div>
+            <div
+              *ngIf="isInfoBox4Visible"
+              class="tw-absolute tw-left-full tw-ml-2 tw-mt-[-50%] tw-text-white tw-w-[300px] tw-py-2 tw-px-3 tw-bg-sky-600 tw-rounded-lg tw-shadow-lg tw-text-sm tw-flex tw-justify-center tw-items-center"
+            >
+              A task must belong to a project
+            </div>
+          </div>
+        </div>
+
+        <mat-form-field class="tw-w-full">
+          <mat-select [formControl]="taskControl">
+            <mat-option value="">-- None --</mat-option>
+            <ng-container *ngFor="let group of taskGroups">
+              <mat-optgroup [label]="group.name">
+                <mat-option
+                  *ngFor="let task of group.tasks"
+                  [value]="task.value"
+                >
+                  {{ task.viewValue }}
+                </mat-option>
+              </mat-optgroup>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+
+    <form class="tw-w-full">
+      <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
+        <div class="tw-flex tw-items-center tw-gap-2">
+          <h2 class="tw-text-lg tw-font-black">Deadline</h2>
+          <span
+            class="tw-text-red-800 tw-bg-rose-200 tw-text-xs tw-font-semibold tw-px-3 tw-py-1 tw-rounded-lg"
+            >Required</span
+          >
+
+          <div class="tw-relative tw-flex tw-flex-row">
+            <div
+              class="tw-w-5 tw-h-5 tw-p-2 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-cursor-pointer tw-bg-gray-600 hover:tw-bg-sky-600"
+              (mouseenter)="isInfoBox5Visible = true"
+              (mouseleave)="isInfoBox5Visible = false"
+            >
+              <i class="tw-invert material-icons tw-text-base">question_mark</i>
+            </div>
+            <div
+              *ngIf="isInfoBox5Visible"
+              class="tw-absolute tw-left-full tw-ml-2 tw-mt-[-50%] tw-text-white tw-w-[300px] tw-py-2 tw-px-3 tw-bg-sky-600 tw-rounded-lg tw-shadow-lg tw-text-sm tw-flex tw-justify-center tw-items-center"
+            >
+              Choose a last day of this task
+            </div>
+          </div>
+        </div>
+
+        <mat-form-field>
+          <mat-label>Choose a day</mat-label>
+          <input matInput [matDatepicker]="picker" />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </form>
+    <form class="tw-w-full">
+      <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
+        <div class="tw-flex tw-items-center tw-gap-2">
+          <h2 class="tw-text-lg tw-font-black">Category</h2>
+          <span
+            class="tw-text-red-800 tw-bg-rose-200 tw-text-xs tw-font-semibold tw-px-3 tw-py-1 tw-rounded-lg"
+            >Required</span
+          >
+
+          <div class="tw-relative tw-flex tw-flex-row">
+            <div
+              class="tw-w-5 tw-h-5 tw-p-2 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-cursor-pointer tw-bg-gray-600 hover:tw-bg-sky-600"
+              (mouseenter)="isInfoBox6Visible = true"
+              (mouseleave)="isInfoBox6Visible = false"
+            >
+              <i class="tw-invert material-icons tw-text-base">question_mark</i>
+            </div>
+            <div
+              *ngIf="isInfoBox6Visible"
+              class="tw-absolute tw-left-full tw-ml-2 tw-mt-[-50%] tw-text-white tw-w-[300px] tw-py-2 tw-px-3 tw-bg-sky-600 tw-rounded-lg tw-shadow-lg tw-text-sm tw-flex tw-justify-center tw-items-center"
+            >
+              Choose what category(ies) this task belong to
+            </div>
+          </div>
+        </div>
+
+        <mat-form-field class="example-chip-list">
+          <mat-label>Select multiples</mat-label>
+          <mat-chip-grid #chipGrid aria-label="Select multiples">
+            @for (category of categories(); track $index) {
+              <mat-chip-row (removed)="remove(category)">
+                {{category}}
+                <button matChipRemove [attr.aria-label]="'remove ' + category">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            }
+          </mat-chip-grid>
+          <input
+            name="currentCategories"
+            placeholder="Add category(ies)"
+            #fruitInput
+            [(ngModel)]="currentCategories"
+            [matChipInputFor]="chipGrid"
+            [matAutocomplete]="auto"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="add($event)"
+          />
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+            @for (cate of filteredCates(); track cate) {
+              <mat-option [value]="cate">{{cate}}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+
+        
+      </div>
+    </form>
+  </div>
+
+  <!-- Left side with the general and to-do list -->
+  <div
+    class="tw-w-[40%] tw-h-full tw-flex tw-flex-col tw-gap-3 tw-px-10 tw-py-10"
+  >
+    <div class="tw-h-auto tw-w-full tw-flex tw-flex-col tw-gap-2">
+      <h3 class="tw-text-lg tw-text-gray-600">General + To do</h3>
+      <h3 class="tw-text-3xl tw-text-black tw-font-bold">To do</h3>
+    </div>
+
+    <div
+      class="tw-h-auto tw-w-full tw-flex tw-flex-row tw-justify-between tw-items-center"
+    >
+      <h3 class="tw-text-2xl tw-text-gray-600 tw-font-bold">Today, June 25</h3>
+      <button
+        class="tw-flex tw-w-auto tw-px-4 tw-py-2 tw-bg-sky-800 tw-items-center tw-flex-row tw-gap-2 tw-rounded-xl"
+        (click)="openModal()"
+      >
+        <i class="tw-invert material-icons">add_circle</i>
+        <h1 class="tw-text-white tw-text-lg tw-font-semibold">New task</h1>
+      </button>
+    </div>
+    <!-- Modal -->
+
+    <div class="tw-flex tw-flex-col tw-gap-5 tw-justify-center tw-items-center">
+      <!-- Iterating over tasks to display each as a card -->
+      <div
+        *ngFor="let task of tasks"
+        class="tw-w-full tw-flex tw-flex-row tw-h-auto tw-justify-center tw-gap-6 tw-items-start tw-px-4 tw-py-4 tw-shadow-lg tw-rounded-lg tw-p-5 tw-border-2"
+        [class.tw-border-blue-600]="selectedTask === task"
+        (click)="selectTask(task)"
+      >
+        <input
+          type="checkbox"
+          id="taskCheckbox"
+          class="tw-form-checkbox tw-h-5 tw-w-5 tw-mt-1"
+        />
+        <div
+          class="tw-flex tw-flex-col tw-gap-2 tw-w-full tw-justify-start tw-items-start"
+        >
+          <h2 class="tw-text-xl tw-font-bold">{{ task.title }}</h2>
+          <div class="tw-flex tw-flex-row tw-gap-6 tw-w-full">
+            <div
+              class="tw-flex tw-flex-row tw-justify-center tw-items-center tw-gap-1"
+            >
+              <i class="material-icons tw-text-base tw-text-gray-400"
+                >attachment</i
+              >
+              <p class="tw-text-base tw-text-gray-400">
+                {{ task.attachments.length }}
+              </p>
+            </div>
+            <div
+              class="tw-flex tw-flex-row tw-justify-center tw-items-center tw-gap-1"
+            >
+              <i class="material-icons tw-text-base tw-text-gray-400"
+                >comment</i
+              >
+              <p class="tw-text-base tw-text-gray-400">
+                {{ task.attachments.length }}
+              </p>
+            </div>
+            <div
+              class="tw-flex tw-flex-row tw-justify-center tw-items-center tw-gap-1"
+            >
+              <i class="material-icons tw-text-base tw-text-gray-400"
+                >calendar_today</i
+              >
+              <p class="tw-text-base tw-text-gray-400">
+                {{ task.due_time }}
+              </p>
+            </div>
+          </div>
+          <div
+            [ngStyle]="{
+              'border-color': task.tag.color,
+              color: task.tag.color
+            }"
+            class="tw-flex tw-w-auto tw-px-4 tw-py-1 tw-flex-row tw-gap-2 tw-rounded-3xl tw-border-2 tw-bg-white tw-justify-center tw-items-center"
+          >
+            <h1
+              class="tw-text-base tw-font-semibold tw-flex tw-justify-center tw-items-center"
+            >
+              {{ task.tag.name }}
+            </h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right side with the task details -->
+  <div
+    class="tw-w-[50%] tw-h-full tw-flex tw-flex-col tw-gap-3 tw-px-4 tw-py-10 tw-border-l-2 tw-border-black/20 tw-overflow-x-hidden"
+  >
+    <h2
+      *ngIf="selectedTask"
+      class="tw-text-black tw-text-2xl tw-mb-3 tw-font-semibold"
+    >
+      Task Details
+    </h2>
+    <h3 *ngIf="selectedTask" class="tw-text-gray-400 tw-text-xl">
+      {{ selectedTask.project }}
+    </h3>
+    <h3 *ngIf="selectedTask" class="tw-text-black tw-font-bold tw-text-3xl">
+      {{ selectedTask.title }}
+    </h3>
+    <h3 *ngIf="selectedTask" class="tw-text-black tw-text-xl tw-text-justify">
+      {{ selectedTask.description }}
+    </h3>
+    <h2 *ngIf="!selectedTask" class="tw-text-black tw-text-2xl tw-font-bold">
+      Select a task to see details
+    </h2>
+
+    <div
+      *ngIf="selectedTask"
+      class="tw-flex tw-flex-col tw-gap-5 tw-justify-center tw-items-start tw-mt-10"
+    >
+      <div
+        class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl"
+      >
+        <h2 class="tw-text-gray-400 tw-w-[100px]">Created at</h2>
+        <h3
+          *ngIf="selectedTask"
+          class="tw-text-black tw-font-semibold tw-text-xl tw-text-justify"
+        >
+          {{ selectedTask.created_time }}
+        </h3>
+      </div>
+      <div
+        class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl"
+      >
+        <h2 class="tw-text-gray-400 tw-w-[100px]">Deadline</h2>
+        <h3
+          *ngIf="selectedTask"
+          class="tw-text-black tw-font-semibold tw-text-xl tw-text-justify"
+        >
+          {{ selectedTask.due_time }}
+        </h3>
+      </div>
+      <div
+        class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl"
+      >
+        <h2 class="tw-text-gray-400 tw-w-[100px]">Assigner</h2>
+        <h3
+          *ngIf="selectedTask"
+          class="tw-text-black tw-font-semibold tw-text-xl tw-text-justify"
+        >
+          {{ selectedTask.assigner }}
+        </h3>
+      </div>
+      <div
+        class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl"
+      >
+        <h2 class="tw-text-gray-400 tw-w-[100px]">Category</h2>
+        <h3
+          *ngIf="selectedTask"
+          class="tw-text-black tw-font-semibold tw-text-xl tw-text-justify"
+        >
+          {{ selectedTask.type }}
+        </h3>
+      </div>
+    </div>
+    <div
+      *ngIf="selectedTask"
+      class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-2 tw-mt-4"
+    >
+      <i class="material-icons tw-text-xl tw-text-black">attachment</i>
+      <p class="tw-text-xl tw-text-black">Attachments</p>
+    </div>
+
+    <div
+      *ngIf="selectedTask?.attachments"
+      class="tw-flex tw-flex-row tw-gap-3 tw-w-full tw-h-auto"
+    >
+      <div
+        *ngFor="let attachment of selectedTask.attachments"
+        class="tw-flex tw-flex-col tw-justify-center tw-w-[120px] tw-h-[120px] tw-border-2 tw-border-gray-400/40 tw-rounded-2xl tw-items-center tw-mt-2"
+      >
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.type === AttachmentType.PDF"
+          src="assets/pdf.png"
+        />
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.type === AttachmentType.XLSX"
+          src="assets/xlsx.png"
+        />
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.type === AttachmentType.PNG"
+          src="assets/png.png"
+        />
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.type === AttachmentType.DOCX"
+          src="assets/docx.png"
+        />
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.type === AttachmentType.PPTX"
+          src="assets/pptx.png"
+        />
+        <p class="tw-text-lg tw-font-bold tw-text-black">
+          {{ attachment.name }}
+        </p>
+        <p class="tw-text-base tw-font-semibold tw-text-gray-500">
+          {{ attachment.date }}
+        </p>
+      </div>
+    </div>
+
+    <div
+      *ngIf="selectedTask"
+      class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-2 tw-mt-4"
+    >
+      <i class="material-icons tw-text-xl tw-text-black">comment</i>
+      <p class="tw-text-xl tw-text-black">Comments</p>
+    </div>
+
+    <div
+      *ngIf="selectedTask?.comments"
+      class="tw-flex tw-flex-row tw-gap-3 tw-w-full tw-h-auto"
+    >
+      <div
+        [ngClass]="{
+          'tw-bg-green-200': comment.state === CommentState.checked
+        }"
+        *ngFor="let comment of selectedTask.comments"
+        class="tw-flex tw-flex-row tw-w-full tw-h-auto tw-border-2 tw-border-gray-400/40 tw-bg-gray-200 tw-rounded-3xl tw-items-start tw-justify-between tw-mt-2 tw-px-4 tw-py-2"
+      >
+        <div
+          *ngFor="let comment of selectedTask.comments"
+          class="tw-flex tw-flex-col tw-gap-1 tw-justify-start tw-items-start tw-w-[95%] tw-h-full"
+        >
+          <div
+            class="tw-flex tw-flex-row tw-items-center tw-w-full tw-justify-between tw-pr-5"
+          >
+            <p class="tw-text-lg tw-font-bold tw-text-black">
+              {{ comment.commenter }}
+            </p>
+            <p class="tw-text-base tw-font-semibold tw-text-gray-600">
+              {{ comment.timeline }}
+            </p>
+          </div>
+          <p class="tw-text-base tw-font-semibold tw-text-gray-500">
+            {{ comment.comment }}
+          </p>
+        </div>
+        <i
+          class="material-icons tw-text-2xl tw-text-green-600"
+          *ngIf="comment.state === CommentState.checked"
+          >check_circle</i
+        >
+
+        <i
+          class="material-icons tw-text-2xl tw-text-gray-600"
+          *ngIf="comment.state !== CommentState.checked"
+          >incomplete_circle</i
+        >
+      </div>
+    </div>
+  </div>
+</section>

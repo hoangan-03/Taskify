@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { SideNavComponent } from './angular/side-nav/side-nav.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, SideNavComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'testt';
+  title = 'angular';
 }

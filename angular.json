@@ -24,9 +24,13 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+                
+              },
+              "src/assets"
             ],
+            
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
             "scripts": [],
@@ -87,9 +91,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -97,5 +103,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "3a5e18cc-9e14-4a3e-af7e-d4cf62f7c91b"
   }
 }

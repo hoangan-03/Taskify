@@ -1,0 +1,68 @@
+<div class="slide-out-panel tw-bg-gray-200 tw-px-4" [class.slide-out]="isSlideOut">
+  <h3 class="tw-text-2xl tw-uppercase tw-text-black tw-font-extrabold tw-h-auto tw-w-full tw-mt-[80px] tw-mb-[20px]">
+    <span class="tw-text-sky-800">Task</span>Slayer
+  </h3>
+  <button
+    class="tw-flex tw-w-full tw-px-4 tw-py-2 tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
+    (click)="onTodo()"
+  >
+    <i class="material-icons">account_box</i>
+    <h1 class="tw-text-black tw-text-lg tw-font-semibold">John' space</h1>
+  </button>
+  <div class="tw-flex tw-flex-col tw-justify-center tw-items-start tw-pt-[20px] tw-pb-[20px] tw-gap-3">
+    <h3 class="tw-text-lg tw-text-gray-500">General</h3>
+
+    <button
+      class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
+      [class.tw-bg-white]="activeRoute === '/angular/todo'"
+      (click)="onTodo()"
+    >
+      <i class="material-icons">task</i>
+      <h1 class="tw-text-black tw-text-lg tw-font-semibold">To do</h1>
+    </button>
+    <button
+      class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
+      [class.tw-bg-white]="activeRoute === '/angular/calendar'"
+      (click)="onCalendar()"
+    >
+      <i class="material-icons">calendar_today</i>
+      <h1 class="tw-text-black tw-text-lg tw-font-semibold">Calendar</h1>
+    </button>
+    <button
+      class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
+      [class.tw-bg-white]="activeRoute === '/angular/inbox'"
+      (click)="onInbox()"
+    >
+      <mat-icon>inbox</mat-icon>
+      <h1 class="tw-text-black tw-text-lg tw-font-semibold">Inbox</h1>
+    </button>
+    <button
+      class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
+      [class.tw-bg-white]="activeRoute === '/angular/trash'"
+      (click)="onTrash()"
+    >
+      <i class="material-icons">delete</i>
+      <h1 class="tw-text-black tw-text-lg tw-font-semibold">Trash</h1>
+    </button>
+  </div>
+  <div class="tw-flex tw-flex-col tw-justify-center tw-items-start tw-gap-1 tw-pt-[20px]">
+    <h3 class="tw-text-lg tw-text-gray-500">Account</h3>
+
+    <button
+      class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
+      [class.tw-bg-white]="activeRoute === '/angular/trash'"
+      (click)="onTrash()"
+    >
+      <i class="material-icons">settings</i>
+      <h1 class="tw-text-black tw-text-lg tw-font-semibold">Settings</h1>
+    </button>
+    <button
+      class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
+      [class.tw-bg-white]="activeRoute === '/angular/trash'"
+      (click)="onTrash()"
+    >
+      <i class="material-icons">file_download</i>
+      <h1 class="tw-text-black tw-text-lg tw-font-semibold">Downloaded</h1>
+    </button>
+  </div>
+</div>
