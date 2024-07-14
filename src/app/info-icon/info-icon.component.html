@@ -1,0 +1,22 @@
+<div class="tw-flex tw-items-center tw-gap-2">
+  <h2 class="tw-text-lg tw-font-black">{{ title }}</h2>
+  <span
+    class="tw-text-red-800 tw-bg-rose-200 tw-text-xs tw-font-semibold tw-px-3 tw-py-1 tw-rounded-lg"
+    >{{ type }}</span
+  >
+  <div class="tw-relative flex flex-row">
+    <div
+      class="tw-w-5 tw-h-5 tw-p-2 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-cursor-pointer tw-bg-gray-600 hover:tw-bg-sky-600"
+      (mouseenter)="isInfoBoxVisible = true"
+      (mouseleave)="isInfoBoxVisible = false"
+    >
+      <i class="tw-invert material-icons tw-text-base">question_mark</i>
+    </div>
+    <div
+      *ngIf="isInfoBoxVisible"
+      class="tw-absolute tw-left-full tw-ml-2 tw-mt-[-30px] tw-text-white tw-w-[300px] tw-py-2 tw-px-3 tw-bg-sky-600 tw-rounded-lg tw-shadow-lg tw-text-sm tw-flex tw-justify-center tw-items-center"
+    >
+      {{ infoText }}
+    </div>
+  </div>
+</div>

@@ -24,7 +24,7 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { computed,  signal} from '@angular/core';
 import {MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
-
+import { InfoIconComponent } from '../../info-icon/info-icon.component';
 interface Tag {
   name: string;
   color: string;
@@ -101,7 +101,8 @@ interface projectGroup {
     MatInputModule,
     FormFieldComponent,
     MatChipsModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    InfoIconComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNativeDateAdapter()],

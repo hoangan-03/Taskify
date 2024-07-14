@@ -9,7 +9,6 @@
       class="tw-flex tw-flex-row tw-justify-between tw-items-center tw-w-full tw-h-auto tw-mb-3 tw-border-b-2 tw-border-black/40"
     >
       <h2 class="tw-text-xl tw-text-black tw-font-bold">Add Task</h2>
-
       <button
         (click)="showModal = false"
         class="tw-w-10 tw-h-10 tw-self-end tw-shadow-2xl tw-rounded-full tw-flex tw-justify-center tw-items-center hover:tw-bg-white tw-p-3"
@@ -19,37 +18,17 @@
         >
       </button>
     </div>
-
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <div class="tw-flex tw-items-center tw-gap-2">
-          <h2 class="tw-text-lg tw-font-black">Task Name</h2>
-          <span
-            class="tw-text-red-800 tw-bg-rose-200 tw-text-xs tw-font-semibold tw-px-3 tw-py-1 tw-rounded-lg"
-            >Required</span
-          >
-
-          <div class="tw-relative">
-            <div
-              class="tw-w-5 tw-h-5 tw-p-2 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-cursor-pointer tw-bg-gray-600 hover:tw-bg-sky-600"
-              (mouseenter)="isInfoBoxVisible = true"
-              (mouseleave)="isInfoBoxVisible = false"
-            >
-              <i class="tw-invert material-icons tw-text-base">question_mark</i>
-            </div>
-            <div
-              *ngIf="isInfoBoxVisible"
-              class="tw-absolute tw-left-full tw-ml-2 tw-mt-[-30px] tw-text-white tw-w-[300px] tw-py-2 tw-px-3 tw-bg-sky-600 tw-rounded-lg tw-shadow-lg tw-text-sm tw-flex tw-justify-center tw-items-center"
-            >
-              It should be descriptive and clear.
-            </div>
-          </div>
-        </div>
-
+        <app-info-icon
+          infoText="It should be descriptive and clear."
+          title="Task Name"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field class="tw-w-full">
           <input
             class="tw-px-2 tw-h-[45px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
-            type="email"
+            type="text"
             matInput
             [formControl]="emailFormControl"
             placeholder="Feed my dog named Peterson"
@@ -57,37 +36,17 @@
         </mat-form-field>
       </div>
     </form>
-
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <div class="tw-flex tw-items-center tw-gap-2">
-          <h2 class="tw-text-lg tw-font-black">Task Description</h2>
-          <span
-            class="tw-text-blue-800 tw-bg-sky-200 tw-text-xs tw-font-semibold tw-px-3 tw-py-1 tw-rounded-lg"
-            >Optional</span
-          >
-
-          <div class="tw-relative tw-flex tw-flex-row">
-            <div
-              class="tw-w-5 tw-h-5 tw-p-2 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-cursor-pointer tw-bg-gray-600 hover:tw-bg-sky-600"
-              (mouseenter)="isInfoBox2Visible = true"
-              (mouseleave)="isInfoBox2Visible = false"
-            >
-              <i class="tw-invert material-icons tw-text-base">question_mark</i>
-            </div>
-            <div
-              *ngIf="isInfoBox2Visible"
-              class="tw-absolute tw-left-full tw-ml-2 tw-mt-[-30px] tw-text-white tw-w-[300px] tw-py-2 tw-px-3 tw-bg-sky-600 tw-rounded-lg tw-shadow-lg tw-text-sm tw-flex tw-justify-center tw-items-center"
-            >
-              A detailed description helps others understand your task better.
-            </div>
-          </div>
-        </div>
-
+        <app-info-icon
+          infoText="A detailed description helps others understand your task better."
+          title="Task Description"
+          type="Optional"
+        ></app-info-icon>
         <mat-form-field class="tw-w-full">
           <input
             class="tw-px-2 tw-h-[75px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
-            type="email"
+            type="text"
             matInput
             [formControl]="emailFormControl"
             placeholder="My dog Peterson is"
@@ -97,30 +56,11 @@
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <div class="tw-flex tw-items-center tw-gap-2">
-          <h2 class="tw-text-lg tw-font-black">Assigner</h2>
-          <span
-            class="tw-text-blue-800 tw-bg-sky-200 tw-text-xs tw-font-semibold tw-px-3 tw-py-1 tw-rounded-lg"
-            >Optional</span
-          >
-
-          <div class="tw-relative tw-flex tw-flex-row">
-            <div
-              class="tw-w-5 tw-h-5 tw-p-2 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-cursor-pointer tw-bg-gray-600 hover:tw-bg-sky-600"
-              (mouseenter)="isInfoBox3Visible = true"
-              (mouseleave)="isInfoBox3Visible = false"
-            >
-              <i class="tw-invert material-icons tw-text-base">question_mark</i>
-            </div>
-            <div
-              *ngIf="isInfoBox3Visible"
-              class="tw-absolute tw-left-full tw-ml-2 tw-mt-[-50%] tw-text-white tw-w-[300px] tw-py-2 tw-px-3 tw-bg-sky-600 tw-rounded-lg tw-shadow-lg tw-text-sm tw-flex tw-justify-center tw-items-center"
-            >
-              You can skip this field if self-assigning.
-            </div>
-          </div>
-        </div>
-
+        <app-info-icon
+          infoText="You can skip this field if self-assigning."
+          title="Assigner"
+          type="Optional"
+        ></app-info-icon>
         <mat-form-field class="tw-w-full">
           <input
             class="tw-px-2 tw-h-[45px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
@@ -134,33 +74,14 @@
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <div class="tw-flex tw-items-center tw-gap-2">
-          <h2 class="tw-text-lg tw-font-black">Project</h2>
-          <span
-            class="tw-text-red-800 tw-bg-rose-200 tw-text-xs tw-font-semibold tw-px-3 tw-py-1 tw-rounded-lg"
-            >Required</span
-          >
-
-          <div class="tw-relative tw-flex tw-flex-row">
-            <div
-              class="tw-w-5 tw-h-5 tw-p-2 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-cursor-pointer tw-bg-gray-600 hover:tw-bg-sky-600"
-              (mouseenter)="isInfoBox4Visible = true"
-              (mouseleave)="isInfoBox4Visible = false"
-            >
-              <i class="tw-invert material-icons tw-text-base">question_mark</i>
-            </div>
-            <div
-              *ngIf="isInfoBox4Visible"
-              class="tw-absolute tw-left-full tw-ml-2 tw-mt-[-50%] tw-text-white tw-w-[300px] tw-py-2 tw-px-3 tw-bg-sky-600 tw-rounded-lg tw-shadow-lg tw-text-sm tw-flex tw-justify-center tw-items-center"
-            >
-              A task must belong to a project
-            </div>
-          </div>
-        </div>
-
+        <app-info-icon
+          infoText="A task must belong to a project"
+          title="Project"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field class="tw-w-full">
+          <mat-label>Choose a project</mat-label>
           <mat-select [formControl]="taskControl">
-            <mat-option value="">-- None --</mat-option>
             <ng-container *ngFor="let group of taskGroups">
               <mat-optgroup [label]="group.name">
                 <mat-option
@@ -175,33 +96,13 @@
         </mat-form-field>
       </div>
     </form>
-
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <div class="tw-flex tw-items-center tw-gap-2">
-          <h2 class="tw-text-lg tw-font-black">Deadline</h2>
-          <span
-            class="tw-text-red-800 tw-bg-rose-200 tw-text-xs tw-font-semibold tw-px-3 tw-py-1 tw-rounded-lg"
-            >Required</span
-          >
-
-          <div class="tw-relative tw-flex tw-flex-row">
-            <div
-              class="tw-w-5 tw-h-5 tw-p-2 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-cursor-pointer tw-bg-gray-600 hover:tw-bg-sky-600"
-              (mouseenter)="isInfoBox5Visible = true"
-              (mouseleave)="isInfoBox5Visible = false"
-            >
-              <i class="tw-invert material-icons tw-text-base">question_mark</i>
-            </div>
-            <div
-              *ngIf="isInfoBox5Visible"
-              class="tw-absolute tw-left-full tw-ml-2 tw-mt-[-50%] tw-text-white tw-w-[300px] tw-py-2 tw-px-3 tw-bg-sky-600 tw-rounded-lg tw-shadow-lg tw-text-sm tw-flex tw-justify-center tw-items-center"
-            >
-              Choose a last day of this task
-            </div>
-          </div>
-        </div>
-
+        <app-info-icon
+          infoText="Choose a last day of this task"
+          title="Deadline"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field>
           <mat-label>Choose a day</mat-label>
           <input matInput [matDatepicker]="picker" />
@@ -216,40 +117,21 @@
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <div class="tw-flex tw-items-center tw-gap-2">
-          <h2 class="tw-text-lg tw-font-black">Category</h2>
-          <span
-            class="tw-text-red-800 tw-bg-rose-200 tw-text-xs tw-font-semibold tw-px-3 tw-py-1 tw-rounded-lg"
-            >Required</span
-          >
-
-          <div class="tw-relative tw-flex tw-flex-row">
-            <div
-              class="tw-w-5 tw-h-5 tw-p-2 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-cursor-pointer tw-bg-gray-600 hover:tw-bg-sky-600"
-              (mouseenter)="isInfoBox6Visible = true"
-              (mouseleave)="isInfoBox6Visible = false"
-            >
-              <i class="tw-invert material-icons tw-text-base">question_mark</i>
-            </div>
-            <div
-              *ngIf="isInfoBox6Visible"
-              class="tw-absolute tw-left-full tw-ml-2 tw-mt-[-50%] tw-text-white tw-w-[300px] tw-py-2 tw-px-3 tw-bg-sky-600 tw-rounded-lg tw-shadow-lg tw-text-sm tw-flex tw-justify-center tw-items-center"
-            >
-              Choose what category(ies) this task belong to
-            </div>
-          </div>
-        </div>
-
+        <app-info-icon
+          infoText="Choose what category(ies) this task belong to"
+          title="Category"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field class="example-chip-list">
           <mat-label>Select multiples</mat-label>
           <mat-chip-grid #chipGrid aria-label="Select multiples">
             @for (category of categories(); track $index) {
-              <mat-chip-row (removed)="remove(category)">
-                {{category}}
-                <button matChipRemove [attr.aria-label]="'remove ' + category">
-                  <mat-icon>cancel</mat-icon>
-                </button>
-              </mat-chip-row>
+            <mat-chip-row (removed)="remove(category)">
+              {{ category }}
+              <button matChipRemove [attr.aria-label]="'remove ' + category">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
             }
           </mat-chip-grid>
           <input
@@ -262,14 +144,15 @@
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
             (matChipInputTokenEnd)="add($event)"
           />
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="selected($event)"
+          >
             @for (cate of filteredCates(); track cate) {
-              <mat-option [value]="cate">{{cate}}</mat-option>
+            <mat-option [value]="cate">{{ cate }}</mat-option>
             }
           </mat-autocomplete>
         </mat-form-field>
-
-        
       </div>
     </form>
   </div>

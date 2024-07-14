@@ -16,7 +16,7 @@ import { FormFieldComponent } from '../components/form-field/app-form-field.comp
   ],
   exports: [
     FormFieldComponent,
-    SideNavComponent // export SideNavComponent if it's used in other modules
+    SideNavComponent
   ]
 })
 export class AngularModule { }
