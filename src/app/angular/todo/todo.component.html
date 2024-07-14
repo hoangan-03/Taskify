@@ -30,7 +30,7 @@
             class="tw-px-2 tw-h-[45px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
             type="text"
             matInput
-            [formControl]="emailFormControl"
+            [formControl]="taskNameControl"
             placeholder="Feed my dog named Peterson"
           />
         </mat-form-field>
@@ -48,7 +48,7 @@
             class="tw-px-2 tw-h-[75px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
             type="text"
             matInput
-            [formControl]="emailFormControl"
+            [formControl]="taskDescriptionControl"
             placeholder="My dog Peterson is"
           />
         </mat-form-field>
@@ -64,9 +64,9 @@
         <mat-form-field class="tw-w-full">
           <input
             class="tw-px-2 tw-h-[45px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
-            type="email"
+            type="text"
             matInput
-            [formControl]="emailFormControl"
+            [formControl]="assignerControl"
             placeholder="Dr. Ratio"
           />
         </mat-form-field>
@@ -155,9 +155,12 @@
         </mat-form-field>
       </div>
     </form>
+    <button (click)="submitForm()" class="tw-w-full tw-h-10 tw-bg-blue-500 tw-text-white tw-rounded-lg">
+      Submit
+    </button>
   </div>
 
-  <!-- Left side with the general and to-do list -->
+  <!-- general and to-do list -->
   <div
     class="tw-w-[40%] tw-h-full tw-flex tw-flex-col tw-gap-3 tw-px-10 tw-py-10"
   >
@@ -178,10 +181,8 @@
         <h1 class="tw-text-white tw-text-lg tw-font-semibold">New task</h1>
       </button>
     </div>
-    <!-- Modal -->
 
     <div class="tw-flex tw-flex-col tw-gap-5 tw-justify-center tw-items-center">
-      <!-- Iterating over tasks to display each as a card -->
       <div
         *ngFor="let task of tasks"
         class="tw-w-full tw-flex tw-flex-row tw-h-auto tw-justify-center tw-gap-6 tw-items-start tw-px-4 tw-py-4 tw-shadow-lg tw-rounded-lg tw-p-5 tw-border-2"

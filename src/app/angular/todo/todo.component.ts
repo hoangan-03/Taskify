@@ -19,12 +19,16 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { FormFieldComponent } from '../../components/form-field/app-form-field.component';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { computed,  signal} from '@angular/core';
-import {MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { computed, signal } from '@angular/core';
+import {
+  MatAutocompleteModule,
+  MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { InfoIconComponent } from '../../info-icon/info-icon.component';
+import { HttpClient } from '@angular/common/http';
 interface Tag {
   name: string;
   color: string;
@@ -102,7 +106,7 @@ interface projectGroup {
     FormFieldComponent,
     MatChipsModule,
     MatAutocompleteModule,
-    InfoIconComponent
+    InfoIconComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNativeDateAdapter()],
@@ -110,6 +114,7 @@ interface projectGroup {
   styleUrl: './todo.component.scss',
 })
 export class TodoComponent {
+
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly currentCategories = model('');
   readonly categories = signal(['Daily']);
@@ -195,13 +200,15 @@ export class TodoComponent {
     'Calibration',
     'Outreach',
     'Public Relations',
-    'Event Planning'
+    'Event Planning',
   ];
-  
+
   readonly filteredCates = computed(() => {
     const currentCategory = this.currentCategories().toLowerCase();
     return currentCategory
-      ? this.allCate.filter(fruit => fruit.toLowerCase().includes(currentCategory))
+      ? this.allCate.filter((fruit) =>
+          fruit.toLowerCase().includes(currentCategory)
+        )
       : this.allCate.slice();
   });
 
@@ -210,13 +217,13 @@ export class TodoComponent {
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
-      this.categories.update(cates => [...cates, value]);
+      this.categories.update((cates) => [...cates, value]);
     }
     this.currentCategories.set('');
   }
 
   remove(category: string): void {
-    this.categories.update(cates => {
+    this.categories.update((cates) => {
       const index = cates.indexOf(category);
       if (index < 0) {
         return cates;
@@ -229,7 +236,7 @@ export class TodoComponent {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.categories.update(cates => [...cates, event.option.viewValue]);
+    this.categories.update((cates) => [...cates, event.option.viewValue]);
     this.currentCategories.set('');
     event.option.deselect();
   }
@@ -244,12 +251,32 @@ export class TodoComponent {
     extracheese: false,
     mushroom: false,
   });
-  emailFormControl = new FormControl('', [
-    Validators.required,
-    Validators.email,
-  ]);
+  taskNameControl = new FormControl('', [Validators.required]);
+  taskDescriptionControl = new FormControl('', [Validators.required]);
+  assignerControl = new FormControl('', [Validators.required]);
+  deadlineControl = new FormControl('', [Validators.required]);
+  projectControl = new FormControl('');
+  
   showModal: boolean = false;
-
+  
+  async submitForm() {
+    const formData = {
+      taskName: this.taskNameControl.value,
+      taskDescription: this.taskDescriptionControl.value,
+      assigner: this.assignerControl.value,
+      project: this.projectControl.value,
+      deadline: this.deadlineControl.value,
+      categories: this.currentCategories
+    };
+  
+    try {
+      const response = await this.http.post('https://your-api-endpoint.com/tasks', formData).toPromise();
+      console.log('Form submitted successfully', response);
+      this.showModal = false;
+    } catch (error) {
+      console.error('Error submitting form', error);
+    }
+  }
   openModal() {
     this.showModal = true;
   }
@@ -262,7 +289,7 @@ export class TodoComponent {
   isInfoBox6Visible: boolean = false;
   AttachmentType = AttachmentType;
   CommentState = CommentState;
-  projectControl = new FormControl('');
+
   projectGroups: projectGroup[] = [
     {
       name: 'Grass',
