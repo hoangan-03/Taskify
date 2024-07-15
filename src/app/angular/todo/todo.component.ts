@@ -114,6 +114,22 @@ interface projectGroup {
   styleUrl: './todo.component.scss',
 })
 export class TodoComponent {
+  userList: any[] = [];
+  constructor(private http: HttpClient) {}
+  ngOnInit() {
+    this.getAllUser();
+  }
+  getAllUser() {
+    this.http
+      .get('https://jsonplaceholder.typicode.com/users')
+      .subscribe((res: any) => {
+        this.userList = res;
+        this.logUserList(); 
+      });
+  }
+  logUserList() {
+    console.log(this.userList);
+  }
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly currentCategories = model('');
@@ -256,9 +272,9 @@ export class TodoComponent {
   assignerControl = new FormControl('', [Validators.required]);
   deadlineControl = new FormControl('', [Validators.required]);
   projectControl = new FormControl('');
-  
+
   showModal: boolean = false;
-  
+
   async submitForm() {
     const formData = {
       taskName: this.taskNameControl.value,
@@ -266,11 +282,13 @@ export class TodoComponent {
       assigner: this.assignerControl.value,
       project: this.projectControl.value,
       deadline: this.deadlineControl.value,
-      categories: this.currentCategories
+      categories: this.currentCategories,
     };
-  
+
     try {
-      const response = await this.http.post('https://your-api-endpoint.com/tasks', formData).toPromise();
+      const response = await this.http
+        .post('https://your-api-endpoint.com/tasks', formData)
+        .toPromise();
       console.log('Form submitted successfully', response);
       this.showModal = false;
     } catch (error) {
