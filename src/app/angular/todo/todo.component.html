@@ -3,10 +3,10 @@
 >
   <div
     *ngIf="showModal"
-    class="tw-absolute tw-flex tw-flex-col tw-py-4 tw-px-6 tw-top-[50%] tw-left-[50%] tw-z-[100] tw--translate-x-[50%] tw--translate-y-[50%] tw-h-[720px] tw-w-[800px] tw-bg-gray-100 tw-rounded-2xl tw-gap-2"
+    class="tw-absolute tw-flex tw-flex-col tw-py-4 tw-px-6 tw-top-[50%] tw-left-[50%] tw-z-[100] tw--translate-x-[50%] tw--translate-y-[50%] tw-h-[620px] tw-overflow-y-scroll tw-w-[800px] tw-bg-gray-100 tw-rounded-2xl tw-gap-2"
   >
     <div
-      class="tw-flex tw-flex-row tw-justify-between tw-items-center tw-w-full tw-h-auto tw-mb-3 tw-border-b-2 tw-border-black/40"
+      class="tw-flex tw-flex-row tw-justify-between tw-items-center tw-w-full tw-mb-3 tw-border-b-2 tw-border-black/40"
     >
       <h2 class="tw-text-xl tw-text-black tw-font-bold">Add Task</h2>
       <button
@@ -155,7 +155,7 @@
         </mat-form-field>
       </div>
     </form>
-    <button (click)="submitForm()" class="tw-w-full tw-h-10 tw-bg-blue-500 tw-text-white tw-rounded-lg">
+    <button (click)="submitForm()" class="tw-w-[120px] tw-px-10 tw-h-10 tw-bg-sky-700 hover:tw-bg-sky-500 tw-text-white tw-rounded-xl tw-py-3 tw-text-lg tw-font-bold tw-flex tw-items-center tw-self-center tw-justify-center">
       Submit
     </button>
   </div>
