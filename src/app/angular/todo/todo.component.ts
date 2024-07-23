@@ -29,6 +29,8 @@ import {
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { InfoIconComponent } from '../../info-icon/info-icon.component';
 import { HttpClient } from '@angular/common/http';
+import { randomInt } from 'crypto';
+import { lastValueFrom } from 'rxjs';
 interface Tag {
   name: string;
   color: string;
@@ -116,20 +118,7 @@ interface projectGroup {
 export class TodoComponent {
   userList: any[] = [];
   constructor(private http: HttpClient) {}
-  ngOnInit() {
-    this.getAllUser();
-  }
-  getAllUser() {
-    this.http
-      .get('https://jsonplaceholder.typicode.com/users')
-      .subscribe((res: any) => {
-        this.userList = res;
-        this.logUserList(); 
-      });
-  }
-  logUserList() {
-    console.log(this.userList);
-  }
+
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly currentCategories = model('');
@@ -274,21 +263,23 @@ export class TodoComponent {
   projectControl = new FormControl('');
 
   showModal: boolean = false;
+  baseUrl = "http://localhost:5187";
 
   async submitForm() {
     const formData = {
-      taskName: this.taskNameControl.value,
-      taskDescription: this.taskDescriptionControl.value,
+      id: 6969,
+      title: this.taskNameControl.value,
+      description: this.taskDescriptionControl.value,
+      createdAt: new Date(), 
       assigner: this.assignerControl.value,
-      project: this.projectControl.value,
-      deadline: this.deadlineControl.value,
-      categories: this.currentCategories,
+      deadline: this.deadlineControl.value ? new Date(this.deadlineControl.value).toISOString() : null,
+      type: this.currentCategories,
+      userid: 1,
+      projectid: this.projectControl.value === "coding" ? 1 : 2,
     };
 
     try {
-      const response = await this.http
-        .post('https://your-api-endpoint.com/tasks', formData)
-        .toPromise();
+      const response = await lastValueFrom(this.http.post(`${this.baseUrl}/api/tasks`, formData));
       console.log('Form submitted successfully', response);
       this.showModal = false;
     } catch (error) {

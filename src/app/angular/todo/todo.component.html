@@ -81,7 +81,7 @@
         ></app-info-icon>
         <mat-form-field class="tw-w-full">
           <mat-label>Choose a project</mat-label>
-          <mat-select [formControl]="taskControl">
+          <mat-select [formControl]="projectControl">
             <ng-container *ngFor="let group of taskGroups">
               <mat-optgroup [label]="group.name">
                 <mat-option
