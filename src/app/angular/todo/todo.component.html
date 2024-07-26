@@ -10,7 +10,7 @@
     >
       <h2 class="tw-text-xl tw-text-black tw-font-bold">Add Task</h2>
       <button
-        (click)="showModal = false"
+          (click)="handleClose()"
         class="tw-w-10 tw-h-10 tw-self-end tw-shadow-2xl tw-rounded-full tw-flex tw-justify-center tw-items-center hover:tw-bg-white tw-p-3"
       >
         <i class="material-icons tw-cursor-pointer tw-rounded-full tw-text-4xl"
@@ -105,7 +105,11 @@
         ></app-info-icon>
         <mat-form-field>
           <mat-label>Choose a day</mat-label>
-          <input matInput [matDatepicker]="picker" />
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [formControl]="deadlineControl"
+          />
           <mat-hint>MM/DD/YYYY</mat-hint>
           <mat-datepicker-toggle
             matIconSuffix
@@ -118,44 +122,25 @@
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
         <app-info-icon
-          infoText="Choose what category(ies) this task belong to"
+          infoText="Choose categories of this task"
           title="Category"
           type="Required"
         ></app-info-icon>
-        <mat-form-field class="example-chip-list">
-          <mat-label>Select multiples</mat-label>
-          <mat-chip-grid #chipGrid aria-label="Select multiples">
-            @for (category of categories(); track $index) {
-            <mat-chip-row (removed)="remove(category)">
-              {{ category }}
-              <button matChipRemove [attr.aria-label]="'remove ' + category">
-                <mat-icon>cancel</mat-icon>
-              </button>
-            </mat-chip-row>
-            }
-          </mat-chip-grid>
-          <input
-            name="currentCategories"
-            placeholder="Add category(ies)"
-            #fruitInput
-            [(ngModel)]="currentCategories"
-            [matChipInputFor]="chipGrid"
-            [matAutocomplete]="auto"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            (matChipInputTokenEnd)="add($event)"
-          />
-          <mat-autocomplete
-            #auto="matAutocomplete"
-            (optionSelected)="selected($event)"
-          >
-            @for (cate of filteredCates(); track cate) {
-            <mat-option [value]="cate">{{ cate }}</mat-option>
-            }
-          </mat-autocomplete>
-        </mat-form-field>
+        <mat-chip-listbox
+          class="mat-mdc-chip-set-stacked"
+          aria-label="Categories"
+          multiple
+          [formControl]="categoryControl"
+        >
+          <mat-chip-option *ngFor="let category of categories; trackBy: trackByCategory" [value]="category">{{ category }}</mat-chip-option>
+        </mat-chip-listbox>
       </div>
     </form>
-    <button (click)="submitForm()" class="tw-w-[120px] tw-px-10 tw-h-10 tw-bg-sky-700 hover:tw-bg-sky-500 tw-text-white tw-rounded-xl tw-py-3 tw-text-lg tw-font-bold tw-flex tw-items-center tw-self-center tw-justify-center">
+
+    <button
+      (click)="submitForm()"
+      class="tw-w-[120px] tw-px-10 tw-h-10 tw-bg-sky-700 hover:tw-bg-sky-500 tw-text-white tw-rounded-xl tw-py-3 tw-text-lg tw-font-bold tw-flex tw-items-center tw-self-center tw-justify-center"
+    >
       Submit
     </button>
   </div>

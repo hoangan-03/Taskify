@@ -119,167 +119,166 @@ export class TodoComponent {
   userList: any[] = [];
   constructor(private http: HttpClient) {}
 
+  // readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  // readonly currentCategories = model('');
+  // readonly categories = 'Daily';
+  // readonly allCate: string[] = [
+  //   'Daily',
+  //   'Weekly',
+  //   'Monthly',
+  //   'Quarterly',
+  //   'Annual',
+  //   'Urgent',
+  //   'High Priority',
+  //   'Medium Priority',
+  //   'Low Priority',
+  //   'Routine',
+  //   'Ad-hoc',
+  //   'Maintenance',
+  //   'Project-Based',
+  //   'Critical',
+  //   'Optional',
+  //   'Mandatory',
+  //   'Short-term',
+  //   'Long-term',
+  //   'Recurrent',
+  //   'One-time',
+  //   'Follow-up',
+  //   'Scheduled',
+  //   'Unscheduled',
+  //   'Team',
+  //   'Individual',
+  //   'Client-related',
+  //   'Internal',
+  //   'Training',
+  //   'Development',
+  //   'Research',
+  //   'Testing',
+  //   'Deployment',
+  //   'Review',
+  //   'Approval',
+  //   'Documentation',
+  //   'Reporting',
+  //   'Planning',
+  //   'Evaluation',
+  //   'Support',
+  //   'Operational',
+  //   'Strategic',
+  //   'Emergency',
+  //   'Preventive',
+  //   'Corrective',
+  //   'Improvement',
+  //   'Monitoring',
+  //   'Supervisory',
+  //   'Logistics',
+  //   'Compliance',
+  //   'Audit',
+  //   'Financial',
+  //   'Administrative',
+  //   'Marketing',
+  //   'Sales',
+  //   'Customer Service',
+  //   'Inventory',
+  //   'Procurement',
+  //   'Quality Assurance',
+  //   'Risk Management',
+  //   'Change Management',
+  //   'Human Resources',
+  //   'IT',
+  //   'Legal',
+  //   'Health and Safety',
+  //   'Environmental',
+  //   'Networking',
+  //   'Configuration',
+  //   'Security',
+  //   'Backup',
+  //   'Recovery',
+  //   'Installation',
+  //   'Upgrade',
+  //   'Migration',
+  //   'Integration',
+  //   'Troubleshooting',
+  //   'Optimization',
+  //   'Calibration',
+  //   'Inspection',
+  //   'Calibration',
+  //   'Outreach',
+  //   'Public Relations',
+  //   'Event Planning',
+  // ];
 
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  readonly currentCategories = model('');
-  readonly categories = signal(['Daily']);
-  readonly allCate: string[] = [
-    'Daily',
-    'Weekly',
-    'Monthly',
-    'Quarterly',
-    'Annual',
-    'Urgent',
-    'High Priority',
-    'Medium Priority',
-    'Low Priority',
-    'Routine',
-    'Ad-hoc',
-    'Maintenance',
-    'Project-Based',
-    'Critical',
-    'Optional',
-    'Mandatory',
-    'Short-term',
-    'Long-term',
-    'Recurrent',
-    'One-time',
-    'Follow-up',
-    'Scheduled',
-    'Unscheduled',
-    'Team',
-    'Individual',
-    'Client-related',
-    'Internal',
-    'Training',
-    'Development',
-    'Research',
-    'Testing',
-    'Deployment',
-    'Review',
-    'Approval',
-    'Documentation',
-    'Reporting',
-    'Planning',
-    'Evaluation',
-    'Support',
-    'Operational',
-    'Strategic',
-    'Emergency',
-    'Preventive',
-    'Corrective',
-    'Improvement',
-    'Monitoring',
-    'Supervisory',
-    'Logistics',
-    'Compliance',
-    'Audit',
-    'Financial',
-    'Administrative',
-    'Marketing',
-    'Sales',
-    'Customer Service',
-    'Inventory',
-    'Procurement',
-    'Quality Assurance',
-    'Risk Management',
-    'Change Management',
-    'Human Resources',
-    'IT',
-    'Legal',
-    'Health and Safety',
-    'Environmental',
-    'Networking',
-    'Configuration',
-    'Security',
-    'Backup',
-    'Recovery',
-    'Installation',
-    'Upgrade',
-    'Migration',
-    'Integration',
-    'Troubleshooting',
-    'Optimization',
-    'Calibration',
-    'Inspection',
-    'Calibration',
-    'Outreach',
-    'Public Relations',
-    'Event Planning',
-  ];
+  // readonly filteredCates = computed(() => {
+  //   const currentCategory = this.currentCategories().toLowerCase();
+  //   return currentCategory
+  //     ? this.allCate.filter((fruit) =>
+  //         fruit.toLowerCase().includes(currentCategory)
+  //       )
+  //     : this.allCate.slice();
+  // });
+  // trackByCate(index: number, cate: string): string {
+  //   return `${index}-${cate}`;
+  // }
 
-  readonly filteredCates = computed(() => {
-    const currentCategory = this.currentCategories().toLowerCase();
-    return currentCategory
-      ? this.allCate.filter((fruit) =>
-          fruit.toLowerCase().includes(currentCategory)
-        )
-      : this.allCate.slice();
-  });
+  // readonly announcer = inject(LiveAnnouncer);
 
-  readonly announcer = inject(LiveAnnouncer);
+  // add(event: MatChipInputEvent): void {
+  //   const value = (event.value || '').trim();
+  //   if (value) {
+  //     this.categories.update((cates) => [...cates, value]);
+  //   }
+  //   this.currentCategories.set('');
+  // }
 
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-    if (value) {
-      this.categories.update((cates) => [...cates, value]);
-    }
-    this.currentCategories.set('');
+  // remove(category: string): void {
+  //   this.categories.update((cates) => {
+  //     const index = cates.indexOf(category);
+  //     if (index < 0) {
+  //       return cates;
+  //     }
+
+  //     cates.splice(index, 1);
+  //     this.announcer.announce(`Removed ${category}`);
+  //     return [...cates];
+  //   });
+  // }
+
+  // selected(event: MatAutocompleteSelectedEvent): void {
+  //   this.categories.update((cates) => [...cates, event.option.viewValue]);
+  //   this.currentCategories.set('');
+  //   event.option.deselect();
+  // }
+  trackByCategory(index: number, cate: string): string {
+    return `${index}-${cate}`;
   }
-
-  remove(category: string): void {
-    this.categories.update((cates) => {
-      const index = cates.indexOf(category);
-      if (index < 0) {
-        return cates;
-      }
-
-      cates.splice(index, 1);
-      this.announcer.announce(`Removed ${category}`);
-      return [...cates];
-    });
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.categories.update((cates) => [...cates, event.option.viewValue]);
-    this.currentCategories.set('');
-    event.option.deselect();
-  }
-  readonly checked = model(false);
-  readonly indeterminate = model(false);
-  readonly labelPosition = model<'before' | 'after'>('after');
-  readonly disabled = model(false);
-  private readonly _formBuilder = inject(FormBuilder);
-
-  readonly toppings = this._formBuilder.group({
-    pepperoni: false,
-    extracheese: false,
-    mushroom: false,
-  });
+ 
+  readonly categories: string[] = ['Daily', 'Development', 'Maintenance', 'Individual'];
   taskNameControl = new FormControl('', [Validators.required]);
   taskDescriptionControl = new FormControl('', [Validators.required]);
   assignerControl = new FormControl('', [Validators.required]);
   deadlineControl = new FormControl('', [Validators.required]);
   projectControl = new FormControl('');
+  categoryControl = new FormControl('',[Validators.required]);
 
   showModal: boolean = false;
-  baseUrl = "http://localhost:5187";
+  baseUrl = 'http://localhost:5187';
 
   async submitForm() {
     const formData = {
-      id: 6969,
       title: this.taskNameControl.value,
       description: this.taskDescriptionControl.value,
-      createdAt: new Date(), 
+      createdAt: new Date().toISOString(), // Convert to ISO 8601 string
       assigner: this.assignerControl.value,
-      deadline: this.deadlineControl.value ? new Date(this.deadlineControl.value).toISOString() : null,
-      type: this.currentCategories,
-      userid: 1,
-      projectid: this.projectControl.value === "coding" ? 1 : 2,
+      deadline: this.deadlineControl.value
+        ? new Date(this.deadlineControl.value).toISOString() // Convert to ISO 8601 string
+        : null,
+      type: this.categoryControl.value,
+      userid: "1",
+      projectid: this.projectControl.value === 'coding' ? "1" : "12",
     };
-
     try {
-      const response = await lastValueFrom(this.http.post(`${this.baseUrl}/api/tasks`, formData));
+      const response = await lastValueFrom(
+        this.http.post(`${this.baseUrl}/api/tasks`, formData)
+      );
       console.log('Form submitted successfully', response);
       this.showModal = false;
     } catch (error) {
@@ -288,6 +287,9 @@ export class TodoComponent {
   }
   openModal() {
     this.showModal = true;
+  }
+  handleClose() {
+    this.showModal = false;
   }
 
   isInfoBoxVisible: boolean = false;
@@ -298,43 +300,7 @@ export class TodoComponent {
   isInfoBox6Visible: boolean = false;
   AttachmentType = AttachmentType;
   CommentState = CommentState;
-
-  projectGroups: projectGroup[] = [
-    {
-      name: 'Grass',
-      project: [
-        { value: 'bulbasaur-0', viewValue: 'Bulbasaur' },
-        { value: 'oddish-1', viewValue: 'Oddish' },
-        { value: 'bellsprout-2', viewValue: 'Bellsprout' },
-      ],
-    },
-    {
-      name: 'Water',
-      project: [
-        { value: 'squirtle-3', viewValue: 'Squirtle' },
-        { value: 'psyduck-4', viewValue: 'Psyduck' },
-        { value: 'horsea-5', viewValue: 'Horsea' },
-      ],
-    },
-    {
-      name: 'Fire',
-      disabled: true,
-      project: [
-        { value: 'charmander-6', viewValue: 'Charmander' },
-        { value: 'vulpix-7', viewValue: 'Vulpix' },
-        { value: 'flareon-8', viewValue: 'Flareon' },
-      ],
-    },
-    {
-      name: 'Psychic',
-      project: [
-        { value: 'mew-9', viewValue: 'Mew' },
-        { value: 'mewtwo-10', viewValue: 'Mewtwo' },
-      ],
-    },
-  ];
   taskControl = new FormControl();
-
   taskGroups = [
     {
       name: 'FPT Software',
