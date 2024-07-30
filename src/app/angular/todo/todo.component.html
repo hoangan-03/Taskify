@@ -136,6 +136,43 @@
         </mat-chip-listbox>
       </div>
     </form>
+    <form class="tw-w-full">
+      <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
+        <app-info-icon
+          infoText="Select some tags for this task"
+          title="Tags"
+          type="Required"
+        ></app-info-icon>
+        <mat-form-field class="example-chip-list">
+          <mat-label>Favorite tags</mat-label>
+          <mat-chip-grid #chipGrid aria-label="Fruit selection">
+            @for (tag of tags(); track $index) {
+              <mat-chip-row (removed)="remove(tag)">
+                {{tag}}
+                <button matChipRemove [attr.aria-label]="'remove ' + tag">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            }
+          </mat-chip-grid>
+          <input
+            name="currentTag"
+            placeholder="New Tag..."
+            #fruitInput
+            [(ngModel)]="currentTag"
+            [matChipInputFor]="chipGrid"
+            [matAutocomplete]="auto"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="add($event)"
+          />
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+            <ng-container *ngFor="let tag of filteredTags(); trackBy: trackByTag">
+              <mat-option [value]="tag">{{tag}}</mat-option>
+            </ng-container>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </form>
 
     <button
       (click)="submitForm()"

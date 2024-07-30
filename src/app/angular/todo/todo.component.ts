@@ -118,152 +118,165 @@ interface projectGroup {
 export class TodoComponent {
   userList: any[] = [];
   constructor(private http: HttpClient) {}
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  readonly currentTag = model('');
+  readonly tags = signal(['Daily']);
+  readonly allTags: string[] = [
+    'Daily',
+    'Weekly',
+    'Monthly',
+    'Quarterly',
+    'Annual',
+    'Urgent',
+    'High Priority',
+    'Medium Priority',
+    'Low Priority',
+    'Routine',
+    'Ad-hoc',
+    'Maintenance',
+    'Project-Based',
+    'Critical',
+    'Optional',
+    'Mandatory',
+    'Short-term',
+    'Long-term',
+    'Recurrent',
+    'One-time',
+    'Follow-up',
+    'Scheduled',
+    'Unscheduled',
+    'Team',
+    'Individual',
+    'Client-related',
+    'Internal',
+    'Training',
+    'Development',
+    'Research',
+    'Testing',
+    'Deployment',
+    'Review',
+    'Approval',
+    'Documentation',
+    'Reporting',
+    'Planning',
+    'Evaluation',
+    'Support',
+    'Operational',
+    'Strategic',
+    'Emergency',
+    'Preventive',
+    'Corrective',
+    'Improvement',
+    'Monitoring',
+    'Supervisory',
+    'Logistics',
+    'Compliance',
+    'Audit',
+    'Financial',
+    'Administrative',
+    'Marketing',
+    'Sales',
+    'Customer Service',
+    'Inventory',
+    'Procurement',
+    'Quality Assurance',
+    'Risk Management',
+    'Change Management',
+    'Human Resources',
+    'IT',
+    'Legal',
+    'Health and Safety',
+    'Environmental',
+    'Networking',
+    'Configuration',
+    'Security',
+    'Backup',
+    'Recovery',
+    'Installation',
+    'Upgrade',
+    'Migration',
+    'Integration',
+    'Troubleshooting',
+    'Optimization',
+    'Calibration',
+    'Inspection',
+    'Calibration',
+    'Outreach',
+    'Public Relations',
+    'Event Planning',
+  ];
+  trackByTag(index: number, fruit: string): string {
+    return fruit;
+  }
+  readonly filteredTags = computed(() => {
+    const currentFruit = this.currentTag().toLowerCase();
+    return currentFruit
+      ? this.allTags.filter((fruit) =>
+          fruit.toLowerCase().includes(currentFruit)
+        )
+      : this.allTags.slice();
+  });
 
-  // readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  // readonly currentCategories = model('');
-  // readonly categories = 'Daily';
-  // readonly allCate: string[] = [
-  //   'Daily',
-  //   'Weekly',
-  //   'Monthly',
-  //   'Quarterly',
-  //   'Annual',
-  //   'Urgent',
-  //   'High Priority',
-  //   'Medium Priority',
-  //   'Low Priority',
-  //   'Routine',
-  //   'Ad-hoc',
-  //   'Maintenance',
-  //   'Project-Based',
-  //   'Critical',
-  //   'Optional',
-  //   'Mandatory',
-  //   'Short-term',
-  //   'Long-term',
-  //   'Recurrent',
-  //   'One-time',
-  //   'Follow-up',
-  //   'Scheduled',
-  //   'Unscheduled',
-  //   'Team',
-  //   'Individual',
-  //   'Client-related',
-  //   'Internal',
-  //   'Training',
-  //   'Development',
-  //   'Research',
-  //   'Testing',
-  //   'Deployment',
-  //   'Review',
-  //   'Approval',
-  //   'Documentation',
-  //   'Reporting',
-  //   'Planning',
-  //   'Evaluation',
-  //   'Support',
-  //   'Operational',
-  //   'Strategic',
-  //   'Emergency',
-  //   'Preventive',
-  //   'Corrective',
-  //   'Improvement',
-  //   'Monitoring',
-  //   'Supervisory',
-  //   'Logistics',
-  //   'Compliance',
-  //   'Audit',
-  //   'Financial',
-  //   'Administrative',
-  //   'Marketing',
-  //   'Sales',
-  //   'Customer Service',
-  //   'Inventory',
-  //   'Procurement',
-  //   'Quality Assurance',
-  //   'Risk Management',
-  //   'Change Management',
-  //   'Human Resources',
-  //   'IT',
-  //   'Legal',
-  //   'Health and Safety',
-  //   'Environmental',
-  //   'Networking',
-  //   'Configuration',
-  //   'Security',
-  //   'Backup',
-  //   'Recovery',
-  //   'Installation',
-  //   'Upgrade',
-  //   'Migration',
-  //   'Integration',
-  //   'Troubleshooting',
-  //   'Optimization',
-  //   'Calibration',
-  //   'Inspection',
-  //   'Calibration',
-  //   'Outreach',
-  //   'Public Relations',
-  //   'Event Planning',
-  // ];
+  readonly announcer = inject(LiveAnnouncer);
 
-  // readonly filteredCates = computed(() => {
-  //   const currentCategory = this.currentCategories().toLowerCase();
-  //   return currentCategory
-  //     ? this.allCate.filter((fruit) =>
-  //         fruit.toLowerCase().includes(currentCategory)
-  //       )
-  //     : this.allCate.slice();
-  // });
-  // trackByCate(index: number, cate: string): string {
-  //   return `${index}-${cate}`;
-  // }
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      this.tags.update((tags) => [...tags, value]);
+    }
+    this.currentTag.set('');
+  }
+  remove(fruit: string): void {
+    this.tags.update((tags) => {
+      const index = tags.indexOf(fruit);
+      if (index < 0) {
+        return tags;
+      }
 
-  // readonly announcer = inject(LiveAnnouncer);
+      tags.splice(index, 1);
+      this.announcer.announce(`Removed ${fruit}`);
+      return [...tags];
+    });
+  }
 
-  // add(event: MatChipInputEvent): void {
-  //   const value = (event.value || '').trim();
-  //   if (value) {
-  //     this.categories.update((cates) => [...cates, value]);
-  //   }
-  //   this.currentCategories.set('');
-  // }
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.tags.update((tags) => [...tags, event.option.viewValue]);
+    this.currentTag.set('');
+    event.option.deselect();
+  }
 
-  // remove(category: string): void {
-  //   this.categories.update((cates) => {
-  //     const index = cates.indexOf(category);
-  //     if (index < 0) {
-  //       return cates;
-  //     }
-
-  //     cates.splice(index, 1);
-  //     this.announcer.announce(`Removed ${category}`);
-  //     return [...cates];
-  //   });
-  // }
-
-  // selected(event: MatAutocompleteSelectedEvent): void {
-  //   this.categories.update((cates) => [...cates, event.option.viewValue]);
-  //   this.currentCategories.set('');
-  //   event.option.deselect();
-  // }
   trackByCategory(index: number, cate: string): string {
     return `${index}-${cate}`;
   }
- 
-  readonly categories: string[] = ['Daily', 'Development', 'Maintenance', 'Individual'];
+
+  readonly categories: string[] = [
+    'Daily',
+    'Development',
+    'Maintenance',
+    'Individual',
+  ];
+
   taskNameControl = new FormControl('', [Validators.required]);
   taskDescriptionControl = new FormControl('', [Validators.required]);
   assignerControl = new FormControl('', [Validators.required]);
   deadlineControl = new FormControl('', [Validators.required]);
   projectControl = new FormControl('');
-  categoryControl = new FormControl('',[Validators.required]);
-
+  categoryControl = new FormControl('', [Validators.required]);
+  tagControl = new FormControl('', [Validators.required]);
   showModal: boolean = false;
   baseUrl = 'http://localhost:5187';
 
   async submitForm() {
+    const getRandomColor = () => {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+  };
     const formData = {
+      
       title: this.taskNameControl.value,
       description: this.taskDescriptionControl.value,
       createdAt: new Date().toISOString(), // Convert to ISO 8601 string
@@ -272,17 +285,23 @@ export class TodoComponent {
         ? new Date(this.deadlineControl.value).toISOString() // Convert to ISO 8601 string
         : null,
       type: this.categoryControl.value,
-      userid: "1",
-      projectid: this.projectControl.value === 'coding' ? "1" : "12",
+      userid: '1',
+      projectid: this.projectControl.value === 'coding' ? '1' : '12',
+      taskTags: this.tags().map(tag => ({
+        TagName: tag,
+        Color: getRandomColor()
+    })),
     };
     try {
       const response = await lastValueFrom(
         this.http.post(`${this.baseUrl}/api/tasks`, formData)
       );
       console.log('Form submitted successfully', response);
+      console.log('Tags', formData.taskTags);
       this.showModal = false;
     } catch (error) {
       console.error('Error submitting form', error);
+      console.log('Tags', formData.taskTags);
     }
   }
   openModal() {
