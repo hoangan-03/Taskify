@@ -10,7 +10,7 @@
     >
       <h2 class="tw-text-xl tw-text-black tw-font-bold">Add Task</h2>
       <button
-          (click)="handleClose()"
+        (click)="handleClose()"
         class="tw-w-10 tw-h-10 tw-self-end tw-shadow-2xl tw-rounded-full tw-flex tw-justify-center tw-items-center hover:tw-bg-white tw-p-3"
       >
         <i class="material-icons tw-cursor-pointer tw-rounded-full tw-text-4xl"
@@ -132,7 +132,11 @@
           multiple
           [formControl]="categoryControl"
         >
-          <mat-chip-option *ngFor="let category of categories; trackBy: trackByCategory" [value]="category">{{ category }}</mat-chip-option>
+          <mat-chip-option
+            *ngFor="let category of categories; trackBy: trackByCategory"
+            [value]="category"
+            >{{ category }}</mat-chip-option
+          >
         </mat-chip-listbox>
       </div>
     </form>
@@ -147,12 +151,12 @@
           <mat-label>Favorite tags</mat-label>
           <mat-chip-grid #chipGrid aria-label="Fruit selection">
             @for (tag of tags(); track $index) {
-              <mat-chip-row (removed)="remove(tag)">
-                {{tag}}
-                <button matChipRemove [attr.aria-label]="'remove ' + tag">
-                  <mat-icon>cancel</mat-icon>
-                </button>
-              </mat-chip-row>
+            <mat-chip-row (removed)="remove(tag)">
+              {{ tag }}
+              <button matChipRemove [attr.aria-label]="'remove ' + tag">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
             }
           </mat-chip-grid>
           <input
@@ -165,9 +169,14 @@
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
             (matChipInputTokenEnd)="add($event)"
           />
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-            <ng-container *ngFor="let tag of filteredTags(); trackBy: trackByTag">
-              <mat-option [value]="tag">{{tag}}</mat-option>
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="selected($event)"
+          >
+            <ng-container
+              *ngFor="let tag of filteredTags(); trackBy: trackByTag"
+            >
+              <mat-option [value]="tag">{{ tag }}</mat-option>
             </ng-container>
           </mat-autocomplete>
         </mat-form-field>
@@ -204,7 +213,7 @@
       </button>
     </div>
 
-    <div class="tw-flex tw-flex-col tw-gap-5 tw-justify-center tw-items-center">
+    <div class="tw-flex tw-flex-col tw-gap-3 tw-justify-center tw-items-center">
       <div
         *ngFor="let task of tasks"
         class="tw-w-full tw-flex tw-flex-row tw-h-auto tw-justify-center tw-gap-6 tw-items-start tw-px-4 tw-py-4 tw-shadow-lg tw-rounded-lg tw-p-5 tw-border-2"
@@ -248,22 +257,27 @@
                 >calendar_today</i
               >
               <p class="tw-text-base tw-text-gray-400">
-                {{ task.due_time }}
+                {{ task.deadline.substring(0, 10) }}
               </p>
             </div>
           </div>
           <div
-            [ngStyle]="{
-              'border-color': task.tag.color,
-              color: task.tag.color
-            }"
-            class="tw-flex tw-w-auto tw-px-4 tw-py-1 tw-flex-row tw-gap-2 tw-rounded-3xl tw-border-2 tw-bg-white tw-justify-center tw-items-center"
+            class="tw-flex tw-w-auto tw-px-4 tw-py-1 tw-flex-row tw-gap-2  tw-justify-center tw-items-center"
           >
-            <h1
-              class="tw-text-base tw-font-semibold tw-flex tw-justify-center tw-items-center"
+            <div
+              *ngFor="let tag of task.taskTags"
+              [ngStyle]="{
+                'border-color': tag.color,
+                color: tag.color
+              }"
+              class="tw-flex tw-w-auto tw-px-4 tw-py-1 tw-flex-row tw-gap-2 tw-rounded-3xl tw-border-2 tw-bg-white tw-justify-center tw-items-center"
             >
-              {{ task.tag.name }}
-            </h1>
+              <h1
+                class="tw-text-base tw-font-semibold tw-flex tw-justify-center tw-items-center"
+              >
+                {{ tag.name }}
+              </h1>
+            </div>
           </div>
         </div>
       </div>
@@ -281,7 +295,7 @@
       Task Details
     </h2>
     <h3 *ngIf="selectedTask" class="tw-text-gray-400 tw-text-xl">
-      {{ selectedTask.project }}
+      {{ selectedTask.projectName }}
     </h3>
     <h3 *ngIf="selectedTask" class="tw-text-black tw-font-bold tw-text-3xl">
       {{ selectedTask.title }}
@@ -305,7 +319,7 @@
           *ngIf="selectedTask"
           class="tw-text-black tw-font-semibold tw-text-xl tw-text-justify"
         >
-          {{ selectedTask.created_time }}
+          {{ selectedTask.createdAt.substring(0, 10) }}
         </h3>
       </div>
       <div
@@ -316,20 +330,10 @@
           *ngIf="selectedTask"
           class="tw-text-black tw-font-semibold tw-text-xl tw-text-justify"
         >
-          {{ selectedTask.due_time }}
+          {{ selectedTask.deadline.substring(0, 10) }}
         </h3>
       </div>
-      <div
-        class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl"
-      >
-        <h2 class="tw-text-gray-400 tw-w-[100px]">Assigner</h2>
-        <h3
-          *ngIf="selectedTask"
-          class="tw-text-black tw-font-semibold tw-text-xl tw-text-justify"
-        >
-          {{ selectedTask.assigner }}
-        </h3>
-      </div>
+
       <div
         class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl"
       >

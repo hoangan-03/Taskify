@@ -6,6 +6,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { JsonPipe } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -31,6 +32,9 @@ import { InfoIconComponent } from '../../info-icon/info-icon.component';
 import { HttpClient } from '@angular/common/http';
 import { randomInt } from 'crypto';
 import { lastValueFrom } from 'rxjs';
+import { TaskService } from '../services/task.service'; // Adjust the import path as needed
+import { Task } from '../models/task.model'; // Adjust the import path as needed
+
 interface Tag {
   name: string;
   color: string;
@@ -53,31 +57,17 @@ enum CommentState {
   checked = 'checked',
   unchecked = 'unchecked',
 }
-interface Comment {
-  commenter: string;
-  state: CommentState;
-  comment: string;
-  timeline: string;
-}
-interface Attachment {
-  name: string;
-  type: AttachmentType;
-  date: string;
-}
-interface Task {
-  id: number;
-  title: string;
-  project: string;
-  description: string;
-  created_time: string; //  ISO format
-  due_time: string; // 'HH:mm' format
-  assigner: string;
-  type: string;
-  tag: Tag;
-  attachments: Attachment[];
-  comments: Comment[];
-}
-
+// interface Comment {
+//   commenter: string;
+//   state: CommentState;
+//   comment: string;
+//   timeline: string;
+// }
+// interface Attachment {
+//   name: string;
+//   type: AttachmentType;
+//   date: string;
+// }
 interface Project {
   value: string;
   viewValue: string;
@@ -117,7 +107,7 @@ interface projectGroup {
 })
 export class TodoComponent {
   userList: any[] = [];
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private taskService: TaskService, private cdr: ChangeDetectorRef) {}
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly currentTag = model('');
   readonly tags = signal(['Daily']);
@@ -271,12 +261,11 @@ export class TodoComponent {
       const letters = '0123456789ABCDEF';
       let color = '#';
       for (let i = 0; i < 6; i++) {
-          color += letters[Math.floor(Math.random() * 16)];
+        color += letters[Math.floor(Math.random() * 16)];
       }
       return color;
-  };
+    };
     const formData = {
-      
       title: this.taskNameControl.value,
       description: this.taskDescriptionControl.value,
       createdAt: new Date().toISOString(), // Convert to ISO 8601 string
@@ -287,10 +276,10 @@ export class TodoComponent {
       type: this.categoryControl.value,
       userid: '1',
       projectid: this.projectControl.value === 'coding' ? '1' : '12',
-      taskTags: this.tags().map(tag => ({
+      taskTags: this.tags().map((tag) => ({
         TagName: tag,
-        Color: getRandomColor()
-    })),
+        Color: getRandomColor(),
+      })),
     };
     try {
       const response = await lastValueFrom(
@@ -337,64 +326,85 @@ export class TodoComponent {
       ],
     },
   ];
-  tasks: Task[] = [
-    {
-      id: 1,
-      title: 'Code Review',
-      project: 'Project FPT Software',
-      description:
-        'Contrary to popular belief, Lorem Ipsum is not simply random text.It has roots in a piece of classical Latin literature from 45 BC,',
-      created_time: '14:00 2023-04-01',
-      due_time: '14:00 2023-08-01',
-      assigner: 'John Doe',
-      type: 'Daily Task',
-      tag: { name: 'Dev', color: '#ff0000' },
-      attachments: [
-        { name: 'file1.pdf', type: AttachmentType.PDF, date: '2024-01-06' },
-        { name: 'file2.docx', type: AttachmentType.DOCX, date: '2024-01-06' },
-      ],
-      comments: [
-        {
-          commenter: 'John Appricot',
-          state: CommentState.checked,
-          comment:
-            'Duis venenatis nulla sed vehicula iaculis. Sed feugiat nulla sapien, id gravida metus ultricies eget. Morbi eget tortor sem. Phasellus eu turpis nec est rutrum feugiat in sed erat. Praesent.',
-          timeline: '14:07:00 20/11/2023',
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: 'Meeting with DR. Stranger',
-      project: 'Project FPT Software',
-      description:
-        'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, ',
-      created_time: '14:00 2023-07-01',
-      due_time: '14:00 2023-12-01',
-      assigner: 'John Aleted Scott',
-      type: 'Important Task',
-      tag: { name: 'Meeting', color: '#800080' },
-      attachments: [
-        { name: 'file3.pdf', type: AttachmentType.PDF, date: '2024-01-06' },
-        { name: 'file32.pptx', type: AttachmentType.PPTX, date: '2024-01-06' },
-        { name: 'file4.xlsx', type: AttachmentType.XLSX, date: '2024-01-06' },
-      ],
-      comments: [
-        {
-          commenter: 'Steven Atlantis Johnson',
-          state: CommentState.unchecked,
-          comment:
-            'Pellentesque vitae nibh tortor. Maecenas vitae egestas est. Fusce pretium iaculis ante, ultricies ornare velit cursus non. Nam tempor lobortis dapibus. Cras tristique sapien ut est bibendum vulputate. Sed eu',
-          timeline: '17:07:00 30/11/2023',
-        },
-      ],
-    },
-  ];
-
+  tasks: Task[] = [];
   selectedTask: any = null;
 
   selectTask(task: Task): void {
     this.selectedTask =
       this.selectedTask && this.selectedTask.id == task.id ? null : task;
+      console.log("Selected task:", this.selectedTask);
   }
+  ngOnInit(): void {
+    this.fetchTasks();
+
+  }
+
+  fetchTasks(): void {
+    this.taskService.getTasks().subscribe(
+      (data: Task[]) => {
+        console.log('Fetched tasks:', data); //
+        this.tasks = data;
+        this.cdr.detectChanges(); // Trigger change detection
+      },
+      (error) => {
+        console.error('Error fetching tasks', error);
+      }
+    );
+  }
+
+  // tasks: Task[] = [
+  //   {
+  //     id: 1,
+  //     title: 'Code Review',
+  //     project: 'Project FPT Software',
+  //     description:
+  //       'Contrary to popular belief, Lorem Ipsum is not simply random text.It has roots in a piece of classical Latin literature from 45 BC,',
+  //     created_time: '14:00 2023-04-01',
+  //     due_time: '14:00 2023-08-01',
+  //     assigner: 'John Doe',
+  //     type: 'Daily Task',
+  //     tag: { name: 'Dev', color: '#ff0000' },
+  //     attachments: [
+  //       { name: 'file1.pdf', type: AttachmentType.PDF, date: '2024-01-06' },
+  //       { name: 'file2.docx', type: AttachmentType.DOCX, date: '2024-01-06' },
+  //     ],
+  //     comments: [
+  //       {
+  //         commenter: 'John Appricot',
+  //         state: CommentState.checked,
+  //         comment:
+  //           'Duis venenatis nulla sed vehicula iaculis. Sed feugiat nulla sapien, id gravida metus ultricies eget. Morbi eget tortor sem. Phasellus eu turpis nec est rutrum feugiat in sed erat. Praesent.',
+  //         timeline: '14:07:00 20/11/2023',
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'Meeting with DR. Stranger',
+  //     project: 'Project FPT Software',
+  //     description:
+  //       'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, ',
+  //     created_time: '14:00 2023-07-01',
+  //     due_time: '14:00 2023-12-01',
+  //     assigner: 'John Aleted Scott',
+  //     type: 'Important Task',
+  //     tag: { name: 'Meeting', color: '#800080' },
+  //     attachments: [
+  //       { name: 'file3.pdf', type: AttachmentType.PDF, date: '2024-01-06' },
+  //       { name: 'file32.pptx', type: AttachmentType.PPTX, date: '2024-01-06' },
+  //       { name: 'file4.xlsx', type: AttachmentType.XLSX, date: '2024-01-06' },
+  //     ],
+  //     comments: [
+  //       {
+  //         commenter: 'Steven Atlantis Johnson',
+  //         state: CommentState.unchecked,
+  //         comment:
+  //           'Pellentesque vitae nibh tortor. Maecenas vitae egestas est. Fusce pretium iaculis ante, ultricies ornare velit cursus non. Nam tempor lobortis dapibus. Cras tristique sapien ut est bibendum vulputate. Sed eu',
+  //         timeline: '17:07:00 30/11/2023',
+  //       },
+  //     ],
+  //   },
+  // ];
+
+ 
 }
