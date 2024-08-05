@@ -33,30 +33,13 @@ import { HttpClient } from '@angular/common/http';
 import { randomInt } from 'crypto';
 import { lastValueFrom } from 'rxjs';
 import { TaskService } from '../services/task.service'; // Adjust the import path as needed
-import { Task } from '../models/task.model'; // Adjust the import path as needed
+import {
+  Task,
+  AttachmentType,
+  CommentState,
+  Comment,
+} from '../models/task.model'; // Adjust the import path as needed
 
-interface Tag {
-  name: string;
-  color: string;
-}
-enum AttachmentType {
-  PDF = 'PDF',
-  DOCX = 'DOCX',
-  XLSX = 'XLSX',
-  PPTX = 'PPTX',
-  PNG = 'PNG',
-  JPG = 'JPG',
-  GIF = 'GIF',
-  DOC = 'DOC',
-  XLS = 'XLS',
-  PPT = 'PPT',
-  XML = 'XML',
-  MD = 'MD',
-}
-enum CommentState {
-  checked = 'checked',
-  unchecked = 'unchecked',
-}
 // interface Comment {
 //   commenter: string;
 //   state: CommentState;
@@ -72,13 +55,6 @@ interface Project {
   value: string;
   viewValue: string;
 }
-
-interface projectGroup {
-  disabled?: boolean;
-  name: string;
-  project: Project[];
-}
-
 @Component({
   selector: 'app-todo',
   standalone: true,
@@ -107,7 +83,11 @@ interface projectGroup {
 })
 export class TodoComponent {
   userList: any[] = [];
-  constructor(private http: HttpClient, private taskService: TaskService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private http: HttpClient,
+    private taskService: TaskService,
+    private cdr: ChangeDetectorRef
+  ) {}
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly currentTag = model('');
   readonly tags = signal(['Daily']);
@@ -277,7 +257,7 @@ export class TodoComponent {
       userid: '1',
       projectid: this.projectControl.value === 'coding' ? '1' : '12',
       taskTags: this.tags().map((tag) => ({
-        TagName: tag,
+        Name: tag,
         Color: getRandomColor(),
       })),
     };
@@ -286,11 +266,11 @@ export class TodoComponent {
         this.http.post(`${this.baseUrl}/api/tasks`, formData)
       );
       console.log('Form submitted successfully', response);
-      console.log('Tags', formData.taskTags);
+      console.log('Formdataa', formData);
       this.showModal = false;
     } catch (error) {
       console.error('Error submitting form', error);
-      console.log('Tags', formData.taskTags);
+      console.log('Formdataa', formData);
     }
   }
   openModal() {
@@ -327,24 +307,36 @@ export class TodoComponent {
     },
   ];
   tasks: Task[] = [];
-  selectedTask: any = null;
+  selectedTask: Task | null = null;
 
   selectTask(task: Task): void {
     this.selectedTask =
       this.selectedTask && this.selectedTask.id == task.id ? null : task;
-      console.log("Selected task:", this.selectedTask);
+    console.log('Selected task:', this.selectedTask);
   }
   ngOnInit(): void {
     this.fetchTasks();
-
+    this.selectedTask = null;
+    console.log('selected:', this.selectedTask);
   }
 
   fetchTasks(): void {
     this.taskService.getTasks().subscribe(
-      (data: Task[]) => {
-        console.log('Fetched tasks:', data); //
-        this.tasks = data;
-        this.cdr.detectChanges(); // Trigger change detection
+      (response: any) => {
+        if (response && response.$values) {
+          this.tasks = response.$values.map((task: any) => {
+            return {
+              ...task,
+              taskTags: task.taskTags.$values,
+              comments: task.comments.$values,
+              attachments: task.attachments.$values,
+            };
+          });
+          console.log('Fetched tasks:', this.tasks);
+          this.cdr.detectChanges(); // Trigger change detection
+        } else {
+          console.error('Unexpected response format', response);
+        }
       },
       (error) => {
         console.error('Error fetching tasks', error);
@@ -405,6 +397,4 @@ export class TodoComponent {
   //     ],
   //   },
   // ];
-
- 
 }

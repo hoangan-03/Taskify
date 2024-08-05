@@ -14,8 +14,8 @@ export enum AttachmentType {
 }
 
 export enum CommentState {
-  checked,
-  unchecked,
+  checked = 'checked',
+  unchecked = 'unchecked',
 }
 
 export interface User {
@@ -80,10 +80,7 @@ export interface Task {
 }
 
 export interface TaskTag {
-  taskId: number;
-  task?: Task;
-  tagId: number;
-  tag?: Tag;
+
   name?: string;
   color?: string;
 }

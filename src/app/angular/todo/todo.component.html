@@ -191,7 +191,6 @@
     </button>
   </div>
 
-  <!-- general and to-do list -->
   <div
     class="tw-w-[40%] tw-h-full tw-flex tw-flex-col tw-gap-3 tw-px-10 tw-py-10"
   >
@@ -262,7 +261,7 @@
             </div>
           </div>
           <div
-            class="tw-flex tw-w-auto tw-px-4 tw-py-1 tw-flex-row tw-gap-2  tw-justify-center tw-items-center"
+            class="tw-flex tw-w-auto tw-px-4 tw-py-1 tw-flex-row tw-gap-2 tw-justify-center tw-items-center"
           >
             <div
               *ngFor="let tag of task.taskTags"
@@ -284,7 +283,6 @@
     </div>
   </div>
 
-  <!-- Right side with the task details -->
   <div
     class="tw-w-[50%] tw-h-full tw-flex tw-flex-col tw-gap-3 tw-px-4 tw-py-10 tw-border-l-2 tw-border-black/20 tw-overflow-x-hidden"
   >
@@ -345,6 +343,24 @@
           {{ selectedTask.type }}
         </h3>
       </div>
+      <div
+        class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl"
+      >
+        <div
+          *ngFor="let tag of selectedTask.taskTags"
+          [ngStyle]="{
+            'border-color': tag.color,
+            color: tag.color
+          }"
+          class="tw-flex tw-w-auto tw-px-4 tw-py-1 tw-flex-row tw-gap-2 tw-rounded-3xl tw-border-2 tw-bg-white tw-justify-center tw-items-center"
+        >
+          <h1
+            class="tw-text-base tw-font-semibold tw-flex tw-justify-center tw-items-center"
+          >
+            {{ tag.name }}
+          </h1>
+        </div>
+      </div>
     </div>
     <div
       *ngIf="selectedTask"
@@ -359,7 +375,7 @@
       class="tw-flex tw-flex-row tw-gap-3 tw-w-full tw-h-auto"
     >
       <div
-        *ngFor="let attachment of selectedTask.attachments"
+        *ngFor="let attachment of selectedTask?.attachments || []"
         class="tw-flex tw-flex-col tw-justify-center tw-w-[120px] tw-h-[120px] tw-border-2 tw-border-gray-400/40 tw-rounded-2xl tw-items-center tw-mt-2"
       >
         <img
@@ -391,7 +407,7 @@
           {{ attachment.name }}
         </p>
         <p class="tw-text-base tw-font-semibold tw-text-gray-500">
-          {{ attachment.date }}
+          <!-- {{ attachment.date }} -->
         </p>
       </div>
     </div>
@@ -412,25 +428,25 @@
         [ngClass]="{
           'tw-bg-green-200': comment.state === CommentState.checked
         }"
-        *ngFor="let comment of selectedTask.comments"
+        *ngFor="let comment of selectedTask?.comments || []"
         class="tw-flex tw-flex-row tw-w-full tw-h-auto tw-border-2 tw-border-gray-400/40 tw-bg-gray-200 tw-rounded-3xl tw-items-start tw-justify-between tw-mt-2 tw-px-4 tw-py-2"
       >
         <div
-          *ngFor="let comment of selectedTask.comments"
+          *ngFor="let comment of selectedTask?.comments || []"
           class="tw-flex tw-flex-col tw-gap-1 tw-justify-start tw-items-start tw-w-[95%] tw-h-full"
         >
           <div
             class="tw-flex tw-flex-row tw-items-center tw-w-full tw-justify-between tw-pr-5"
           >
             <p class="tw-text-lg tw-font-bold tw-text-black">
-              {{ comment.commenter }}
+              {{ comment.userId }}
             </p>
             <p class="tw-text-base tw-font-semibold tw-text-gray-600">
               {{ comment.timeline }}
             </p>
           </div>
           <p class="tw-text-base tw-font-semibold tw-text-gray-500">
-            {{ comment.comment }}
+            {{ comment.commentText }}
           </p>
         </div>
         <i
