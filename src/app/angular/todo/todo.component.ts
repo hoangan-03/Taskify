@@ -38,6 +38,7 @@ import {
   AttachmentType,
   CommentState,
   Comment,
+  Project,
 } from '../models/task.model'; // Adjust the import path as needed
 
 // interface Comment {
@@ -51,10 +52,6 @@ import {
 //   type: AttachmentType;
 //   date: string;
 // }
-interface Project {
-  value: string;
-  viewValue: string;
-}
 @Component({
   selector: 'app-todo',
   standalone: true,
@@ -245,17 +242,22 @@ export class TodoComponent {
       }
       return color;
     };
+    const selectedProjectName = this.projectControl.value;
+    const selectedProject = this.projectGroups.find(
+      (project) => project.title === selectedProjectName
+    );
+    const projectId = selectedProject ? selectedProject.projectId : null;
     const formData = {
       title: this.taskNameControl.value,
       description: this.taskDescriptionControl.value,
-      createdAt: new Date().toISOString(), // Convert to ISO 8601 string
+      createdAt: new Date().toISOString(),
       assigner: this.assignerControl.value,
       deadline: this.deadlineControl.value
-        ? new Date(this.deadlineControl.value).toISOString() // Convert to ISO 8601 string
+        ? new Date(this.deadlineControl.value).toISOString()
         : null,
       type: this.categoryControl.value,
       userid: '1',
-      projectid: this.projectControl.value === 'coding' ? '1' : '12',
+      projectid: projectId,
       taskTags: this.tags().map((tag) => ({
         Name: tag,
         Color: getRandomColor(),
@@ -264,19 +266,19 @@ export class TodoComponent {
     try {
       const response = await lastValueFrom(
         this.http.post(`${this.baseUrl}/api/tasks`, formData)
+   
       );
-      console.log('Form submitted successfully', response);
-      console.log('Formdataa', formData);
-      this.showModal = false;
+      this.closeModal();
+      console.log('Form submitted:', formData);
+      console.log("Sselecteddd anm",selectedProjectName);
     } catch (error) {
-      console.error('Error submitting form', error);
-      console.log('Formdataa', formData);
+      console.error('Error submitting form', formData);
     }
   }
   openModal() {
     this.showModal = true;
   }
-  handleClose() {
+  closeModal() {
     this.showModal = false;
   }
 
@@ -288,26 +290,9 @@ export class TodoComponent {
   isInfoBox6Visible: boolean = false;
   AttachmentType = AttachmentType;
   CommentState = CommentState;
-  taskControl = new FormControl();
-  taskGroups = [
-    {
-      name: 'FPT Software',
-      tasks: [
-        { value: 'coding', viewValue: 'Coding' },
-        { value: 'requirement', viewValue: 'Requirement' },
-        { value: 'debugging', viewValue: 'Debugging' },
-      ],
-    },
-    {
-      name: 'Trip Plan Vung Tau',
-      tasks: [
-        { value: 'planning', viewValue: 'Planning' },
-        { value: 'settingup', viewValue: 'Setting up' },
-      ],
-    },
-  ];
   tasks: Task[] = [];
   selectedTask: Task | null = null;
+  projectGroups: Project[] = [];
 
   selectTask(task: Task): void {
     this.selectedTask =
@@ -316,8 +301,7 @@ export class TodoComponent {
   }
   ngOnInit(): void {
     this.fetchTasks();
-    this.selectedTask = null;
-    console.log('selected:', this.selectedTask);
+    this.fetchProjectGroups();
   }
 
   fetchTasks(): void {
@@ -333,7 +317,7 @@ export class TodoComponent {
             };
           });
           console.log('Fetched tasks:', this.tasks);
-          this.cdr.detectChanges(); // Trigger change detection
+          this.cdr.detectChanges();
         } else {
           console.error('Unexpected response format', response);
         }
@@ -344,57 +328,23 @@ export class TodoComponent {
     );
   }
 
-  // tasks: Task[] = [
-  //   {
-  //     id: 1,
-  //     title: 'Code Review',
-  //     project: 'Project FPT Software',
-  //     description:
-  //       'Contrary to popular belief, Lorem Ipsum is not simply random text.It has roots in a piece of classical Latin literature from 45 BC,',
-  //     created_time: '14:00 2023-04-01',
-  //     due_time: '14:00 2023-08-01',
-  //     assigner: 'John Doe',
-  //     type: 'Daily Task',
-  //     tag: { name: 'Dev', color: '#ff0000' },
-  //     attachments: [
-  //       { name: 'file1.pdf', type: AttachmentType.PDF, date: '2024-01-06' },
-  //       { name: 'file2.docx', type: AttachmentType.DOCX, date: '2024-01-06' },
-  //     ],
-  //     comments: [
-  //       {
-  //         commenter: 'John Appricot',
-  //         state: CommentState.checked,
-  //         comment:
-  //           'Duis venenatis nulla sed vehicula iaculis. Sed feugiat nulla sapien, id gravida metus ultricies eget. Morbi eget tortor sem. Phasellus eu turpis nec est rutrum feugiat in sed erat. Praesent.',
-  //         timeline: '14:07:00 20/11/2023',
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: 2,
-  //     title: 'Meeting with DR. Stranger',
-  //     project: 'Project FPT Software',
-  //     description:
-  //       'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, ',
-  //     created_time: '14:00 2023-07-01',
-  //     due_time: '14:00 2023-12-01',
-  //     assigner: 'John Aleted Scott',
-  //     type: 'Important Task',
-  //     tag: { name: 'Meeting', color: '#800080' },
-  //     attachments: [
-  //       { name: 'file3.pdf', type: AttachmentType.PDF, date: '2024-01-06' },
-  //       { name: 'file32.pptx', type: AttachmentType.PPTX, date: '2024-01-06' },
-  //       { name: 'file4.xlsx', type: AttachmentType.XLSX, date: '2024-01-06' },
-  //     ],
-  //     comments: [
-  //       {
-  //         commenter: 'Steven Atlantis Johnson',
-  //         state: CommentState.unchecked,
-  //         comment:
-  //           'Pellentesque vitae nibh tortor. Maecenas vitae egestas est. Fusce pretium iaculis ante, ultricies ornare velit cursus non. Nam tempor lobortis dapibus. Cras tristique sapien ut est bibendum vulputate. Sed eu',
-  //         timeline: '17:07:00 30/11/2023',
-  //       },
-  //     ],
-  //   },
-  // ];
+  fetchProjectGroups(): void {
+    this.taskService.getProjects().subscribe(
+      (response: any) => {
+        if (response && response.$values && Array.isArray(response.$values)) {
+          this.projectGroups = response.$values.map((project: any) => ({
+            projectId: project.projectId,
+            title: project.title,
+          }));
+          console.log('Fetched project groups:', this.projectGroups);
+          this.cdr.detectChanges();
+        } else {
+          console.error('Unexpected response format', response);
+        }
+      },
+      (error) => {
+        console.error('Error fetching project groups', error);
+      }
+    );
+  }
 }

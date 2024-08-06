@@ -10,7 +10,7 @@
     >
       <h2 class="tw-text-xl tw-text-black tw-font-bold">Add Task</h2>
       <button
-        (click)="handleClose()"
+        (click)="closeModal()"
         class="tw-w-10 tw-h-10 tw-self-end tw-shadow-2xl tw-rounded-full tw-flex tw-justify-center tw-items-center hover:tw-bg-white tw-p-3"
       >
         <i class="material-icons tw-cursor-pointer tw-rounded-full tw-text-4xl"
@@ -79,19 +79,15 @@
           title="Project"
           type="Required"
         ></app-info-icon>
-        <mat-form-field class="tw-w-full">
-          <mat-label>Choose a project</mat-label>
+        <mat-form-field>
+          <mat-label>Project</mat-label>
           <mat-select [formControl]="projectControl">
-            <ng-container *ngFor="let group of taskGroups">
-              <mat-optgroup [label]="group.name">
-                <mat-option
-                  *ngFor="let task of group.tasks"
-                  [value]="task.value"
-                >
-                  {{ task.viewValue }}
-                </mat-option>
-              </mat-optgroup>
-            </ng-container>
+            <mat-option
+              *ngFor="let project of projectGroups"
+              [value]="project.title"
+            >
+              {{ project.title }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -215,20 +211,20 @@
     <div class="tw-flex tw-flex-col tw-gap-3 tw-justify-center tw-items-center">
       <div
         *ngFor="let task of tasks"
-        class="tw-w-full tw-flex tw-flex-row tw-h-auto tw-justify-center tw-gap-6 tw-items-start tw-px-4 tw-py-4 tw-shadow-lg tw-rounded-lg tw-p-5 tw-border-2"
+        class="tw-w-full tw-overflow-hidden tw-flex tw-flex-row tw-h-auto tw-justify-start tw-gap-6 tw-items-start tw-px-4 tw-py-4 tw-shadow-lg tw-rounded-lg tw-p-5 tw-border-2"
         [class.tw-border-blue-600]="selectedTask === task"
         (click)="selectTask(task)"
       >
         <input
           type="checkbox"
           id="taskCheckbox"
-          class="tw-form-checkbox tw-h-5 tw-w-5 tw-mt-1"
+          class="tw-form-checkbox tw-h-5 tw-min-w-5 tw-mt-1"
         />
         <div
           class="tw-flex tw-flex-col tw-gap-2 tw-w-full tw-justify-start tw-items-start"
         >
           <h2 class="tw-text-xl tw-font-bold">{{ task.title }}</h2>
-          <div class="tw-flex tw-flex-row tw-gap-6 tw-w-full">
+          <div class="tw-flex tw-flex-row tw-gap-6 tw-w-auto tw-justify-start">
             <div
               class="tw-flex tw-flex-row tw-justify-center tw-items-center tw-gap-1"
             >
@@ -261,18 +257,18 @@
             </div>
           </div>
           <div
-            class="tw-flex tw-w-auto tw-px-4 tw-py-1 tw-flex-row tw-gap-2 tw-justify-center tw-items-center"
+            class="tw-flex tw-w-full tw-py-1 tw-flex-row tw-gap-2 tw-justify-start tw-items-center"
           >
             <div
-              *ngFor="let tag of task.taskTags"
+              *ngFor="let tag of task.taskTags | slice : 0 : 3"
               [ngStyle]="{
                 'border-color': tag.color,
                 color: tag.color
               }"
-              class="tw-flex tw-w-auto tw-px-4 tw-py-1 tw-flex-row tw-gap-2 tw-rounded-3xl tw-border-2 tw-bg-white tw-justify-center tw-items-center"
+              class="tw-flex tw-w-auto tw-text-wrap tw-px-4 tw-py-1 tw-flex-row tw-gap-1 tw-rounded-3xl tw-border-2 tw-bg-white tw-justify-center tw-items-center"
             >
               <h1
-                class="tw-text-base tw-font-semibold tw-flex tw-justify-center tw-items-center"
+                class="tw-text-base tw-font-semibold tw-flex tw-w-auto tw-justify-center tw-items-center"
               >
                 {{ tag.name }}
               </h1>
@@ -284,7 +280,7 @@
   </div>
 
   <div
-    class="tw-w-[50%] tw-h-full tw-flex tw-flex-col tw-gap-3 tw-px-4 tw-py-10 tw-border-l-2 tw-border-black/20 tw-overflow-x-hidden"
+    class="tw-w-[60%] tw-h-full tw-flex tw-flex-col tw-gap-5 tw-pl-4 tw-py-10 tw-border-l-2 tw-border-black/20 tw-overflow-x-hidden"
   >
     <h2
       *ngIf="selectedTask"
@@ -344,7 +340,7 @@
         </h3>
       </div>
       <div
-        class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl"
+        class="tw-flex tw-flex-row tw-flex-wrap tw-justify-start tw-items-center tw-gap-8 tw-text-xl"
       >
         <div
           *ngFor="let tag of selectedTask.taskTags"
