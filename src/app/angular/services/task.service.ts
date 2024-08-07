@@ -10,7 +10,7 @@ export class TaskService {
   private baseUrl = 'http://localhost:5187/';
   private taskUrl = this.baseUrl + 'api/tasks';
   private projectUrl = this.baseUrl + 'api/projects';
-  private userUrl = this.baseUrl + 'api/projects';
+  private userUrl = this.baseUrl + 'api/users';
 
   constructor(private http: HttpClient) {}
 
@@ -20,8 +20,7 @@ export class TaskService {
   getProjects(): Observable<Project[]> {
     return this.http.get<Project[]>(this.projectUrl);
   }
-
-  getUserss(): Observable<User[]> {
+  getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.userUrl);
   }
 }

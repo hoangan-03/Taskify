@@ -23,7 +23,7 @@ export interface User {
   fullName?: string;
   email: string;
   password: string;
-  createAt: string; // ISO 8601 string
+  createAt: string;
   tasks: Task[];
   comments: Comment[];
 }
@@ -39,7 +39,7 @@ export interface Comment {
   commentId: number;
   state: CommentState;
   commentText: string;
-  timeline: string; // ISO 8601 string
+  timeline: string;
   userId?: string;
   user?: User;
   taskId?: number;
@@ -58,7 +58,7 @@ export interface Project {
   projectId: string;
   title: string;
   description?: string;
-  createAt: string; // ISO 8601 string
+  createAt: string; 
   tasks: Task[];
 }
 
@@ -66,8 +66,8 @@ export interface Task {
   id: number;
   title: string;
   description?: string;
-  createdAt: string; // ISO 8601 string
-  deadline: string; // ISO 8601 string
+  createdAt: string; 
+  deadline: string;
   type: string[];
   projectId?: string;
   project?: Project;
@@ -80,7 +80,6 @@ export interface Task {
 }
 
 export interface TaskTag {
-
   name?: string;
   color?: string;
 }

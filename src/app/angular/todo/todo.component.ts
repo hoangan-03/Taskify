@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -39,6 +38,7 @@ import {
   CommentState,
   Comment,
   Project,
+  User,
 } from '../models/task.model'; // Adjust the import path as needed
 
 // interface Comment {
@@ -228,6 +228,7 @@ export class TodoComponent {
   assignerControl = new FormControl('', [Validators.required]);
   deadlineControl = new FormControl('', [Validators.required]);
   projectControl = new FormControl('');
+  assigneeControl = new FormControl('', [Validators.required]);
   categoryControl = new FormControl('', [Validators.required]);
   tagControl = new FormControl('', [Validators.required]);
   showModal: boolean = false;
@@ -247,11 +248,24 @@ export class TodoComponent {
       (project) => project.title === selectedProjectName
     );
     const projectId = selectedProject ? selectedProject.projectId : null;
+
+    const selectedAssignerName = this.assignerControl.value;
+    const selectedAssigner = this.Users.find(
+      (user) => user.fullName === selectedAssignerName
+    );
+    const assignerId = selectedAssigner ? selectedAssigner.userId : null;
+
+    const selectedAssigneeName = this.assigneeControl.value;
+    const selectedAssignee = this.Users.find(
+      (user) => user.fullName === selectedAssigneeName
+    );
+    const assigneeId = selectedAssignee ? selectedAssignee.userId : null;
     const formData = {
       title: this.taskNameControl.value,
-      description: this.taskDescriptionControl.value,
+      description: this.taskDescriptionControl.value ?? '',
       createdAt: new Date().toISOString(),
-      assigner: this.assignerControl.value,
+      assigner: assignerId ?? 'John Wick',
+      assignee: assigneeId ?? 'John Wick',
       deadline: this.deadlineControl.value
         ? new Date(this.deadlineControl.value).toISOString()
         : null,
@@ -266,11 +280,10 @@ export class TodoComponent {
     try {
       const response = await lastValueFrom(
         this.http.post(`${this.baseUrl}/api/tasks`, formData)
-   
       );
       this.closeModal();
       console.log('Form submitted:', formData);
-      console.log("Sselecteddd anm",selectedProjectName);
+      console.log('Sselecteddd anm', selectedProjectName);
     } catch (error) {
       console.error('Error submitting form', formData);
     }
@@ -293,6 +306,7 @@ export class TodoComponent {
   tasks: Task[] = [];
   selectedTask: Task | null = null;
   projectGroups: Project[] = [];
+  Users: User[] = [];
 
   selectTask(task: Task): void {
     this.selectedTask =
@@ -302,6 +316,7 @@ export class TodoComponent {
   ngOnInit(): void {
     this.fetchTasks();
     this.fetchProjectGroups();
+    this.fetchUsers();
   }
 
   fetchTasks(): void {
@@ -344,6 +359,25 @@ export class TodoComponent {
       },
       (error) => {
         console.error('Error fetching project groups', error);
+      }
+    );
+  }
+  fetchUsers(): void {
+    this.taskService.getUsers().subscribe(
+      (response: any) => {
+        if (response && response.$values && Array.isArray(response.$values)) {
+          this.Users = response.$values.map((user: any) => ({
+            userId: user.userId,
+            fullName: user.fullName,
+          }));
+          console.log('Fetched users', this.Users);
+          this.cdr.detectChanges();
+        } else {
+          console.error('Unexpected response format', response);
+        }
+      },
+      (error) => {
+        console.error('Error fetching users', error);
       }
     );
   }
