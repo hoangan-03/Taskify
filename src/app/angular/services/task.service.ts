@@ -11,6 +11,7 @@ export class TaskService {
   private taskUrl = this.baseUrl + 'api/tasks';
   private projectUrl = this.baseUrl + 'api/projects';
   private userUrl = this.baseUrl + 'api/users';
+  private commentUrl = this.baseUrl + 'api/comments';
 
   constructor(private http: HttpClient) {}
 
@@ -22,5 +23,8 @@ export class TaskService {
   }
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.userUrl);
+  }
+  getComments(): Observable<Comment[]> {
+    return this.http.get<Comment[]>(this.commentUrl);
   }
 }

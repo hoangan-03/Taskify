@@ -11,21 +11,27 @@ export enum AttachmentType {
   PPT,
   XML,
   MD,
+  UNKNOWN,
 }
 
 export enum CommentState {
-  checked = 'checked',
-  unchecked = 'unchecked',
+  checkedd,
+  uncheckedd,
+}
+export enum TaskState {
+  inprogress,
+  completed,
+  prioritized,
 }
 
 export interface User {
-  userId: string;
-  fullName?: string;
-  email: string;
-  password: string;
-  createAt: string;
-  tasks: Task[];
-  comments: Comment[];
+  userId: number;
+  fullName: string;
+  email?: string;
+  password?: string;
+  createAt?: string;
+  tasks?: Task[];
+  comments?: Comment[];
 }
 
 export interface Tag {
@@ -42,6 +48,7 @@ export interface Comment {
   timeline: string;
   userId?: string;
   user?: User;
+  userName?: string;
   taskId?: number;
   task?: Task;
 }
@@ -49,13 +56,15 @@ export interface Comment {
 export interface Attachment {
   attachmentId: number;
   name: string;
-  type: AttachmentType;
+  fileType: AttachmentType;
+  uploadedAt: string;
   taskId?: number;
+  url: string;
   task?: Task;
 }
 
 export interface Project {
-  projectId: string;
+  projectId: number;
   title: string;
   description?: string;
   createAt: string; 
@@ -68,6 +77,7 @@ export interface Task {
   description?: string;
   createdAt: string; 
   deadline: string;
+  state: TaskState;
   type: string[];
   projectId?: string;
   project?: Project;
