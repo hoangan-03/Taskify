@@ -123,7 +123,8 @@
         <div class="tw-flex tw-flex-col tw-gap-3">
           <app-info-icon infoText="Upload your attachments for this task" title="Attachments"
             type="Optional"></app-info-icon>
-          <input type="file" [formControl]="fileControl" (change)="onFileSelected($event)" (change)="onFileControlled($event)"  multiple />
+          <input type="file" [formControl]="fileControl" (change)="onFileSelected($event)"
+            (change)="onFileControlled($event)" multiple />
         </div>
         <div *ngFor="let file of selectedFiles; let i = index">
           <mat-form-field class="tw-w-full">
@@ -156,9 +157,10 @@
       </button>
     </div>
 
-    <div class="tw-flex tw-flex-col tw-gap-3 tw-justify-center tw-items-center">
-      <div *ngFor="let task of sortTasks(tasks)"
-        class="tw-w-full tw-cursor-pointer tw-overflow-hidden tw-flex tw-flex-row tw-h-auto tw-justify-start tw-gap-6 tw-items-start tw-px-4 tw-py-4 tw-shadow-lg tw-rounded-lg tw-p-5 tw-border-2"
+    <div class="tw-flex tw-flex-col tw-gap-3 tw-justify-center tw-items-center" cdkDropList
+      (cdkDropListDropped)="drop($event)">
+      <div *ngFor="let task of sortTasks(tasks); let i = index" cdkDrag
+        class="tw-w-full tw-bg-white tw-cursor-pointer tw-overflow-hidden tw-flex tw-flex-row tw-h-auto tw-justify-start tw-gap-6 tw-items-start tw-px-4 tw-py-4 tw-shadow-lg tw-rounded-lg tw-p-5 tw-border-2"
         [class.tw-border-blue-600]="selectedTask === task" [class.tw-bg-gray-200]="task.state === 1"
         (click)="selectTask(task)">
         <input [checked]="task.state === 1" type="checkbox" (click)="toggleTaskState(task, 1); $event.stopPropagation()"
@@ -269,8 +271,7 @@
     </div>
 
     <div *ngIf="selectedTask?.attachments" class="tw-flex tw-flex-row tw-gap-3 tw-w-full tw-h-auto">
-      <div *ngFor="let attachment of selectedTask?.attachments || []"
-        (click)="downloadAttachment(attachment)"
+      <div *ngFor="let attachment of selectedTask?.attachments || []" (click)="downloadAttachment(attachment)"
         class="tw-flex tw-cursor-pointer tw-flex-col tw-gap-1 tw-px-3 tw-py-2 tw-justify-center tw-w-auto tw-h-[120px] tw-border-2 tw-border-gray-400/40 tw-rounded-2xl tw-items-start tw-mt-2">
         <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PDF" src="assets/pdf.png" />
         <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.XLSX" src="assets/xlsx.png" />

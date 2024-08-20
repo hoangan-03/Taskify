@@ -1,0 +1,166 @@
+<section class="tw-h-screen tw-w-screen tw-bg-blue tw-pl-[200px] tw-flex tw-flex-col">
+    <div
+        class="tw-w-full tw-h-auto tw-flex tw-flex-row tw-px-10 tw-border-b-2  tw-py-3 tw-justify-between tw-items-center">
+
+        <h1 class="tw-text-xl tw-text-black">Jan 2024</h1>
+
+        <div class="tw-flex tw-flex-row tw-gap-2 tw-justify-center tw-items-center">
+            <div class="tw-w-7 tw-h-7 tw-border-2 tw-flex tw-justify-center tw-items-center tw-rounded-full tw-p-4">
+                <i class="material-icons">chevron_left</i>
+            </div>
+            <h1 class="tw-text-xl tw-text-black">07 Jan - 07 Jan 2024</h1>
+            <div class="tw-w-7 tw-h-7 tw-border-2 tw-flex tw-justify-center tw-items-center tw-rounded-full tw-p-4">
+                <i class="material-icons">chevron_right</i>
+            </div>
+        </div>
+        <button
+            class="tw-flex tw-w-auto tw-px-4 tw-py-2 tw-bg-sky-800 tw-items-center tw-flex-row tw-gap-2 tw-rounded-xl">
+            <i class="tw-invert material-icons">add_circle</i>
+            <h1 class="tw-text-white tw-text-lg tw-font-semibold">New task</h1>
+        </button>
+    </div>
+
+    <div class="tw-w-full tw-h-full tw-overflow-auto">
+        <div class="tw-grid tw-grid-cols-8 tw-gap-0 tw-p-4">
+            <div class="tw-flex tw-flex-col tw-gap-0">
+                <div class="tw-h-20"></div>
+                <div *ngFor="let hour of hours" class="tw-h-20 tw-flex tw-items-center tw-justify-center">
+                    {{ hour }}
+                </div>
+            </div>
+            <div class="tw-flex tw-flex-col tw-gap-0">
+                <div
+                    class="tw-h-16 tw-flex tw-flex-col tw-items-center tw-border tw-border-gray-300 tw-justify-center tw-font-bold ">
+                    <div class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold">
+                        01
+                    </div>
+                    <div class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold">
+                        Mon
+                    </div>
+                </div>
+                <div *ngFor="let hour of hours"
+                    class="tw-h-20 tw-border tw-border-gray-300 tw-relative tw-flex tw-items-center tw-justify-center">
+                    <div *ngIf="hour === '2:00 AM'"
+                        class="tw-bg-red-100 tw-border-t-4 tw-border-red-600 tw-text-black tw-h-full tw-w-full tw-p-2 tw-mx-1 tw-mb-1 tw-flex tw-flex-col tw-items-start tw-justify-start">
+                        <div>User flow design</div>
+                        <div class="tw-text-sm tw-text-gray-600">1 AM - 2 AM</div>
+                    </div>
+                </div>
+            </div>
+            <div class="tw-flex tw-flex-col tw-gap-0">
+                <div
+                    class="tw-h-16 tw-flex tw-flex-col tw-items-center tw-border tw-border-gray-300 tw-justify-center tw-font-bold ">
+                    <div class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold">
+                        02
+                    </div>
+                    <div class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold">
+                        Tue
+                    </div>
+                </div>
+                <div *ngFor="let hour of hours"
+                    class="tw-h-20 tw-border tw-border-gray-300 tw-relative tw-flex tw-items-center tw-justify-center">
+                    <div *ngIf="hour === '4:00 AM'"
+                        class="tw-bg-green-100 tw-border-t-4 tw-border-green-600 tw-text-black tw-h-full tw-w-full tw-p-2 tw-mx-1 tw-mb-1 tw-flex tw-flex-col tw-items-start tw-justify-start">
+                        <div>Meeting with John</div>
+                        <div class="tw-text-sm tw-text-gray-600">1 AM - 2 AM</div>
+                    </div>
+                </div>
+            </div>
+            <div class="tw-flex tw-flex-col tw-gap-0">
+                <div
+                    class="tw-h-16 tw-flex tw-flex-col tw-items-center tw-border tw-border-gray-300 tw-justify-center tw-font-bold ">
+                    <div class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold">
+                        03
+                    </div>
+                    <div class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold">
+                        Wed
+                    </div>
+                </div>
+                <div *ngFor="let hour of hours"
+                    class="tw-h-20 tw-border tw-border-gray-300 tw-relative tw-flex tw-items-center tw-justify-center">
+                    <div *ngIf="hour === '1:00 AM'"
+                        class="tw-bg-green-100 tw-border-t-4 tw-border-green-600 tw-text-black tw-h-full tw-w-full tw-p-2 tw-mx-1 tw-mb-1 tw-flex tw-flex-col tw-items-start tw-justify-start">
+                        <div>Meeting with Alex</div>
+                        <div class="tw-text-sm tw-text-gray-600">1 AM - 2 AM</div>
+                    </div>
+                </div>
+            </div>
+            <div class="tw-flex tw-flex-col tw-gap-0">
+                <div
+                    class="tw-h-16 tw-flex tw-flex-col tw-items-center tw-border tw-border-gray-300 tw-justify-center tw-font-bold ">
+                    <div class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold">
+                        04
+                    </div>
+                    <div class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold">
+                        Thu
+                    </div>
+                </div>
+                <div *ngFor="let hour of hours"
+                    class="tw-h-20 tw-border tw-border-gray-300 tw-relative tw-flex tw-items-center tw-justify-center">
+                    <div *ngIf="hour === '3:00 AM'"
+                        class="tw-bg-red-100 tw-border-t-4 tw-border-red-600 tw-text-black tw-h-full tw-w-full tw-p-2 tw-mx-1 tw-mb-1 tw-flex tw-flex-col tw-items-start tw-justify-start">
+                        <div>Mobile app design</div>
+                        <div class="tw-text-sm tw-text-gray-600">1 AM - 2 AM</div>
+                    </div>
+                </div>
+            </div>
+            <div class="tw-flex tw-flex-col tw-gap-0">
+                <div
+                    class="tw-h-16 tw-flex tw-flex-col tw-items-center tw-border tw-border-gray-300 tw-justify-center tw-font-bold ">
+                    <div class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold">
+                        05
+                    </div>
+                    <div class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold">
+                        Fri
+                    </div>
+                </div>
+                <div *ngFor="let hour of hours"
+                    class="tw-h-20 tw-border tw-border-gray-300 tw-relative tw-flex tw-items-center tw-justify-center">
+                    <div *ngIf="hour === '7:00 AM'"
+                        class="tw-bg-green-100 tw-border-t-4 tw-border-green-600 tw-text-black tw-h-full tw-w-full tw-p-2 tw-mx-1 tw-mb-1 tw-flex tw-flex-col tw-items-start tw-justify-start">
+                        <div>User interview</div>
+                        <div class="tw-text-sm tw-text-gray-600">1 AM - 2 AM</div>
+                    </div>
+                </div>
+            </div>
+            <div class="tw-flex tw-flex-col tw-gap-0">
+                <div
+                    class="tw-h-16 tw-flex tw-flex-col tw-items-center tw-border tw-border-gray-300 tw-justify-center tw-font-bold ">
+                    <div class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold">
+                        06
+                    </div>
+                    <div class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold">
+                        Sat
+                    </div>
+                </div>
+                <div *ngFor="let hour of hours"
+                    class="tw-h-20 tw-border tw-border-gray-300 tw-relative tw-flex tw-items-center tw-justify-center">
+                    <div *ngIf="hour === '6:00 AM'"
+                        class="tw-bg-sky-100 tw-border-t-4 tw-border-sky-600 tw-text-black tw-h-full tw-w-full tw-p-2 tw-mx-1 tw-mb-1 tw-flex tw-flex-col tw-items-start tw-justify-start">
+                        <div>Unit testing</div>
+                        <div class="tw-text-sm tw-text-gray-600">1 AM - 2 AM</div>
+                    </div>
+                </div>
+            </div>
+            <div class="tw-flex tw-flex-col tw-gap-0">
+                <div
+                    class="tw-h-16 tw-flex tw-flex-col tw-items-center tw-border tw-border-gray-300 tw-justify-center tw-font-bold ">
+                    <div class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold">
+                        07
+                    </div>
+                    <div class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold">
+                        Sun
+                    </div>
+                </div>
+                <div *ngFor="let hour of hours"
+                    class="tw-h-20 tw-border tw-border-gray-300 tw-relative tw-flex tw-items-center tw-justify-center">
+                    <div *ngIf="hour === '5:00 AM'"
+                        class="tw-bg-yellow-100 tw-border-t-4 tw-border-yellow-600 tw-text-black tw-h-full tw-w-full tw-p-2 tw-mx-1 tw-mb-1 tw-flex tw-flex-col tw-items-start tw-justify-start">
+                        <div>Capitalize infracstructure</div>
+                        <div class="tw-text-sm tw-text-gray-600">1 AM - 2 AM</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -7,6 +7,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { JsonPipe } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -60,6 +62,7 @@ import {
     MatChipsModule,
     MatAutocompleteModule,
     InfoIconComponent,
+    DragDropModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNativeDateAdapter(), DatePipe],
@@ -73,7 +76,7 @@ export class TodoComponent {
     private taskService: TaskService,
     private cdr: ChangeDetectorRef,
     private datePipe: DatePipe
-  ) { }
+  ) {}
   readonly announcer = inject(LiveAnnouncer);
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly currentTag = model('');
@@ -222,7 +225,6 @@ export class TodoComponent {
   }
   controlFiles: File[] = [];
 
-  // Update the method to handle file selection
   onFileControlled(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files) {
@@ -255,14 +257,10 @@ export class TodoComponent {
   uploadAttachment(file: File): Promise<string> {
     const formData = new FormData();
     formData.append('file', file);
-
     return this.http
       .post<{ url: string }>(`${this.baseUrl}/api/attachments`, formData)
       .toPromise()
       .then((response) => {
-        // Log the entire response to check if it contains the Url field
-        console.log('Server response:', response);
-
         if (response && response.url) {
           return response.url;
         } else {
@@ -284,7 +282,6 @@ export class TodoComponent {
       }
       return color;
     };
-
     const selectedProjectName = this.projectControl.value;
     const selectedProject = this.projectGroups.find(
       (project) => project.title === selectedProjectName
@@ -311,14 +308,13 @@ export class TodoComponent {
         title: this.taskNameControl.value,
         description: this.taskDescriptionControl.value ?? '',
         createdAt: new Date().toISOString(),
-        assigner: assignerId ?? 'John Wick',
-        assignee: assigneeId ?? 'John Wick',
+        assignerId: assignerId ?? 1,
+        assigneeId: assigneeId ?? 1,
         deadline: this.deadlineControl.value
           ? new Date(this.deadlineControl.value).toISOString()
           : null,
         state: 0,
         type: this.categoryControl.value,
-        userid: '1',
         projectid: projectId,
         taskTags: this.tags().map((tag) => ({
           Name: tag,
@@ -333,13 +329,9 @@ export class TodoComponent {
       this.http.post(`${this.baseUrl}/api/tasks`, formData).subscribe({
         next: (response) => {
           this.closeModal();
-          console.log('Form submitted:', formData.attachments);
-          console.log('Control Files:', this.controlFiles);
           this.fetchTasks();
         },
         error: (error) => {
-          console.error('Error submitting form', formData.attachments);
-          console.log('Control Files:', this.controlFiles);
           console.error('Error:', error);
         },
       });
@@ -348,7 +340,11 @@ export class TodoComponent {
     }
   }
   downloadAttachment(attachment: any) {
-    this.http.get(`${this.baseUrl}/api/attachments/${attachment.attachmentId}`, { observe: 'response', responseType: 'blob' })
+    this.http
+      .get(`${this.baseUrl}/api/attachments/${attachment.attachmentId}`, {
+        observe: 'response',
+        responseType: 'blob',
+      })
       .subscribe({
         next: (response) => {
           const blob = response.body;
@@ -368,7 +364,7 @@ export class TodoComponent {
         },
         error: (error) => {
           console.error('Error downloading attachment:', error);
-        }
+        },
       });
   }
   openModal() {
@@ -380,12 +376,40 @@ export class TodoComponent {
   }
   sortTasks(tasks: Task[]): Task[] {
     return tasks.sort((a, b) => {
-      if (a.state === 2) return -1;
-      if (b.state === 2) return 1;
-      if (a.state === 1) return 1;
-      if (b.state === 1) return -1;
+      if (a.state === 2 && b.state !== 2) return -1;
+      if (b.state === 2 && a.state !== 2) return 1;
+      if (a.state === 1 && b.state !== 1) return 1;
+      if (b.state === 1 && a.state !== 1) return -1;
+      if (a.state === b.state) {
+        return a.order - b.order;
+      }
       return 0;
     });
+  }
+  drop(event: CdkDragDrop<string[]>) {
+    const sortedTasks = this.sortTasks(this.tasks);
+    moveItemInArray(sortedTasks, event.previousIndex, event.currentIndex);
+    this.tasks = sortedTasks;
+    this.saveTaskOrder();
+  }
+  saveTaskOrder() {
+    const taskOrder = this.tasks.map((task, index) => ({
+      id: task.id,
+      order: index,
+    }));
+    this.http
+      .post(
+        `${this.baseUrl}/api/tasks/save-task-order`,
+        { tasks: taskOrder },
+        { responseType: 'text' }
+      )
+      .subscribe((response) => {
+        try {
+          this.fetchTasks();
+        } catch (e) {
+          console.error('Error parsing response as JSON', response);
+        }
+      });
   }
   toggleCommentState(comment: any) {
     comment.state =
@@ -421,7 +445,6 @@ export class TodoComponent {
       )
       .subscribe(
         () => {
-          console.log('Comment state updated');
           this.fetchComments();
         },
         (error) => {
@@ -438,7 +461,6 @@ export class TodoComponent {
       .put(`${this.baseUrl}/api/tasks/${task.id}`, updateTaskDto)
       .subscribe(
         () => {
-          console.log('Task state updated');
           this.fetchTasks();
         },
         (error) => {
@@ -449,7 +471,6 @@ export class TodoComponent {
   selectTask(task: Task): void {
     this.selectedTask =
       this.selectedTask && this.selectedTask.id == task.id ? null : task;
-    console.log('Selected task:', this.selectedTask);
   }
 
   fetchTasks(): void {
@@ -464,7 +485,6 @@ export class TodoComponent {
               attachments: task.attachments.$values,
             };
           });
-          console.log('Fetched tasks:', this.tasks);
           this.cdr.detectChanges();
         } else {
           console.error('Unexpected response format', response);
@@ -483,7 +503,6 @@ export class TodoComponent {
             projectId: project.projectId,
             title: project.title,
           }));
-          console.log('Fetched project groups:', this.projectGroups);
           this.cdr.detectChanges();
         } else {
           console.error('Unexpected response format', response);
@@ -502,7 +521,6 @@ export class TodoComponent {
             userId: user.userId,
             fullName: user.fullName,
           }));
-          console.log('Fetched users', this.Users);
           this.cdr.detectChanges();
         } else {
           console.error('Unexpected response format', response);
@@ -520,7 +538,6 @@ export class TodoComponent {
           this.Comments = response.$values.map((comment: any) => ({
             ...comment,
           }));
-          console.log('Fetched Comments', this.Comments);
           this.cdr.detectChanges();
         } else {
           console.error('Unexpected response format', response);
@@ -535,7 +552,6 @@ export class TodoComponent {
     if (id) {
       this.http.delete(`${this.baseUrl}/api/tasks/${id}`).subscribe(
         () => {
-          console.log('Deleted task:', id);
           if (this.selectedTask && this.selectedTask.id === id) {
             this.selectedTask = null;
           }

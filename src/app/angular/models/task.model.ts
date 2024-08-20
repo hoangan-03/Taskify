@@ -87,6 +87,7 @@ export interface Task {
   comments: Comment[];
   attachments: Attachment[];
   projectName: string;
+  order: number;
 }
 
 export interface TaskTag {

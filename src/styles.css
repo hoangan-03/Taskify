@@ -1,8 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Forum&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-    
+
 ::-webkit-scrollbar {
     display: none;
 }
@@ -11,9 +12,37 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
-.mat-mdc-select-panel{
+
+.mat-mdc-select-panel {
     z-index: 10000000000 !important;
 }
-.mat-datepicker-content-container{
+
+.mat-datepicker-content-container {
     z-index: 10000000000 !important;
+}
+
+
+
+@font-face {
+    font-family: 'proxima';
+    src: url('./assets/fonts/proxima.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'sofia';
+    src: url('./assets/fonts/sofia.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+.forum-regular {
+    font-family: "Forum", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  
+body {
+    font-family: 'sofia', sans-serif;
 }
