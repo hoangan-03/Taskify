@@ -77,24 +77,32 @@ interface Task {
 
 export class CalendarComponent {
   tasks: Task[] = [
-    { name: 'User flow design', startTime: '2:00 AM', endTime: '3:00 AM', day: 1, colorClass: 'tw-bg-red-100 tw-border-red-600' },
-    { name: 'Meeting with John', startTime: '4:00 AM', endTime: '6:00 AM', day: 2, colorClass: 'tw-bg-green-100 tw-border-green-600' },
-    { name: 'Meeting with Alex', startTime: '1:00 AM', endTime: '2:00 AM', day: 3, colorClass: 'tw-bg-green-100 tw-border-green-600' },
+    { name: 'User flow design', startTime: '2:00 PM', endTime: '3:00 PM', day: 1, colorClass: 'tw-bg-red-100 tw-border-red-600' },
+    { name: 'Meeting with John', startTime: '4:00 PM', endTime: '6:00 PM', day: 2, colorClass: 'tw-bg-green-100 tw-border-green-600' },
+    { name: 'Meeting with Alex', startTime: '1:00 PM', endTime: '4:00 PM', day: 3, colorClass: 'tw-bg-sky-100 tw-border-sky-600' },
+    { name: 'Meeting with Alex', startTime: '4:00 PM', endTime: '5:00 PM', day: 4, colorClass: 'tw-bg-yellow-100 tw-border-yellow-600' },
+    { name: 'Meeting with Alex', startTime: '7:00 PM', endTime: '9:00 PM', day: 5, colorClass: 'tw-bg-green-100 tw-border-green-600' },
+    { name: 'Meeting with Alex', startTime: '10:00 AM', endTime: '1:00 PM', day: 6, colorClass: 'tw-bg-sky-100 tw-border-sky-600' },
     // Add more tasks
   ];
 
-  getRowSpan(startTime: string, endTime: string): number {
-    const startHour = this.convertToHour(startTime);
-    const endHour = this.convertToHour(endTime);
-    return (endHour - startHour) / 1; // Each slot is 1 hour
+  getRowSpan(task: any): number {
+    const startHour = this.convertTo24HourFormat(task.startTime);
+    const endHour = this.convertTo24HourFormat(task.endTime);
+    return endHour - startHour;
   }
 
-  convertToHour(time: string): number {
-    const [hour, period] = time.split(' ');
-    let [h, m] = hour.split(':');
-    let hourIn24 = +h + (period === 'PM' && +h !== 12 ? 12 : 0);
-    if (period === 'AM' && +h === 12) hourIn24 = 0; // Special case for 12 AM
-    return hourIn24 + +m / 60;
+  convertTo24HourFormat(time: string): number {
+    const [timePart, modifier] = time.split(' ');
+    let [hours, minutes] = timePart.split(':').map(Number);
+
+    if (modifier === 'PM' && hours !== 12) {
+      hours += 12;
+    } else if (modifier === 'AM' && hours === 12) {
+      hours = 0;
+    }
+
+    return hours;
   } days = [
     { day: 1, name: 'Mon' },
     { day: 2, name: 'Tue' },
