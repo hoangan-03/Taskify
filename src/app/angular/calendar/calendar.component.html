@@ -7,13 +7,18 @@
     <h1 class="tw-text-xl tw-text-black">Jan 2024</h1>
     <div class="tw-flex tw-flex-row tw-gap-2 tw-justify-center tw-items-center">
       <div
-        class="tw-w-7 tw-h-7 tw-border-2 tw-flex tw-justify-center tw-items-center tw-rounded-full tw-p-4"
+        class="tw-w-7 tw-h-7 tw-cursor-pointer tw-border-2 tw-flex tw-justify-center tw-items-center tw-rounded-full tw-p-4"
+        (click)="previousWeek()"
       >
         <i class="material-icons">chevron_left</i>
       </div>
-      <h1 class="tw-text-xl tw-text-black">07 Jan - 07 Jan 2024</h1>
+      <h1 class="tw-text-xl tw-text-black">
+        {{ weeks[currentWeekIndex].start | date : "dd MMM" }} -
+        {{ weeks[currentWeekIndex].end | date : "dd MMM yyyy" }}
+      </h1>
       <div
-        class="tw-w-7 tw-h-7 tw-border-2 tw-flex tw-justify-center tw-items-center tw-rounded-full tw-p-4"
+        class="tw-w-7 tw-h-7 tw-cursor-pointer tw-border-2 tw-flex tw-justify-center tw-items-center tw-rounded-full tw-p-4"
+        (click)="nextWeek()"
       >
         <i class="material-icons">chevron_right</i>
       </div>
@@ -22,7 +27,7 @@
       class="tw-flex tw-w-auto tw-px-4 tw-py-2 tw-bg-sky-800 tw-items-center tw-flex-row tw-gap-2 tw-rounded-xl"
     >
       <i class="tw-invert material-icons">add_circle</i>
-      <h1 class="tw-text-white tw-text-lg tw-font-semibold">New task</h1>
+      <h1 class="tw-text-white tw-text-lg tw-font-semibold">New activity</h1>
     </button>
   </div>
   <div class="tw-w-full tw-h-full tw-overflow-auto">
@@ -33,7 +38,7 @@
           *ngFor="let hour of hours"
           class="tw-h-20 tw-flex tw-items-start tw-justify-center"
         >
-          {{ hour }}
+          {{ hour.substring(0,5) }}
         </div>
       </div>
       <div *ngFor="let day of days" class="tw-flex tw-flex-col tw-gap-0">
@@ -53,18 +58,22 @@
         </div>
         <div
           *ngFor="let hour of hours"
-          class="tw-h-20 tw-border tw-border-gray-300 tw-relative tw-flex  tw-items-start tw-justify-center"
+          class="tw-h-20 tw-border tw-border-gray-300 tw-relative tw-flex tw-items-start tw-justify-center"
         >
-          <ng-container *ngFor="let task of tasks">
+          <ng-container *ngFor="let event of events">
             <div
-              *ngIf="task.day === day.day && task.startTime === hour"
+              *ngIf="
+                isDateInCurrentWeek(getDateObject(event.date)) &&
+                getDayNameFromDate(getDateObject(event.date)) === day.name &&
+                event.startTime === hour
+              "
               class="tw-text-black tw-border-t-2 tw-w-full tw-p-2 tw-flex tw-flex-col tw-items-start tw-justify-start"
-              [ngClass]="task.colorClass"
-              [ngStyle]="{ height: getRowSpan(task) * 5 + 'rem' }"
+                [ngClass]="getColorClasses(event.color)"
+              [ngStyle]="{ height: getRowSpan(event) * 5 + 'rem' }"
             >
-              <div>{{ task.name }}</div>
+              <div class="tw-text-md tw-font-bold tw-text-black">{{ event.eventName }}</div>
               <div class="tw-text-sm tw-text-gray-600">
-                {{ task.startTime }} - {{ task.endTime }}
+                {{ event.startTime.substring(0,5) }} - {{ event.endTime.substring(0,5) }}
               </div>
             </div>
           </ng-container>

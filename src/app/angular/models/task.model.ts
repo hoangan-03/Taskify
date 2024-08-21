@@ -23,6 +23,15 @@ export enum TaskState {
   completed,
   prioritized,
 }
+export enum Color {
+  blue,
+  green,
+  red,
+  purple,
+  yellow,
+  gray,
+  pink,
+}
 
 export interface User {
   userId: number;
@@ -67,7 +76,7 @@ export interface Project {
   projectId: number;
   title: string;
   description?: string;
-  createAt: string; 
+  createAt: string;
   tasks: Task[];
 }
 
@@ -75,7 +84,7 @@ export interface Task {
   id: number;
   title: string;
   description?: string;
-  createdAt: string; 
+  createdAt: string;
   deadline: string;
   state: TaskState;
   type: string[];
@@ -93,4 +102,27 @@ export interface Task {
 export interface TaskTag {
   name?: string;
   color?: string;
+}
+
+export interface Event {
+  eventId: number;
+  eventName?: string;
+  description?: string;
+  date: string; // DateOnly equivalent in TypeScript
+  startTime: string; // TimeOnly equivalent in TypeScript
+  endTime: string; // TimeOnly equivalent in TypeScript
+  location?: string;
+  taskId?: number;
+  task?: Task;
+  creatorId?: number;
+  creator?: User;
+  eventUsers: EventUser[];
+  color?: Color;
+}
+
+export interface EventUser {
+  eventId: number;
+  userId: number;
+  user?: User;
+  event?: Event;
 }

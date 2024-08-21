@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Task, Project, User } from '../models/task.model'; // Adjust the import path as needed
+import { Task, Project, User, Event } from '../models/task.model'; // Adjust the import path as needed
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +12,7 @@ export class TaskService {
   private projectUrl = this.baseUrl + 'api/projects';
   private userUrl = this.baseUrl + 'api/users';
   private commentUrl = this.baseUrl + 'api/comments';
+  private eventUrl = this.baseUrl + 'api/events';
   constructor(private http: HttpClient) {}
 
   getTasks(): Observable<Task[]> {
@@ -25,5 +26,8 @@ export class TaskService {
   }
   getComments(): Observable<Comment[]> {
     return this.http.get<Comment[]>(this.commentUrl);
+  }
+  getEvents(): Observable<Event[]> {
+    return this.http.get<Event[]>(this.eventUrl);
   }
 }

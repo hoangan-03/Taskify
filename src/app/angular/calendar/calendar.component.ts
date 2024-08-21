@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
-import { TaskState } from './../models/task.model';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, Validators } from '@angular/forms';
@@ -31,21 +30,15 @@ import { InfoIconComponent } from '../../info-icon/info-icon.component';
 import { HttpClient } from '@angular/common/http';
 import { TaskService } from '../services/task.service';
 import {
-
   AttachmentType,
   CommentState,
   Comment,
   Project,
   User,
+  Event,
+  Color,
 } from '../models/task.model';
 
-interface Task {
-  name: string;
-  startTime: string;
-  endTime: string;
-  day: number;
-  colorClass: string;
-}
 @Component({
   selector: 'app-side-nav',
   standalone: true,
@@ -73,18 +66,33 @@ interface Task {
   styleUrl: './calendar.component.scss',
 })
 
-
-
 export class CalendarComponent {
-  tasks: Task[] = [
-    { name: 'User flow design', startTime: '2:00 PM', endTime: '3:00 PM', day: 1, colorClass: 'tw-bg-red-100 tw-border-red-600' },
-    { name: 'Meeting with John', startTime: '4:00 PM', endTime: '6:00 PM', day: 2, colorClass: 'tw-bg-green-100 tw-border-green-600' },
-    { name: 'Meeting with Alex', startTime: '1:00 PM', endTime: '4:00 PM', day: 3, colorClass: 'tw-bg-sky-100 tw-border-sky-600' },
-    { name: 'Meeting with Alex', startTime: '4:00 PM', endTime: '5:00 PM', day: 4, colorClass: 'tw-bg-yellow-100 tw-border-yellow-600' },
-    { name: 'Meeting with Alex', startTime: '7:00 PM', endTime: '9:00 PM', day: 5, colorClass: 'tw-bg-green-100 tw-border-green-600' },
-    { name: 'Meeting with Alex', startTime: '10:00 AM', endTime: '1:00 PM', day: 6, colorClass: 'tw-bg-sky-100 tw-border-sky-600' },
-    // Add more tasks
-  ];
+  constructor(
+    private http: HttpClient,
+    private taskService: TaskService,
+    private cdr: ChangeDetectorRef,
+  ) { }
+  events: Event[] = [];
+  weeks: { start: Date, end: Date }[] = [];
+  currentWeekIndex: number = 0;
+  fetchEvents(): void {
+    this.taskService.getEvents().subscribe(
+      (response: any) => {
+        if (response && response.$values && Array.isArray(response.$values)) {
+          this.events = response.$values.map((event: any) => ({
+            ...event,
+          }));
+          console.log('Events', this.events);
+          this.cdr.detectChanges();
+        } else {
+          console.error('Unexpected response format', response);
+        }
+      },
+      (error) => {
+        console.error('Error fetching Events', error);
+      }
+    );
+  }
 
   getRowSpan(task: any): number {
     const startHour = this.convertTo24HourFormat(task.startTime);
@@ -93,17 +101,58 @@ export class CalendarComponent {
   }
 
   convertTo24HourFormat(time: string): number {
-    const [timePart, modifier] = time.split(' ');
-    let [hours, minutes] = timePart.split(':').map(Number);
-
-    if (modifier === 'PM' && hours !== 12) {
-      hours += 12;
-    } else if (modifier === 'AM' && hours === 12) {
-      hours = 0;
-    }
-
+    let [hours, minutes] = time.split(':').map(Number);
     return hours;
-  } days = [
+  }
+
+  generateWeeks(): void {
+    const startDate = new Date('2024-01-01');
+    const endDate = new Date('2024-12-31');
+    let current = startDate;
+    while (current <= endDate) {
+      const weekStart = new Date(current);
+      const weekEnd = new Date(current);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+      this.weeks.push({ start: weekStart, end: weekEnd });
+      current.setDate(current.getDate() + 7);
+    }
+  }
+
+  previousWeek(): void {
+    if (this.currentWeekIndex > 0) {
+      this.currentWeekIndex--;
+      this.saveCurrentWeekIndex();
+    }
+  }
+
+  nextWeek(): void {
+    if (this.currentWeekIndex < this.weeks.length - 1) {
+      this.currentWeekIndex++;
+      this.saveCurrentWeekIndex();
+    }
+  }
+
+  isDateInCurrentWeek(date: Date): boolean {
+    const currentWeek = this.weeks[this.currentWeekIndex];
+    return date >= currentWeek.start && date <= currentWeek.end;
+  }
+
+  getDateObject(dateString: string): Date {
+    return new Date(dateString);
+  }
+
+  getDayNameFromDate(date: Date): string {
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    return daysOfWeek[date.getDay()];
+  }
+  getColorClasses(color: Color | undefined): string {
+    if (color === undefined) {
+      return 'tw-border-gray-600 tw-bg-gray-100';
+    } else {
+      return `tw-border-${Color[color]}-600 tw-bg-${Color[color]}-100`;
+    }
+  }
+  days = [
     { day: 1, name: 'Mon' },
     { day: 2, name: 'Tue' },
     { day: 3, name: 'Wed' },
@@ -114,33 +163,45 @@ export class CalendarComponent {
   ];
 
   hours: string[] = [
-    '12:00 AM',
-    '1:00 AM',
-    '2:00 AM',
-    '3:00 AM',
-    '4:00 AM',
-    '5:00 AM',
-    '6:00 AM',
-    '7:00 AM',
-    '8:00 AM',
-    '9:00 AM',
-    '10:00 AM',
-    '11:00 AM',
-    '12:00 PM',
-    '1:00 PM',
-    '2:00 PM',
-    '3:00 PM',
-    '4:00 PM',
-    '5:00 PM',
-    '6:00 PM',
-    '7:00 PM',
-    '8:00 PM',
-    '9:00 PM',
-    '10:00 PM',
-    '11:00 PM',
+    '00:00:00',
+    '01:00:00',
+    '02:00:00',
+    '03:00:00',
+    '04:00:00',
+    '05:00:00',
+    '06:00:00',
+    '07:00:00',
+    '08:00:00',
+    '09:00:00',
+    '10:00:00',
+    '11:00:00',
+    '12:00:00',
+    '13:00:00',
+    '14:00:00',
+    '15:00:00',
+    '16:00:00',
+    '17:00:00',
+    '18:00:00',
+    '19:00:00',
+    '20:00:00',
+    '21:00:00',
+    '22:00:00',
+    '23:00:00',
   ];
+  saveCurrentWeekIndex(): void {
+    localStorage.setItem('currentWeekIndex', this.currentWeekIndex.toString());
+  }
+
+  loadCurrentWeekIndex(): void {
+    const storedIndex = localStorage.getItem('currentWeekIndex');
+    if (storedIndex !== null) {
+      this.currentWeekIndex = parseInt(storedIndex, 10);
+    }
+  }
 
   ngOnInit(): void {
-    // Initialization logic here
+    this.fetchEvents();
+    this.generateWeeks();
+    this.loadCurrentWeekIndex();
   }
 }
