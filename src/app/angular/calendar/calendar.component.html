@@ -273,7 +273,7 @@
               (mouseenter)="hoveredEvent = event"
               (mouseleave)="hoveredEvent = null"
             >
-              <div class="tw-text-md  tw-font-bold tw-text-black">
+              <div class="tw-text-md tw-font-bold tw-text-black">
                 {{ event.eventName }}
               </div>
               <div class="tw-text-sm tw-text-gray-600">
@@ -282,13 +282,13 @@
               </div>
               <ng-template [ngIf]="hoveredEvent === event">
                 <div
-                  class="tooltip tw-h-auto tw-flex tw-flex-col tw-gap-2 tw-rounded-2xl tw-shadow-2xl tw-absolute tw-py-3 tw-bg-white tw-top-[100%] tw-left-[50%]  tw-z-[1000] tw-w-[500px] -tw-translate-x-[50%]"
+                  class="tooltip tw-h-auto tw-flex tw-flex-col tw-gap-2 tw-rounded-2xl tw-shadow-2xl tw-absolute tw-py-3 tw-bg-white tw-top-[100%] tw-left-[50%] tw-z-[1000] tw-w-[500px] -tw-translate-x-[50%]"
                 >
                   <div
-                    class="tw-flex tw-flew-row  tw-justify-start tw-px-6 tw-gap-2 tw-items-center"
+                    class="tw-flex tw-flew-row tw-justify-start tw-px-6 tw-gap-2 tw-items-center"
                   >
                     <div
-                      class="tw-w-4  tw-h-4 tw-rounded-md"
+                      class="tw-w-4 tw-h-4 tw-rounded-md"
                       [ngClass]="{
                         'tw-bg-blue-500': event.color === 0,
                         'tw-bg-green-500': event.color === 1,
@@ -299,7 +299,7 @@
                         'tw-bg-pink-500': event.color === 6
                       }"
                     ></div>
-                    <h2 class=" tw-px-6 tw-font-bold tw-text-2xl">
+                    <h2 class="tw-px-6 tw-font-bold tw-text-2xl">
                       {{ event.eventName }}
                     </h2>
                   </div>
