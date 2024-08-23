@@ -27,6 +27,7 @@ ngx-material-timepicker-content{
 .timepicker-overlay{
     z-index: 100000000001 !important;
 }
+/* In your styles.css or component-specific CSS file */
 
 @font-face {
     font-family: 'proxima';

@@ -1,37 +1,66 @@
-<section class="tw-h-screen tw-w-screen tw-bg-blue tw-pl-[200px] tw-flex tw-flex-col">
-  <div *ngIf="showModal"
-    class="tw-fixed tw-z-[1000] tw-flex tw-flex-col tw-py-8 tw-px-12 tw-top-[50%] tw-left-[50%] tw--translate-x-[50%] tw--translate-y-[50%] tw-h-[620px] tw-overflow-y-scroll tw-w-[800px] tw-bg-gray-100 tw-rounded-3xl tw-gap-2">
+<section
+  class="tw-h-screen tw-w-screen tw-bg-blue tw-pl-[200px] tw-flex tw-flex-col"
+>
+  <div
+    *ngIf="showModal"
+    class="tw-fixed tw-z-[1000] tw-flex tw-flex-col tw-py-8 tw-px-12 tw-top-[50%] tw-left-[50%] tw--translate-x-[50%] tw--translate-y-[50%] tw-h-[620px] tw-overflow-y-scroll tw-w-[800px] tw-bg-gray-100 tw-rounded-3xl tw-gap-2"
+  >
     <div
-      class="tw-flex tw-flex-row tw-justify-between tw-items-center tw-w-full tw-mb-3 tw-border-b-2 tw-border-black/40">
+      class="tw-flex tw-flex-row tw-justify-between tw-items-center tw-w-full tw-mb-3 tw-border-b-2 tw-border-black/40"
+    >
       <h2 class="tw-text-xl tw-text-black tw-font-bold">Add Event</h2>
-      <button (click)="closeModal()"
-        class="tw-w-10 tw-h-10 tw-self-end tw-shadow-2xl tw-rounded-full tw-flex tw-justify-center tw-items-center hover:tw-bg-white tw-p-3">
-        <i class="material-icons tw-cursor-pointer tw-rounded-full tw-text-4xl">close</i>
+      <button
+        (click)="closeModal()"
+        class="tw-w-10 tw-h-10 tw-self-end tw-shadow-2xl tw-rounded-full tw-flex tw-justify-center tw-items-center hover:tw-bg-white tw-p-3"
+      >
+        <i class="material-icons tw-cursor-pointer tw-rounded-full tw-text-4xl"
+          >close</i
+        >
       </button>
     </div>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="It should be descriptive and clear." title="Event Name"
-          type="Required"></app-info-icon>
+        <app-info-icon
+          infoText="It should be descriptive and clear."
+          title="Event Name"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field class="tw-w-full">
-          <input class="tw-px-2 tw-h-[45px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg" type="text" matInput
-            [formControl]="eventNameControl" placeholder="Meeting with Alan Johnson for upcoming events" />
+          <input
+            class="tw-px-2 tw-h-[45px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
+            type="text"
+            matInput
+            [formControl]="eventNameControl"
+            placeholder="Meeting with Alan Johnson for upcoming events"
+          />
         </mat-form-field>
       </div>
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="A detailed description helps others understand the event better." title="Description"
-          type="Optional"></app-info-icon>
+        <app-info-icon
+          infoText="A detailed description helps others understand the event better."
+          title="Description"
+          type="Optional"
+        ></app-info-icon>
         <mat-form-field class="tw-w-full">
-          <input class="tw-px-2 tw-h-[75px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg" type="text" matInput
-            [formControl]="eventDescriptionControl" placeholder="..." />
+          <input
+            class="tw-px-2 tw-h-[75px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
+            type="text"
+            matInput
+            [formControl]="eventDescriptionControl"
+            placeholder="..."
+          />
         </mat-form-field>
       </div>
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="An event must belong to a task" title="Task" type="Required"></app-info-icon>
+        <app-info-icon
+          infoText="An event must belong to a task"
+          title="Task"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field>
           <mat-label>Task</mat-label>
           <mat-select [formControl]="taskControl">
@@ -44,44 +73,88 @@
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="A place which this event takes place" title="Location"
-          type="Optional"></app-info-icon>
+        <app-info-icon
+          infoText="A place which this event takes place"
+          title="Location"
+          type="Optional"
+        ></app-info-icon>
         <mat-form-field class="tw-w-full">
-          <input class="tw-px-2 tw-h-[45px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg" type="text" matInput
-            [formControl]="locationControl" />
+          <input
+            class="tw-px-2 tw-h-[45px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
+            type="text"
+            matInput
+            [formControl]="locationControl"
+          />
         </mat-form-field>
       </div>
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="Choose the start time of this task" title="Start time" type="Required"></app-info-icon>
+        <app-info-icon
+          infoText="Choose the start time of this task"
+          title="Start time"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field>
           <mat-label>Start Time</mat-label>
-          <input matInput aria-label="default time" [ngxTimepicker]="start" [value]="'0:00 am'"
-            [(ngModel)]="startTimeControl" [ngModelOptions]="{ standalone: true }" />
+          <input
+            matInput
+            aria-label="default time"
+            [ngxTimepicker]="start"
+            [value]="'0:00 am'"
+            [(ngModel)]="startTimeControl"
+            [ngModelOptions]="{ standalone: true }"
+          />
           <ngx-material-timepicker #start> </ngx-material-timepicker>
         </mat-form-field>
       </div>
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="Choose the end time of this task" title="End time" type="Required"></app-info-icon>
+        <app-info-icon
+          infoText="Choose the end time of this task"
+          title="End time"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field>
           <mat-label>End Time</mat-label>
-          <input matInput aria-label="default time" [ngxTimepicker]="end" [value]="'0:00 am'"
-            [(ngModel)]="endTimeControl" [ngModelOptions]="{ standalone: true }" />
+          <input
+            matInput
+            aria-label="default time"
+            [ngxTimepicker]="end"
+            [value]="'0:00 am'"
+            [(ngModel)]="endTimeControl"
+            [ngModelOptions]="{ standalone: true }"
+          />
           <ngx-material-timepicker #end> </ngx-material-timepicker>
         </mat-form-field>
       </div>
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="Choose a color for this task" title="Task Color" type="Required"></app-info-icon>
+        <app-info-icon
+          infoText="Choose a color for this task"
+          title="Color"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field>
-          <mat-label>Task Color</mat-label>
-          <mat-select [(ngModel)]="taskColorControl" [ngModelOptions]="{ standalone: true }">
-            <mat-option *ngFor="let color of colors" [value]="color" >
-              <span class="tw-flex tw-items-center" [ngStyle]="{'background-color': color, 'display': 'inline-block', 'width': '16px', 'height': '16px', 'margin-right': '8px', 'border-radius': '8px'}"></span>
+          <mat-label>Color</mat-label>
+          <mat-select
+            [(ngModel)]="taskColorControl"
+            [ngModelOptions]="{ standalone: true }"
+          >
+            <mat-option *ngFor="let color of colors" [value]="color">
+              <span
+                class="tw-flex tw-items-center"
+                [ngStyle]="{
+                  'background-color': color,
+                  display: 'inline-block',
+                  width: '16px',
+                  height: '16px',
+                  'margin-right': '8px',
+                  'border-radius': '8px'
+                }"
+              ></span>
               {{ color }}
             </mat-option>
           </mat-select>
@@ -90,10 +163,18 @@
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="Select users for this task" title="Task Users" type="Required"></app-info-icon>
+        <app-info-icon
+          infoText="Select people for this task"
+          title="Participants"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field>
-          <mat-label>Task Users</mat-label>
-          <mat-select [(ngModel)]="selectedUsers" [ngModelOptions]="{ standalone: true }" multiple>
+          <mat-label>Participants</mat-label>
+          <mat-select
+            [(ngModel)]="selectedUsers"
+            [ngModelOptions]="{ standalone: true }"
+            multiple
+          >
             <mat-option *ngFor="let user of usersList" [value]="user">
               {{ user.fullName }}
             </mat-option>
@@ -101,18 +182,22 @@
         </mat-form-field>
       </div>
     </form>
-    <button (click)="submitForm()"
-      class="tw-w-[120px] tw-px-10 tw-h-10 tw-bg-sky-700 hover:tw-bg-sky-500 tw-text-white tw-rounded-xl tw-py-3 tw-text-lg tw-font-bold tw-flex tw-items-center tw-self-center tw-justify-center">
+    <button
+      (click)="submitForm()"
+      class="tw-w-[120px] tw-px-10 tw-h-10 tw-bg-sky-700 hover:tw-bg-sky-500 tw-text-white tw-rounded-xl tw-py-3 tw-text-lg tw-font-bold tw-flex tw-items-center tw-self-center tw-justify-center"
+    >
       Submit
     </button>
   </div>
   <div
-    class="tw-w-full tw-h-auto tw-flex tw-flex-row tw-px-10 tw-border-b-2 tw-py-3 tw-justify-between tw-items-center">
+    class="tw-w-full tw-h-auto tw-flex tw-flex-row tw-px-10 tw-border-b-2 tw-py-3 tw-justify-between tw-items-center"
+  >
     <h1 class="tw-text-xl tw-text-black">Jan 2024</h1>
     <div class="tw-flex tw-flex-row tw-gap-2 tw-justify-center tw-items-center">
       <div
         class="tw-w-7 tw-h-7 tw-cursor-pointer tw-border-2 tw-flex tw-justify-center tw-items-center tw-rounded-full tw-p-4"
-        (click)="previousWeek()">
+        (click)="previousWeek()"
+      >
         <i class="material-icons">chevron_left</i>
       </div>
       <h1 class="tw-text-xl tw-text-black">
@@ -121,11 +206,14 @@
       </h1>
       <div
         class="tw-w-7 tw-h-7 tw-cursor-pointer tw-border-2 tw-flex tw-justify-center tw-items-center tw-rounded-full tw-p-4"
-        (click)="nextWeek()">
+        (click)="nextWeek()"
+      >
         <i class="material-icons">chevron_right</i>
       </div>
     </div>
-    <button class="tw-flex tw-w-auto tw-px-4 tw-py-2 tw-bg-sky-800 tw-items-center tw-flex-row tw-gap-2 tw-rounded-xl">
+    <button
+      class="tw-flex tw-w-auto tw-px-4 tw-py-2 tw-bg-sky-800 tw-items-center tw-flex-row tw-gap-2 tw-rounded-xl"
+    >
       <i class="tw-invert material-icons">add_circle</i>
       <h1 class="tw-text-white tw-text-lg tw-font-semibold">New activity</h1>
     </button>
@@ -134,45 +222,146 @@
     <div class="tw-grid tw-grid-cols-8 tw-gap-0 tw-p-4">
       <div class="tw-flex tw-flex-col tw-gap-0">
         <div class="tw-h-16"></div>
-        <div *ngFor="let hour of hours" class="tw-h-20 tw-flex tw-items-start tw-justify-center">
+        <div
+          *ngFor="let hour of hours"
+          class="tw-h-20 tw-flex tw-items-start tw-justify-center"
+        >
           {{ hour.substring(0, 5) }}
         </div>
       </div>
       <div *ngFor="let day of days" class="tw-flex tw-flex-col tw-gap-0">
         <div
-          class="tw-h-16 tw-flex tw-flex-col tw-items-center tw-border tw-border-gray-300 tw-justify-center tw-font-bold">
-          <div class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold">
+          class="tw-h-16 tw-flex tw-flex-col tw-items-center tw-border tw-border-gray-300 tw-justify-center tw-font-bold"
+        >
+          <div
+            class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold"
+          >
             {{ day.day }}
           </div>
-          <div class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold">
+          <div
+            class="tw-h-auto tw-flex tw-items-center tw-justify-center tw-font-bold"
+          >
             {{ day.name }}
           </div>
         </div>
-        <div *ngFor="let hour of hours" (click)="
+        <div
+          *ngFor="let hour of hours"
+          (click)="
             openModal(addDays(weeks[currentWeekIndex].start, day.day - 1), hour)
-          " class="tw-h-20 tw-border tw-border-gray-300 tw-relative tw-flex tw-items-start tw-justify-center">
+          "
+          class="tw-h-20 tw-border tw-border-gray-300 tw-relative tw-flex tw-items-start tw-justify-center"
+        >
           <ng-container *ngFor="let event of events">
-            <div *ngIf="
+            <div
+              *ngIf="
                 isDateInCurrentWeek(getDateObject(event.date)) &&
                 getDayNameFromDate(getDateObject(event.date)) === day.name &&
                 event.startTime === hour
               "
               class="tw-text-black tw-border-t-2 tw-w-full tw-p-2 tw-flex tw-flex-col tw-items-start tw-justify-start"
               [ngClass]="{
+                'tw-bg-blue-100 tw-border-blue-600': event.color === 0,
                 'tw-bg-green-100 tw-border-green-600': event.color === 1,
-                'tw-bg-blue-100 tw-border-blue-600': event.color === 2,
-                'tw-bg-red-100 tw-border-red-600': event.color === 3,
-                'tw-bg-purple-100 tw-border-purple-600': event.color === 4,
+
+                'tw-bg-red-100 tw-border-red-600': event.color === 2,
+                'tw-bg-purple-100 tw-border-purple-600': event.color === 3,
+                'tw-bg-yellow-100 tw-border-yellow-600': event.color === 4,
                 'tw-bg-gray-100 tw-border-gray-600': event.color === 5,
                 'tw-bg-pink-100 tw-border-pink-600': event.color === 6
-              }" [ngStyle]="{ height: getRowSpan(event) * 5 + 'rem' }">
-              <div class="tw-text-md tw-font-bold tw-text-black">
+              }"
+              [ngStyle]="{ height: getRowSpan(event) * 5 + 'rem' }"
+              (mouseenter)="hoveredEvent = event"
+              (mouseleave)="hoveredEvent = null"
+            >
+              <div class="tw-text-md  tw-font-bold tw-text-black">
                 {{ event.eventName }}
               </div>
               <div class="tw-text-sm tw-text-gray-600">
                 {{ event.startTime.substring(0, 5) }} -
                 {{ event.endTime.substring(0, 5) }}
               </div>
+              <ng-template [ngIf]="hoveredEvent === event">
+                <div
+                  class="tooltip tw-h-auto tw-flex tw-flex-col tw-gap-2 tw-rounded-2xl tw-shadow-2xl tw-absolute tw-py-3 tw-bg-white tw-top-[100%] tw-left-[50%]  tw-z-[1000] tw-w-[500px] -tw-translate-x-[50%]"
+                >
+                  <div
+                    class="tw-flex tw-flew-row  tw-justify-start tw-px-6 tw-gap-2 tw-items-center"
+                  >
+                    <div
+                      class="tw-w-4  tw-h-4 tw-rounded-md"
+                      [ngClass]="{
+                        'tw-bg-blue-500': event.color === 0,
+                        'tw-bg-green-500': event.color === 1,
+                        'tw-bg-red-500': event.color === 2,
+                        'tw-bg-purple-500': event.color === 3,
+                        'tw-bg-yellow-500': event.color === 4,
+                        'tw-bg-gray-500': event.color === 5,
+                        'tw-bg-pink-500': event.color === 6
+                      }"
+                    ></div>
+                    <h2 class=" tw-px-6 tw-font-bold tw-text-2xl">
+                      {{ event.eventName }}
+                    </h2>
+                  </div>
+                  <div class="tw-px-6">
+                    <span class="tw-font-bold">{{
+                      getFullDayName(day.name)
+                    }}</span>
+                    <span
+                      [ngClass]="{
+                        'tw-text-blue-500': event.color === 0,
+                        'tw-text-green-500': event.color === 1,
+                        'tw-text-red-500': event.color === 2,
+                        'tw-text-purple-500': event.color === 3,
+                        'tw-text-yellow-500': event.color === 4,
+                        'tw-text-gray-500': event.color === 5,
+                        'tw-text-pink-500': event.color === 6
+                      }"
+                    >
+                      {{ event.date | date : "dd MMM yyyy" }}
+                    </span>
+                    · {{ event.startTime.substring(0, 5) }} -
+                    {{ event.endTime.substring(0, 5) }}
+                  </div>
+                  <div
+                    class="tw-flex tw-flew-row tw-px-6 tw-justify-start tw-gap-4 tw-items-center"
+                  >
+                    <i class="material-icons tw-text-xl">menu_open</i>
+                    <h2>{{ event.description }}</h2>
+                  </div>
+                  <div
+                    class="tw-flex tw-flew-row tw-px-6 tw-justify-start tw-gap-4 tw-items-center"
+                  >
+                    <i class="material-icons tw-text-xl">location_on</i>
+                    <h2>{{ event.location }}</h2>
+                  </div>
+
+                  <div
+                    class="tw-flex tw-flew-row tw-px-6 tw-justify-start tw-gap-4 tw-items-center"
+                  >
+                    <i class="material-icons tw-text-xl">account_circle</i>
+                    <h2>{{ event.date }}</h2>
+                  </div>
+
+                  <div
+                    class="tw-flex tw-flew-row tw-px-6 tw-justify-start tw-gap-4 tw-items-center hover:tw-bg-gray-100"
+                  >
+                    <i class="material-icons tw-text-xl">people_alt</i>
+                    <h2 *ngIf="event.eventUsers && event.eventUsers.$values">
+                      {{ event.eventUsers.$values.length }} participants
+                    </h2>
+                  </div>
+
+                  <div
+                    class="tw-flex tw-flew-row tw-px-6 tw-justify-start tw-gap-4 tw-items-center"
+                  >
+                    <i class="material-icons tw-text-xl">account_circle</i>
+                    <h2 *ngIf="event.eventUsers && event.eventUsers.$values">
+                      {{ event.creatorId }}
+                    </h2>
+                  </div>
+                </div>
+              </ng-template>
             </div>
           </ng-container>
         </div>

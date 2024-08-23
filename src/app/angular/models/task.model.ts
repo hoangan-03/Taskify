@@ -116,13 +116,14 @@ export interface Event {
   task?: Task;
   creatorId?: number;
   creator?: User;
-  eventUsers: EventUser[];
+  eventUsers: { $values: EventUser[] };
   color?: Color;
 }
 
 export interface EventUser {
   eventId: number;
   userId: number;
+  fullName: string;
   user?: User;
   event?: Event;
 }

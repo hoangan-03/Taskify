@@ -74,12 +74,13 @@ export class CalendarComponent {
     private cdr: ChangeDetectorRef,
     private datePipe: DatePipe
   ) { }
+  hoveredEvent: any = null;
   events: Event[] = [];
   weeks: { start: Date; end: Date }[] = [];
   currentWeekIndex: number = 0;
   selectedUsers: User[] = [];
   usersList: User[] = [];
-
+  Color = Color;
   eventNameControl = new FormControl('');
   eventDescriptionControl = new FormControl('');
   locationControl = new FormControl('');
@@ -141,7 +142,6 @@ export class CalendarComponent {
       
         return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
       }
-      
       const formData = {
         eventName: this.eventNameControl.value,
         description: this.eventDescriptionControl.value ?? '',
@@ -161,6 +161,7 @@ export class CalendarComponent {
         next: (response) => {
           this.closeModal();
           this.fetchEvents();
+          console.log('Response:', formData)
         },
         error: (error) => {
           console.error('Error:', error);
@@ -260,6 +261,18 @@ export class CalendarComponent {
   convertTo24HourFormat(time: string): number {
     let [hours, minutes] = time.split(':').map(Number);
     return hours;
+  }
+  getFullDayName(dayAbbreviation: string): string {
+    const dayMap: { [key: string]: string } = {
+      'Mon': 'Monday',
+      'Tue': 'Tuesday',
+      'Wed': 'Wednesday',
+      'Thu': 'Thursday',
+      'Fri': 'Friday',
+      'Sat': 'Saturday',
+      'Sun': 'Sunday'
+    };
+    return dayMap[dayAbbreviation] || dayAbbreviation;
   }
 
   generateWeeks(): void {
