@@ -1,3 +1,4 @@
+import { EventUser } from './../models/task.model';
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -8,19 +9,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { JsonPipe } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ChangeDetectionStrategy, inject, model } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatRadioModule } from '@angular/material/radio';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
 import { FormFieldComponent } from '../../components/form-field/app-form-field.component';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { computed, signal } from '@angular/core';
+import { MatInputModule } from '@angular/material/input';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import {
   MatAutocompleteModule,
   MatAutocompleteSelectedEvent,
@@ -29,6 +27,7 @@ import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { InfoIconComponent } from '../../info-icon/info-icon.component';
 import { HttpClient } from '@angular/common/http';
 import { TaskService } from '../services/task.service';
+
 import {
   AttachmentType,
   CommentState,
@@ -37,6 +36,7 @@ import {
   User,
   Event,
   Color,
+  Task,
 } from '../models/task.model';
 
 @Component({
@@ -60,21 +60,140 @@ import {
     MatChipsModule,
     MatAutocompleteModule,
     InfoIconComponent,
-    DragDropModule,
+    NgxMaterialTimepickerModule,
   ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss',
+  providers: [provideNativeDateAdapter(), DatePipe],
 })
-
 export class CalendarComponent {
+  baseUrl = 'http://localhost:5187';
   constructor(
     private http: HttpClient,
     private taskService: TaskService,
     private cdr: ChangeDetectorRef,
+    private datePipe: DatePipe
   ) { }
   events: Event[] = [];
-  weeks: { start: Date, end: Date }[] = [];
+  weeks: { start: Date; end: Date }[] = [];
   currentWeekIndex: number = 0;
+  selectedUsers: User[] = [];
+  usersList: User[] = [];
+
+  eventNameControl = new FormControl('');
+  eventDescriptionControl = new FormControl('');
+  locationControl = new FormControl('');
+  startTimeControl = new FormControl('');
+  endTimeControl = new FormControl('');
+  taskControl = new FormControl('');
+  taskColorControl: string = '';
+  colors: string[] = [
+    'blue',
+    'green',
+    'red',
+    'purple',
+    'yellow',
+    'gray',
+    'pink',
+  ];
+  showModal: boolean = false;
+  currentDate: Date = new Date();
+  currentHour: string = '';
+  openModal(date: Date, hour: string) {
+    this.showModal = true;
+    this.currentDate = date;
+    this.currentHour = hour;
+  }
+  addDays(date: Date, days: number): Date {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+  closeModal() {
+    this.showModal = false;
+    this.cdr.detectChanges();
+  }
+  async submitForm() {
+    try {
+      const selectedColor = this.getColorEnumValue(this.taskColorControl);
+      function convertTo24HourFormat(timeControl: FormControl<string | null> | string | null): string {
+        let time: string | null;
+        if (timeControl instanceof FormControl) {
+          time = timeControl.value;
+        } else {
+          time = timeControl;
+        }
+      
+        if (!time) {
+          return '00:00:00';
+        }
+      
+        const [timePart, modifier] = time.split(' ');
+        let [hours, minutes] = timePart.split(':');
+      
+        if (hours === '12') {
+          hours = '00';
+        }
+      
+        if (modifier === 'PM') {
+          hours = (parseInt(hours, 10) + 12).toString();
+        }
+      
+        return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
+      }
+      
+      const formData = {
+        eventName: this.eventNameControl.value,
+        description: this.eventDescriptionControl.value ?? '',
+        color: selectedColor,
+        date: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+        startTime: convertTo24HourFormat(this.startTimeControl),
+        endTime: convertTo24HourFormat(this.endTimeControl),
+        location: this.locationControl.value ?? '',
+        taskId: this.taskControl.value,
+        creatorId: 1,
+        eventUsers: this.selectedUsers.map((user) => ({
+          userId: user.userId,
+        })),
+      };
+      const jsonString = JSON.stringify(formData);
+      this.http.post(`${this.baseUrl}/api/events`, formData).subscribe({
+        next: (response) => {
+          this.closeModal();
+          this.fetchEvents();
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          console.log('Form Data:', formData);
+        },
+      });
+    } catch (error) {
+      console.log('Form error:', error);
+    }
+  }
+  tasks: Task[] = [];
+  fetchTasks(): void {
+    this.taskService.getTasks().subscribe(
+      (response: any) => {
+        if (response && response.$values) {
+          this.tasks = response.$values.map((task: any) => {
+            return {
+              ...task,
+              taskTags: task.taskTags.$values,
+              comments: task.comments.$values,
+              attachments: task.attachments.$values,
+            };
+          });
+          this.cdr.detectChanges();
+        } else {
+          console.error('Unexpected response format', response);
+        }
+      },
+      (error) => {
+        console.error('Error fetching tasks', error);
+      }
+    );
+  }
   fetchEvents(): void {
     this.taskService.getEvents().subscribe(
       (response: any) => {
@@ -90,6 +209,44 @@ export class CalendarComponent {
       },
       (error) => {
         console.error('Error fetching Events', error);
+      }
+    );
+  }
+  public getColorEnumValue(colorString: string): Color {
+    switch (colorString.toLowerCase()) {
+      case 'blue':
+        return Color.blue;
+      case 'green':
+        return Color.green;
+      case 'red':
+        return Color.red;
+      case 'purple':
+        return Color.purple;
+      case 'yellow':
+        return Color.yellow;
+      case 'gray':
+        return Color.gray;
+      case 'pink':
+        return Color.pink;
+      default:
+        throw new Error(`Unknown color: ${colorString}`);
+    }
+  }
+  fetchUsers(): void {
+    this.taskService.getUsers().subscribe(
+      (response: any) => {
+        if (response && response.$values && Array.isArray(response.$values)) {
+          this.usersList = response.$values.map((user: any) => ({
+            userId: user.userId,
+            fullName: user.fullName,
+          }));
+          this.cdr.detectChanges();
+        } else {
+          console.error('Unexpected response format', response);
+        }
+      },
+      (error) => {
+        console.error('Error fetching users', error);
       }
     );
   }
@@ -145,48 +302,19 @@ export class CalendarComponent {
     const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     return daysOfWeek[date.getDay()];
   }
-  getColorClasses(color: Color | undefined): string {
-    if (color === undefined) {
-      return 'tw-border-gray-600 tw-bg-gray-100';
-    } else {
-      return `tw-border-${Color[color]}-600 tw-bg-${Color[color]}-100`;
-    }
-  }
   days = [
-    { day: 1, name: 'Mon' },
-    { day: 2, name: 'Tue' },
-    { day: 3, name: 'Wed' },
-    { day: 4, name: 'Thu' },
-    { day: 5, name: 'Fri' },
-    { day: 6, name: 'Sat' },
-    { day: 7, name: 'Sun' }
+    { day: 1, name: 'Mon', date: new Date() },
+    { day: 2, name: 'Tue', date: new Date() },
+    { day: 3, name: 'Wed', date: new Date() },
+    { day: 4, name: 'Thu', date: new Date() },
+    { day: 5, name: 'Fri', date: new Date() },
+    { day: 6, name: 'Sat', date: new Date() },
+    { day: 7, name: 'Sun', date: new Date() },
   ];
-
   hours: string[] = [
-    '00:00:00',
-    '01:00:00',
-    '02:00:00',
-    '03:00:00',
-    '04:00:00',
-    '05:00:00',
-    '06:00:00',
-    '07:00:00',
-    '08:00:00',
-    '09:00:00',
-    '10:00:00',
-    '11:00:00',
-    '12:00:00',
-    '13:00:00',
-    '14:00:00',
-    '15:00:00',
-    '16:00:00',
-    '17:00:00',
-    '18:00:00',
-    '19:00:00',
-    '20:00:00',
-    '21:00:00',
-    '22:00:00',
-    '23:00:00',
+    '00:00:00', '01:00:00', '02:00:00', '03:00:00', '04:00:00', '05:00:00', '06:00:00', '07:00:00',
+    '08:00:00', '09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00',
+    '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00', '21:00:00', '22:00:00', '23:00:00',
   ];
   saveCurrentWeekIndex(): void {
     localStorage.setItem('currentWeekIndex', this.currentWeekIndex.toString());
@@ -198,10 +326,11 @@ export class CalendarComponent {
       this.currentWeekIndex = parseInt(storedIndex, 10);
     }
   }
-
   ngOnInit(): void {
     this.fetchEvents();
+    this.fetchTasks();
     this.generateWeeks();
+    this.fetchUsers();
     this.loadCurrentWeekIndex();
   }
 }

@@ -20,8 +20,13 @@
 .mat-datepicker-content-container {
     z-index: 10000000000 !important;
 }
+ngx-material-timepicker-content{
+    z-index: 100000000001 !important;
+}
 
-
+.timepicker-overlay{
+    z-index: 100000000001 !important;
+}
 
 @font-face {
     font-family: 'proxima';
