@@ -65,10 +65,6 @@ export class SideNavComponent implements OnInit {
     this.router.navigate([this.activeRoute]);
   }
 
-  onTrash() {
-    this.activeRoute = '/angular/trash';
-    this.router.navigate([this.activeRoute]);
-  }
 
   logout() {
     if (typeof localStorage !== 'undefined') {

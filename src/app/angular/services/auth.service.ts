@@ -11,8 +11,8 @@ export class AuthService {
   private apiUrl = this.baseUrl + '/api/auth';
   constructor(private http: HttpClient) {}
 
-  register(email: string, password: string): Observable<UserDTO> {
-    return this.http.post<UserDTO>(`${this.apiUrl}/register`, { email, password })
+  register(fullname: string, email: string, password: string): Observable<UserDTO> {
+    return this.http.post<UserDTO>(`${this.apiUrl}/register`, {fullname, email, password })
       .pipe(
         catchError(this.handleError)
       );

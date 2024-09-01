@@ -4,6 +4,18 @@ import { AuthService, UserDTO } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+
+export function fullNameValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    if (!value) {
+      return null; 
+    }
+    const isValid = /^[a-zA-Z]+ [a-zA-Z]+$/.test(value);
+    return isValid ? null : { fullNameInvalid: true };
+  };
+}
 
 @Component({
   selector: 'app-auth',
@@ -28,6 +40,7 @@ export class AuthComponent implements OnInit {
     });
 
     this.registerForm = this.fb.group({
+      fullname: ['', [Validators.required, fullNameValidator()]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
@@ -60,9 +73,9 @@ export class AuthComponent implements OnInit {
 
   onRegisterSubmit() {
     if (this.registerForm.valid) {
-      const { email, password } = this.registerForm.value;
+      const {fullname, email, password } = this.registerForm.value;
       console.log("register",this.registerForm.value);
-      this.authService.register(email, password).subscribe(
+      this.authService.register(fullname,email, password).subscribe(
         (response: any) => {
           console.log('Registration successful', response);
           this.toggleView();
