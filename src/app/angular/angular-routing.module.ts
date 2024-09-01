@@ -8,8 +8,8 @@ const routes: Routes = [
   { path: 'todo', component: TodoComponent },
   { path: 'inbox', component: InboxComponent },
   { path: 'calendar', component: CalendarComponent },
-  { path: '', redirectTo: '/angular/todo', pathMatch: 'full' }, // Default route
-  { path: '**', redirectTo: '/angular/todo' }, // Wildcard route for any undefined route
+  { path: '', redirectTo: '/angular/todo', pathMatch: 'full' },
+  { path: '**', redirectTo: '/angular/todo' }, 
 ];
 
 @NgModule({

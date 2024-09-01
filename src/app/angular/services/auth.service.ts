@@ -11,22 +11,22 @@ export class AuthService {
   private apiUrl = this.baseUrl + '/api/auth';
   constructor(private http: HttpClient) {}
 
-  register(fullname: string, email: string, password: string): Observable<UserDTO> {
-    return this.http.post<UserDTO>(`${this.apiUrl}/register`, {fullname, email, password })
+  register(fullname: string, email: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/register`, {fullname, email, password })
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  login(email: string, password: string): Observable<UserDTO> {
-    return this.http.post<UserDTO>(`${this.apiUrl}/login`, { email, password })
+  login(email: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/login`, { email, password })
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  googleLogin(tokenId: string): Observable<UserDTO> {
-    return this.http.post<UserDTO>(`${this.apiUrl}/google-login`, { tokenId })
+  googleLogin(tokenId: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/google-login`, { tokenId })
       .pipe(
         catchError(this.handleError)
       );
@@ -44,10 +44,4 @@ export class AuthService {
     console.error(errorMessage);
     return throwError(errorMessage);
   }
-}
-
-export interface UserDTO {
-  id: number;
-  email: string;
-  token: string;
 }
