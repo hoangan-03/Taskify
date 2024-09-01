@@ -4,43 +4,39 @@
   </h3>
   <button
     class="tw-flex tw-w-full tw-px-4 tw-py-2 tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
-    (click)="onTodo()"
-  >
+    (click)="onTodo()">
     <i class="material-icons">account_box</i>
-    <h1 class="tw-text-black tw-text-lg tw-font-semibold">John' space</h1>
+    <ng-container *ngIf="user; else defaultSpace">
+      <h1 class="tw-text-black tw-text-lg tw-font-semibold">{{ user.fullName.split(' ')[0] }}'s space</h1>
+    </ng-container>
+    <ng-template #defaultSpace>
+      <h1 class="tw-text-black tw-text-lg tw-font-semibold">Your space</h1>
+    </ng-template>
   </button>
   <div class="tw-flex tw-flex-col tw-justify-center tw-items-start tw-pt-[20px] tw-pb-[20px] tw-gap-3">
     <h3 class="tw-text-lg tw-text-gray-500">General</h3>
 
     <button
       class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
-      [class.tw-bg-white]="activeRoute === '/angular/todo'"
-      (click)="onTodo()"
-    >
+      [class.tw-bg-white]="activeRoute === '/angular/todo'" (click)="onTodo()">
       <i class="material-icons">task</i>
       <h1 class="tw-text-black tw-text-lg tw-font-semibold">To do</h1>
     </button>
     <button
       class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
-      [class.tw-bg-white]="activeRoute === '/angular/calendar'"
-      (click)="onCalendar()"
-    >
+      [class.tw-bg-white]="activeRoute === '/angular/calendar'" (click)="onCalendar()">
       <i class="material-icons">calendar_today</i>
       <h1 class="tw-text-black tw-text-lg tw-font-semibold">Calendar</h1>
     </button>
     <button
       class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
-      [class.tw-bg-white]="activeRoute === '/angular/inbox'"
-      (click)="onInbox()"
-    >
+      [class.tw-bg-white]="activeRoute === '/angular/inbox'" (click)="onInbox()">
       <mat-icon>inbox</mat-icon>
       <h1 class="tw-text-black tw-text-lg tw-font-semibold">Inbox</h1>
     </button>
     <button
       class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
-      [class.tw-bg-white]="activeRoute === '/angular/trash'"
-      (click)="onTrash()"
-    >
+      [class.tw-bg-white]="activeRoute === '/angular/trash'" (click)="onTrash()">
       <i class="material-icons">delete</i>
       <h1 class="tw-text-black tw-text-lg tw-font-semibold">Trash</h1>
     </button>
@@ -48,21 +44,36 @@
   <div class="tw-flex tw-flex-col tw-justify-center tw-items-start tw-gap-1 tw-pt-[20px]">
     <h3 class="tw-text-lg tw-text-gray-500">Account</h3>
 
-    <button
-      class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
-      [class.tw-bg-white]="activeRoute === '/angular/trash'"
-      (click)="onTrash()"
-    >
-      <i class="material-icons">settings</i>
-      <h1 class="tw-text-black tw-text-lg tw-font-semibold">Settings</h1>
-    </button>
-    <button
-      class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
-      [class.tw-bg-white]="activeRoute === '/angular/trash'"
-      (click)="onTrash()"
-    >
-      <i class="material-icons">file_download</i>
-      <h1 class="tw-text-black tw-text-lg tw-font-semibold">Downloaded</h1>
-    </button>
+     <ng-container *ngIf="isLoggedIn">
+      <button
+        class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
+        [class.tw-bg-white]="activeRoute === '/angular/trash'" (click)="onTrash()">
+        <i class="material-icons">settings</i>
+        <h1 class="tw-text-black tw-text-lg tw-font-semibold">Settings</h1>
+      </button>
+      <button
+        class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
+        [class.tw-bg-white]="activeRoute === '/angular/trash'" (click)="onTrash()">
+        <i class="material-icons">file_download</i>
+        <h1 class="tw-text-black tw-text-lg tw-font-semibold">Downloaded</h1>
+      </button>
+    </ng-container>
+
   </div>
+  <ng-container *ngIf="isLoggedIn; else loginTemplate">
+    <button
+      class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
+      (click)="logout()">
+      <i class="material-icons">logout</i>
+      <h1 class="tw-text-black tw-text-lg tw-font-semibold">Log out</h1>
+    </button>
+  </ng-container>
+  <ng-template #loginTemplate>
+    <button
+      class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
+      (click)="router.navigate(['/auth'])">
+      <i class="material-icons">login</i>
+      <h1 class="tw-text-black tw-text-lg tw-font-semibold">Log in</h1>
+    </button>
+  </ng-template>
 </div>

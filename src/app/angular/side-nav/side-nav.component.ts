@@ -1,43 +1,80 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { TaskService } from './../services/task.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-side-nav',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIconModule, CommonModule],
   templateUrl: './side-nav.component.html',
   styleUrls: ['./side-nav.component.scss']
 })
-export class SideNavComponent {
+export class SideNavComponent implements OnInit {
   isSlideOut = true;
-  activeRoute: string = ''; 
+  activeRoute: string = '';
+  user: any;
+  isLoggedIn: boolean = false;
 
-  constructor(private router: Router){
+  constructor(public router: Router, private taskService: TaskService) {
     this.router.events.subscribe(() => {
       this.activeRoute = this.router.url;
     });
+  }
+
+  ngOnInit(): void {
+    if (typeof localStorage !== 'undefined') {
+      const userString = localStorage.getItem('user');
+      console.log('User', userString);
+      if (userString) {
+        const user = JSON.parse(userString);
+        const userId = user.id; // Access the id property
+        this.taskService.getUserById(userId).subscribe(
+          (data) => {
+            this.user = data;
+            this.isLoggedIn = true;
+            console.log('User info', userId);
+          },
+          (error) => {
+            console.error('Error fetching user info', error);
+          }
+        );
+      } else {
+        console.error('No user found in local storage');
+      }
+    } 
   }
 
   toggleSlideOut(): void {
     this.isSlideOut = !this.isSlideOut;
   }
 
-  // Update navigation methods to set activeRoute
-  onInbox(){
+  onInbox() {
     this.activeRoute = '/angular/inbox';
     this.router.navigate([this.activeRoute]);
   }
-  onTodo(){
+
+  onTodo() {
     this.activeRoute = '/angular/todo';
     this.router.navigate([this.activeRoute]);
   }
-  onCalendar(){
+
+  onCalendar() {
     this.activeRoute = '/angular/calendar';
     this.router.navigate([this.activeRoute]);
   }
-  onTrash(){
+
+  onTrash() {
     this.activeRoute = '/angular/trash';
     this.router.navigate([this.activeRoute]);
+  }
+
+  logout() {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.clear();
+    }
+    this.router.navigate(['/auth']);
+    this.isLoggedIn = false;
   }
 }

@@ -30,4 +30,8 @@ export class TaskService {
   getEvents(): Observable<Event[]> {
     return this.http.get<Event[]>(this.eventUrl);
   }
+  getUserById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.userUrl}/${id}`);
+  }
+  
 }

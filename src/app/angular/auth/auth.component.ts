@@ -4,6 +4,7 @@ import { AuthService, UserDTO } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
@@ -14,11 +15,11 @@ import { CommonModule } from '@angular/common';
     FormsModule, 
     CommonModule,
   ],
-  
 })
 export class AuthComponent implements OnInit {
   loginForm: FormGroup;
   registerForm: FormGroup;
+  isLoginView: boolean = true;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
@@ -32,16 +33,23 @@ export class AuthComponent implements OnInit {
     });
   }
 
+  toggleView() {
+    this.isLoginView = !this.isLoginView;
+  }
+
   ngOnInit(): void {}
 
   onLoginSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       this.authService.login(email, password).subscribe(
-        (response: UserDTO) => {
+        (response: any) => {
           console.log('Login successful', response);
+          // Store user information in session storage
+          localStorage.setItem('user', JSON.stringify(response));
           // Handle successful login, e.g., store token and navigate
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/angular/todo']);
+          alert("Login successful");
         },
         error => {
           console.error('Login failed', error);
@@ -53,11 +61,13 @@ export class AuthComponent implements OnInit {
   onRegisterSubmit() {
     if (this.registerForm.valid) {
       const { email, password } = this.registerForm.value;
+      console.log("register",this.registerForm.value);
       this.authService.register(email, password).subscribe(
-        (response: UserDTO) => {
+        (response: any) => {
           console.log('Registration successful', response);
+          this.toggleView();
+          alert("Registration successful");
           // Handle successful registration, e.g., store token and navigate
-          this.router.navigate(['/dashboard']);
         },
         error => {
           console.error('Registration failed', error);
