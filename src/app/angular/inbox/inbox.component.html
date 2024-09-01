@@ -1,12 +1,22 @@
 <section class="tw-w-screen tw-h-screen tw-bg-black tw-flex tw-flex-col tw-items-center tw-justify-center">
-    <div class="tw-w-1/2 tw-bg-white tw-rounded-lg tw-shadow-lg tw-overflow-hidden">
-      <div class="tw-p-4 tw-border-b tw-border-gray-200">
-        <h2 class="tw-text-xl tw-font-bold">Chat</h2>
-      </div>
-      <div class="tw-p-4 tw-h-96 tw-overflow-y-auto" #messages></div>
-      <div class="tw-p-4 tw-border-t tw-border-gray-200 tw-flex">
-        <input type="text" #messageInput class="tw-flex-grow tw-p-2 tw-border tw-border-gray-300 tw-rounded-lg" placeholder="Type your message...">
-        <button #sendButton class="tw-ml-2 tw-bg-blue-500 tw-text-white tw-px-4 tw-py-2 tw-rounded-lg">Send</button>
+  <div class="tw-w-1/2 tw-bg-white tw-rounded-lg tw-shadow-lg tw-overflow-hidden">
+    <div class="tw-p-4 tw-border-b tw-border-gray-200">
+      <h2 class="tw-text-xl tw-font-bold">Chat</h2>
+    </div>
+    <div class="tw-p-4 tw-h-96 tw-overflow-y-auto" #messagesContainer>
+      <div *ngFor="let message of messages; let i = index" [ngClass]="{'tw-text-right': i % 2 !== 0}">
+        <div class="tw-flex tw-items-center" [ngClass]="{'tw-justify-end': i % 2 !== 0}">
+          <div class="tw-mb-2 tw-p-2 tw-rounded-lg" [ngClass]="{'tw-bg-blue-100': i % 2 === 0, 'tw-bg-green-100': i % 2 !== 0}">
+            <div class="tw-font-bold">{{ message.user }}</div>
+            <div>{{ message.text }}</div>
+            <div class="tw-text-xs tw-text-gray-500">{{ message.timestamp | date:'shortTime' }}</div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+    <div class="tw-p-4 tw-border-t tw-border-gray-200 tw-flex">
+      <input type="text" #messageInput class="tw-flex-grow tw-p-2 tw-border tw-border-gray-300 tw-rounded-lg" placeholder="Type your message...">
+      <button (click)="sendMessage(messageInput.value)" [disabled]="!connectionEstablished" class="tw-ml-2 tw-bg-blue-500 tw-text-white tw-px-4 tw-py-2 tw-rounded-lg">Send</button>
+    </div>
+  </div>
+</section>

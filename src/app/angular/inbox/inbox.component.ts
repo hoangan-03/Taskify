@@ -1,39 +1,68 @@
-import { Component, AfterViewInit, ElementRef, Renderer2, ViewChild } from '@angular/core';
-import { io } from 'socket.io-client';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SignalRService } from '../services/signalr.service';
+import { TaskService } from '../services/task.service';
+import { User } from '../models/task.model';
+
+interface Message {
+  user: string;
+  text: string;
+  timestamp: Date;
+}
 
 @Component({
   selector: 'app-inbox',
+  standalone: true,
   templateUrl: './inbox.component.html',
-  styleUrls: ['./inbox.component.scss'],
-  
+  imports: [CommonModule]
 })
-export class InboxComponent implements AfterViewInit {
-  baseUrl = 'http://localhost:5187';
-  private socket: any;
-
+export class InboxComponent implements OnInit {
   @ViewChild('messageInput') messageInput!: ElementRef;
-  @ViewChild('sendButton') sendButton!: ElementRef;
-  @ViewChild('messages') messages!: ElementRef;
+  messages: Message[] = [];
+  currentUser: User | null = null; 
+  connectionEstablished: boolean = false;
 
-  constructor(private renderer: Renderer2) {}
+  constructor(private signalRService: SignalRService, private taskService: TaskService) {}
 
-  ngAfterViewInit(): void {
-    this.socket = io(this.baseUrl);
-
-    this.renderer.listen(this.sendButton.nativeElement, 'click', () => {
-      const message = this.messageInput.nativeElement.value;
-      if (message.trim()) {
-        this.socket.emit('chat message', message);
-        this.messageInput.nativeElement.value = '';
+  ngOnInit() {
+    if (typeof localStorage !== 'undefined') {
+      const userString = localStorage.getItem('user');
+      if (userString) {
+        const user = JSON.parse(userString);
+        const userId = user.id; // Access the id property
+        this.taskService.getUserById(userId).subscribe(
+          (data: User) => {
+            this.currentUser = data;
+          },
+          (error) => {
+            console.error('Error fetching user info', error);
+          }
+        );
       }
+    } 
+
+    this.signalRService.getMessage().subscribe((data: { user: string, message: string }) => {
+      const newMessage: Message = {
+        user: this.currentUser?.fullName || 'Anonymous',
+        text: data.message,
+        timestamp: new Date()
+      };
+      this.messages.push(newMessage);
     });
 
-    this.socket.on('chat message', (msg: string) => {
-      const messageElement = this.renderer.createElement('div');
-      const text = this.renderer.createText(msg);
-      this.renderer.appendChild(messageElement, text);
-      this.renderer.appendChild(this.messages.nativeElement, messageElement);
-      this.messages.nativeElement.scrollTop = this.messages.nativeElement.scrollHeight;
+    this.signalRService.isConnectionEstablished().subscribe((established: boolean) => {
+      this.connectionEstablished = established;
     });
+  }
+
+  sendMessage(text: string) {
+    if (text.trim() && this.connectionEstablished && this.currentUser && this.currentUser.fullName) {
+      this.signalRService.sendMessage(this.currentUser.fullName, text);
+      this.messageInput.nativeElement.value = '';
+    } else if (!this.connectionEstablished) {
+      console.error('Cannot send message. Connection is not established.');
+    } else if (!this.currentUser || !this.currentUser.fullName) {
+      console.error('Username is not set.');
+    }
   }
 }
