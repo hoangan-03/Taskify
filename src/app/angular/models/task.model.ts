@@ -108,9 +108,9 @@ export interface Event {
   eventId: number;
   eventName?: string;
   description?: string;
-  date: string; // DateOnly equivalent in TypeScript
-  startTime: string; // TimeOnly equivalent in TypeScript
-  endTime: string; // TimeOnly equivalent in TypeScript
+  date: string; 
+  startTime: string;
+  endTime: string; 
   location?: string;
   taskId?: number;
   task?: Task;

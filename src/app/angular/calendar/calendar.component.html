@@ -200,7 +200,7 @@
       >
         <i class="material-icons">chevron_left</i>
       </div>
-      <h1 class="tw-text-xl tw-text-black">
+      <h1 *ngIf="weeks && weeks[currentWeekIndex]" class="tw-text-xl tw-text-black">
         {{ weeks[currentWeekIndex].start | date : "dd MMM" }} -
         {{ weeks[currentWeekIndex].end | date : "dd MMM yyyy" }}
       </h1>
@@ -254,6 +254,8 @@
           <ng-container *ngFor="let event of events">
             <div
               *ngIf="
+                event &&
+      event.date &&
                 isDateInCurrentWeek(getDateObject(event.date)) &&
                 getDayNameFromDate(getDateObject(event.date)) === day.name &&
                 event.startTime === hour

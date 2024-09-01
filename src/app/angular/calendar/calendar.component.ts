@@ -63,7 +63,6 @@ import {
     NgxMaterialTimepickerModule,
   ],
   templateUrl: './calendar.component.html',
-  styleUrl: './calendar.component.scss',
   providers: [provideNativeDateAdapter(), DatePipe],
 })
 export class CalendarComponent {
@@ -202,7 +201,6 @@ export class CalendarComponent {
           this.events = response.$values.map((event: any) => ({
             ...event,
           }));
-          console.log('Events', this.events);
           this.cdr.detectChanges();
         } else {
           console.error('Unexpected response format', response);
@@ -302,7 +300,10 @@ export class CalendarComponent {
     }
   }
 
-  isDateInCurrentWeek(date: Date): boolean {
+  isDateInCurrentWeek(date: Date | undefined): boolean {
+    if (!date) {
+      return false;
+    }
     const currentWeek = this.weeks[this.currentWeekIndex];
     return date >= currentWeek.start && date <= currentWeek.end;
   }
@@ -334,10 +335,12 @@ export class CalendarComponent {
   }
 
   loadCurrentWeekIndex(): void {
-    const storedIndex = localStorage.getItem('currentWeekIndex');
-    if (storedIndex !== null) {
-      this.currentWeekIndex = parseInt(storedIndex, 10);
-    }
+    if (typeof localStorage !== 'undefined') {
+      const storedIndex = localStorage.getItem('currentWeekIndex');
+      if (storedIndex !== null) {
+        this.currentWeekIndex = parseInt(storedIndex, 10);
+      }
+    } 
   }
   ngOnInit(): void {
     this.fetchEvents();

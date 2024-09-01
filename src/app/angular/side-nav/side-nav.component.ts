@@ -26,7 +26,6 @@ export class SideNavComponent implements OnInit {
   ngOnInit(): void {
     if (typeof localStorage !== 'undefined') {
       const userString = localStorage.getItem('user');
-      console.log('User', userString);
       if (userString) {
         const user = JSON.parse(userString);
         const userId = user.id; // Access the id property
@@ -34,14 +33,11 @@ export class SideNavComponent implements OnInit {
           (data) => {
             this.user = data;
             this.isLoggedIn = true;
-            console.log('User info', userId);
           },
           (error) => {
             console.error('Error fetching user info', error);
           }
         );
-      } else {
-        console.error('No user found in local storage');
       }
     } 
   }

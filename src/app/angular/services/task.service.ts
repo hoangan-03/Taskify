@@ -7,12 +7,12 @@ import { Task, Project, User, Event } from '../models/task.model';
   providedIn: 'root',
 })
 export class TaskService {
-  private baseUrl = 'http://localhost:5187/';
-  private taskUrl = this.baseUrl + 'api/tasks';
-  private projectUrl = this.baseUrl + 'api/projects';
-  private userUrl = this.baseUrl + 'api/users';
-  private commentUrl = this.baseUrl + 'api/comments';
-  private eventUrl = this.baseUrl + 'api/events';
+  private baseUrl = 'http://localhost:5187';
+  private taskUrl = this.baseUrl + '/api/tasks';
+  private projectUrl = this.baseUrl + '/api/projects';
+  private userUrl = this.baseUrl + '/api/users';
+  private commentUrl = this.baseUrl + '/api/comments';
+  private eventUrl = this.baseUrl + '/api/events';
   constructor(private http: HttpClient) {}
 
   getTasks(): Observable<Task[]> {
