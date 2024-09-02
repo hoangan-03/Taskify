@@ -44,4 +44,10 @@ export class SignalRService {
   isConnectionEstablished(): Observable<boolean> {
     return this.connectionEstablished.asObservable();
   }
+  stopConnection() {
+    this.hubConnection.stop().then(() => {
+      console.log('Connection stopped');
+      this.connectionEstablished.next(false);
+    }).catch(err => console.error('Error while stopping connection: ' + err));
+  }
 }

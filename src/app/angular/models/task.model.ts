@@ -127,3 +127,12 @@ export interface EventUser {
   user?: User;
   event?: Event;
 }
+export interface Message {
+  messageId?: number;
+  messageText: string;
+  timeLine: string;
+  senderId: number;
+  receiverId: number;
+  sender?: User;
+  receiver?: User;
+}
