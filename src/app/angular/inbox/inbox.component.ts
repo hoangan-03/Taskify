@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SignalRService } from '../services/signalr.service';
 import { TaskService } from '../services/task.service';
@@ -10,7 +10,7 @@ import { User, Message } from '../models/task.model';
   templateUrl: './inbox.component.html',
   imports: [CommonModule]
 })
-export class InboxComponent implements OnInit {
+export class InboxComponent implements OnInit, OnDestroy {
   @ViewChild('messageInput') messageInput!: ElementRef;
   messages: Message[] = [];
   users: User[] = [];
@@ -19,6 +19,7 @@ export class InboxComponent implements OnInit {
   connectionEstablished: boolean = false;
 
   constructor(private signalRService: SignalRService, private taskService: TaskService) { }
+
   fetchUsers(): void {
     this.taskService.getUsers().subscribe(
       (response: any) => {
@@ -30,12 +31,14 @@ export class InboxComponent implements OnInit {
         } else {
           console.error('Unexpected response format', response);
         }
+        console.log("Users", this.users);
       },
       (error) => {
         console.error('Error fetching users', error);
       }
     );
   }
+
   fetchMessages(userId: number): void {
     this.taskService.getMessagesBetweenUsers(this.currentUser!.userId, userId).subscribe(
       (response: any) => {
@@ -45,39 +48,79 @@ export class InboxComponent implements OnInit {
             messageText: message.messageText,
             senderId: message.senderId,
             receiverId: message.receiverId,
-            timeline: new Date(message.timeline),
+            timeline: message.timeline,
           }));
         } else {
           console.error('Unexpected response format', response);
         }
+        console.log("Messages", this.messages);
       },
       (error) => {
         console.error('Error fetching messages', error);
       }
     );
   }
+
   selectUser(user: User) {
     this.selectedUser = user;
     this.fetchMessages(user.userId);
+
+    if (!this.connectionEstablished) {
+      this.signalRService.startConnection().then(() => {
+        this.signalRService.getMessage().subscribe((data: { user: string, message: string, senderId: number, receiverId: number }) => {
+          if (this.currentUser && this.selectedUser) {
+            // Only add the message if it is relevant to the current chat
+            if ((data.senderId === this.currentUser.userId && data.receiverId === this.selectedUser.userId) ||
+                (data.senderId === this.selectedUser.userId && data.receiverId === this.currentUser.userId)) {
+              const newMessage: Message = {
+                messageText: data.message,
+                senderId: data.senderId,
+                receiverId: data.receiverId,
+                timeline: new Date().toISOString(),
+              };
+              this.messages.push(newMessage);
+            }
+          }
+        });
+
+        this.signalRService.isConnectionEstablished().subscribe((established: boolean) => {
+          this.connectionEstablished = established;
+        });
+      }).catch(err => console.error('Error while starting connection: ' + err));
+    }
   }
 
   sendMessage(text: string) {
-    if (text.trim() && this.connectionEstablished && this.currentUser && this.currentUser.fullName) {
-      this.signalRService.sendMessage(this.currentUser.fullName, text);
-      this.messageInput.nativeElement.value = '';
+    if (text.trim() && this.connectionEstablished && this.currentUser && this.currentUser.fullName && this.selectedUser) {
+      const message = {
+        messageText: text,
+        senderId: this.currentUser.userId,
+        receiverId: this.selectedUser.userId
+      };
+      this.taskService.addMessage(message).subscribe(
+        (newMessage: Message) => {
+          this.signalRService.sendMessage(this.currentUser!.fullName, text, this.currentUser!.userId, this.selectedUser!.userId);
+          this.messageInput.nativeElement.value = '';
+        },
+        (error) => {
+          console.error('Error sending message', error);
+        }
+      );
     } else if (!this.connectionEstablished) {
       console.error('Cannot send message. Connection is not established.');
     } else if (!this.currentUser || !this.currentUser.fullName) {
       console.error('Username is not set.');
     }
   }
+
   ngOnInit() {
     this.fetchUsers();
+
     if (typeof localStorage !== 'undefined') {
       const userString = localStorage.getItem('user');
       if (userString) {
         const user = JSON.parse(userString);
-        const userId = user.id; 
+        const userId = user.id;
         this.taskService.getUserById(userId).subscribe(
           (data: User) => {
             this.currentUser = data;
@@ -88,19 +131,15 @@ export class InboxComponent implements OnInit {
         );
       }
     }
-    this.signalRService.getMessage().subscribe((data: { user: string, message: string }) => {
-      const newMessage: Message = {
-        messageText: data.message,
-        senderId: this.currentUser!.userId, 
-        receiverId: this.selectedUser!.userId, 
-        timeLine: new Date().toISOString(), 
-      };
-      this.messages.push(newMessage);
-    });
 
     this.signalRService.isConnectionEstablished().subscribe((established: boolean) => {
       this.connectionEstablished = established;
     });
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  unloadHandler(event: any) {
+    this.signalRService.stopConnection();
   }
 
   ngOnDestroy() {

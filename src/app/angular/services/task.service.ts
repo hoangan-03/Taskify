@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Task, Project, User, Comment, Event, Message } from '../models/task.model';
 
 @Injectable({
@@ -41,7 +42,36 @@ export class TaskService {
     return this.http.get<any>(`${this.userUrl}/${id}`);
   }
 
+  // getMessagesBetweenUsers(userId1: number, userId2: number): Observable<Message[]> {
+  //   return this.http.get<Message[]>(`${this.messageUrl}/between/${userId1}/${userId2}`);
+  // }
+
   getMessagesBetweenUsers(userId1: number, userId2: number): Observable<Message[]> {
-    return this.http.get<Message[]>(`${this.messageUrl}/between/${userId1}/${userId2}`);
+    return this.http.get<Message[]>(`${this.messageUrl}/between/${userId1}/${userId2}`).pipe(
+      map((response: any) => resolveReferences(response))
+    );
   }
+  addMessage(message: { messageText: string, senderId: number, receiverId: number }): Observable<Message> {
+    return this.http.post<Message>(this.messageUrl, message);
+  }
+}
+function resolveReferences(data: any): any {
+  const idMap = new Map<string, any>();
+
+  function resolve(obj: any): any {
+    if (obj && typeof obj === 'object') {
+      if (obj.$id) {
+        idMap.set(obj.$id, obj);
+      }
+      if (obj.$ref) {
+        return idMap.get(obj.$ref);
+      }
+      for (const key of Object.keys(obj)) {
+        obj[key] = resolve(obj[key]);
+      }
+    }
+    return obj;
+  }
+
+  return resolve(data);
 }

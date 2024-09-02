@@ -130,7 +130,7 @@ export interface EventUser {
 export interface Message {
   messageId?: number;
   messageText: string;
-  timeLine: string;
+  timeline: string;
   senderId: number;
   receiverId: number;
   sender?: User;
