@@ -42,7 +42,6 @@ export class SignalRService {
   startConnection(): Promise<void> {
     return this.hubConnection.start()
       .then(() => {
-        console.log('Connection started');
         this.connectionEstablished.next(true);
       })
       .catch(err => {
@@ -69,7 +68,6 @@ export class SignalRService {
 
   stopConnection() {
     this.hubConnection.stop().then(() => {
-      console.log('Connection stopped');
       this.connectionEstablished.next(false);
     }).catch(err => console.error('Error while stopping connection: ' + err));
   }

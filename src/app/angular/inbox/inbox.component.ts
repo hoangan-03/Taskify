@@ -20,18 +20,45 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   constructor(private signalRService: SignalRService, private taskService: TaskService) { }
 
+  ngOnInit(): void {
+    this.initializeCurrentUserAndUsers();
+    this.signalRService.isConnectionEstablished().subscribe((established: boolean) => {
+      this.connectionEstablished = established;
+    });
+  }
+
+  initializeCurrentUserAndUsers(): void {
+    if (typeof localStorage !== 'undefined') {
+      const userString = localStorage.getItem('user');
+      if (userString) {
+        const user = JSON.parse(userString);
+        const userId = user.id;
+        this.taskService.getUserById(userId).subscribe(
+          (data: User) => {
+            this.currentUser = data;
+            this.fetchUsers(); 
+          },
+          (error) => {
+            console.error('Error fetching user info', error);
+          }
+        );
+      }
+    }
+  }
+
   fetchUsers(): void {
     this.taskService.getUsers().subscribe(
       (response: any) => {
         if (response && response.$values && Array.isArray(response.$values)) {
-          this.users = response.$values.map((user: any) => ({
-            userId: user.userId,
-            fullName: user.fullName,
-          }));
+          this.users = response.$values
+            .map((user: any) => ({
+              userId: user.userId,
+              fullName: user.fullName,
+            }))
+            .filter((user: User) => user.userId !== this.currentUser?.userId); // Filter out the current user
         } else {
           console.error('Unexpected response format', response);
         }
-        console.log("Users", this.users);
       },
       (error) => {
         console.error('Error fetching users', error);
@@ -53,7 +80,6 @@ export class InboxComponent implements OnInit, OnDestroy {
         } else {
           console.error('Unexpected response format', response);
         }
-        console.log("Messages", this.messages);
       },
       (error) => {
         console.error('Error fetching messages', error);
@@ -64,12 +90,10 @@ export class InboxComponent implements OnInit, OnDestroy {
   selectUser(user: User) {
     this.selectedUser = user;
     this.fetchMessages(user.userId);
-
     if (!this.connectionEstablished) {
       this.signalRService.startConnection().then(() => {
         this.signalRService.getMessage().subscribe((data: { user: string, message: string, senderId: number, receiverId: number }) => {
           if (this.currentUser && this.selectedUser) {
-            // Only add the message if it is relevant to the current chat
             if ((data.senderId === this.currentUser.userId && data.receiverId === this.selectedUser.userId) ||
                 (data.senderId === this.selectedUser.userId && data.receiverId === this.currentUser.userId)) {
               const newMessage: Message = {
@@ -82,7 +106,6 @@ export class InboxComponent implements OnInit, OnDestroy {
             }
           }
         });
-
         this.signalRService.isConnectionEstablished().subscribe((established: boolean) => {
           this.connectionEstablished = established;
         });
@@ -111,30 +134,6 @@ export class InboxComponent implements OnInit, OnDestroy {
     } else if (!this.currentUser || !this.currentUser.fullName) {
       console.error('Username is not set.');
     }
-  }
-
-  ngOnInit() {
-    this.fetchUsers();
-
-    if (typeof localStorage !== 'undefined') {
-      const userString = localStorage.getItem('user');
-      if (userString) {
-        const user = JSON.parse(userString);
-        const userId = user.id;
-        this.taskService.getUserById(userId).subscribe(
-          (data: User) => {
-            this.currentUser = data;
-          },
-          (error) => {
-            console.error('Error fetching user info', error);
-          }
-        );
-      }
-    }
-
-    this.signalRService.isConnectionEstablished().subscribe((established: boolean) => {
-      this.connectionEstablished = established;
-    });
   }
 
   @HostListener('window:beforeunload', ['$event'])

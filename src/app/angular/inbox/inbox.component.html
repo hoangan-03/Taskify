@@ -1,40 +1,69 @@
-<section class="tw-w-screen tw-h-screen tw-bg-black tw-flex tw-flex-col tw-items-center tw-justify-center">
-  <div class="tw-w-1/2 tw-bg-white tw-rounded-lg tw-shadow-lg tw-overflow-hidden">
-    <div class="tw-p-4 tw-border-b tw-border-gray-200">
-      <h2 class="tw-text-xl tw-font-bold">Chat</h2>
+<section class="tw-w-screen tw-h-screen tw-bg-gray-200 tw-flex tw-flex-col tw-items-center tw-justify-center">
+  <div class="tw-w-2/3 tw-h-[80%] tw-bg-white tw-rounded-lg tw-shadow-lg tw-overflow-hidden tw-flex tw-flex-row">
+    <div class="tw-p-4 tw-border-b tw-flex tw-flex-col tw-gap-2 tw-border-gray-200 tw-w-[30%]">
+      <button class="tw-bg-black tw-gap-2 tw-inline-flex tw-w-auto tw-items-center tw-justify-center tw-text-white tw-px-3 tw-py-2 tw-rounded-xl tw-mb-4">
+        <i class="material-icons tw-text-base">create</i>
+        <h2 class="tw-text-white tw-font-normal tw-text-base">New Group Message</h2>
+      </button>
+      <div class="tw-flex tw-flex-col tw-gap-6 tw-mb-8 tw-pl-2">
+        <div class="tw-flex tw-flex-row tw-gap-2">
+          <i class="material-icons">crop</i>
+          <h2 class="tw-text-black tw-font-semibold tw-text-base">Channels</h2>
+        </div>
+        <div class="tw-flex tw-flex-row tw-gap-2">
+          <i class="material-icons">drafts</i>
+          <h2 class="tw-text-black tw-font-semibold tw-text-base">Drafts</h2>
+        </div>
+        <div class="tw-flex tw-flex-row tw-gap-2">
+          <i class="material-icons">transcribe</i>
+          <h2 class="tw-text-black tw-font-semibold tw-text-base">Mentions</h2>
+        </div>
+        <div class="tw-flex tw-flex-row tw-gap-2">
+          <i class="material-icons">attach_file</i>
+          <h2 class="tw-text-black tw-font-semibold tw-text-base">Files & Media</h2>
+        </div>
+      </div>
+      <h3 class="tw-text-base tw-font-semibold">Direct messages</h3>
+      <div class="tw-text-base tw-cursor-pointer   tw-flex tw-flex-row tw-p-2 tw-rounded-xl tw-items-center tw-gap-1"
+        *ngFor="let user of users" (click)="selectUser(user)"
+        [ngClass]="{ 'tw-bg-sky-100': selectedUser?.userId === user.userId }">
+        <img src="assets/boy.png" alt="Avatar" class="tw-w-8 tw-h-8 tw-rounded-full tw-mr-2">
+        {{ user.fullName }}
+      </div>
     </div>
-    <div class="tw-p-4 tw-border-b tw-border-gray-200">
-      <h3 class="tw-text-lg tw-font-semibold">Users</h3>
-      <ul>
-        <li *ngFor="let user of users" (click)="selectUser(user)"
-          [ngClass]="{ 'tw-bg-gray-200': selectedUser?.userId === user.userId }">
-          {{ user.fullName }}
-        </li>
-      </ul>
-    </div>
-    <div class="tw-p-4 tw-h-96 tw-overflow-y-auto" #messagesContainer>
-      <div *ngFor="let message of messages" [ngClass]="{ 'tw-text-right': message.senderId === currentUser?.userId, 'tw-text-left': message.senderId !== currentUser?.userId }">
-        <div class="tw-flex tw-items-center" [ngClass]="{ 'tw-justify-end': message.senderId === currentUser?.userId, 'tw-justify-start': message.senderId !== currentUser?.userId }">
-          <div class="tw-mb-2 tw-p-2 tw-rounded-lg" [ngClass]="{
+    <div class="tw-flex tw-flex-col tw-border-l-[1px] tw-border-black/20 tw-w-full tw-gap-3 tw-h-full">
+      <h2 class="tw-text-black tw-text-xl tw-p-4 tw-font-bold">
+        <span *ngIf="selectedUser; else noUserSelected">Chat with {{ selectedUser.fullName }}</span>
+        <ng-template #noUserSelected>Choose a user to chat with</ng-template>
+      </h2>
+      <div class="tw-p-4 tw-h-full tw-overflow-y-auto" #messagesContainer>
+        <div *ngFor="let message of messages" class="tw-gap-1 tw-flex-col tw-flex"
+          [ngClass]="{ 'tw-text-right': message.senderId === currentUser?.userId, 'tw-text-left': message.senderId !== currentUser?.userId }">
+          <div class="tw-flex tw-items-center"
+            [ngClass]="{ 'tw-justify-end': message.senderId === currentUser?.userId, 'tw-justify-start': message.senderId !== currentUser?.userId }">
+            <div class="tw-mt-2 tw-w-auto tw-p-2 tw-rounded-2xl" [ngClass]="{
               'tw-bg-blue-100': message.senderId === currentUser?.userId,
               'tw-bg-green-100': message.senderId !== currentUser?.userId
             }">
-            <div class="tw-font-bold">{{ message.senderId === currentUser?.userId ? 'You' : selectedUser?.fullName }}</div>
-            <div>{{ message.messageText }}</div>
-            <div class="tw-text-xs tw-text-gray-500">
-              {{ message.timeline | date : "shortTime" }}
+              <div>{{ message.messageText }}</div>
             </div>
+          </div>
+          <div class="tw-text-xs tw-text-gray-500"
+            [ngClass]="{ 'tw-text-right tw-mr-1': message.senderId === currentUser?.userId, 'tw-text-left tw-ml-1': message.senderId !== currentUser?.userId }">
+            {{ message.timeline | date : "shortTime" }}
           </div>
         </div>
       </div>
-    </div>
-    <div class="tw-p-4 tw-border-t tw-border-gray-200 tw-flex">
-      <input type="text" #messageInput class="tw-flex-grow tw-p-2 tw-border tw-border-gray-300 tw-rounded-lg"
-        placeholder="Type your message..." />
-      <button (click)="sendMessage(messageInput.value)" [disabled]="!connectionEstablished"
-        class="tw-ml-2 tw-bg-blue-500 tw-text-white tw-px-4 tw-py-2 tw-rounded-lg">
-        Send
-      </button>
+      <div class="tw-p-4 tw-flex tw-flex-row">
+        <div class="tw-relative tw-flex-grow">
+          <input type="text" #messageInput class="tw-w-full tw-p-3 tw-pr-20 tw-border  tw-bg-gray-100 tw-rounded-xl"
+            [placeholder]="selectedUser ? 'Message ' + selectedUser.fullName : 'Choose a user to chat with'" />
+          <button (click)="sendMessage(messageInput.value)" [disabled]="!connectionEstablished"
+            class="tw-absolute tw-text-sm tw-font-bold tw-cursor-pointer tw-right-2 tw-top-1/2 tw-transform tw--translate-y-1/2 tw-bg-black tw-text-white tw-px-4 tw-py-1 tw-rounded-2xl">
+            Send
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </section>

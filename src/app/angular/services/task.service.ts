@@ -42,10 +42,6 @@ export class TaskService {
     return this.http.get<any>(`${this.userUrl}/${id}`);
   }
 
-  // getMessagesBetweenUsers(userId1: number, userId2: number): Observable<Message[]> {
-  //   return this.http.get<Message[]>(`${this.messageUrl}/between/${userId1}/${userId2}`);
-  // }
-
   getMessagesBetweenUsers(userId1: number, userId2: number): Observable<Message[]> {
     return this.http.get<Message[]>(`${this.messageUrl}/between/${userId1}/${userId2}`).pipe(
       map((response: any) => resolveReferences(response))
