@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Task, Project, User, Comment, Event, Message } from '../models/task.model';
+import { Task, Project, User, Comment, Event, Message, Attachment } from '../models/task.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class TaskService {
   private commentUrl = this.baseUrl + '/api/comments';
   private eventUrl = this.baseUrl + '/api/events';
   private messageUrl = this.baseUrl + '/api/messages';
-
+  private attachmentUrl = this.baseUrl + '/api/attachments';
   constructor(private http: HttpClient) {}
 
   getTasks(): Observable<Task[]> {
@@ -36,6 +36,10 @@ export class TaskService {
 
   getEvents(): Observable<Event[]> {
     return this.http.get<Event[]>(this.eventUrl);
+  }
+
+  getAttachments(): Observable<Attachment[]> {
+    return this.http.get<Attachment[]>(this.attachmentUrl);
   }
 
   getUserById(id: number): Observable<any> {

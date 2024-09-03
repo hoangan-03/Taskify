@@ -60,7 +60,10 @@ export class SideNavComponent implements OnInit {
     this.activeRoute = '/angular/calendar';
     this.router.navigate([this.activeRoute]);
   }
-
+  onDownloaded() {
+    this.activeRoute = '/angular/downloaded';
+    this.router.navigate([this.activeRoute]);
+  }
 
   logout() {
     if (typeof localStorage !== 'undefined') {

@@ -1,0 +1,34 @@
+<section class="tw-w-screen tw-h-screen tw-pl-[220px]">
+    <div class="tw-flex tw-flex-col tw-pl-12 tw-pt-16 tw-gap-3">
+        <h1 class="tw-text-black tw-font-bold tw-text-2xl">Your downloaded materials</h1>
+        <h1 class="tw-text-gray-600 tw-font-normal tw-text-base">Manages all your team's attachments here</h1>
+        
+        <table class="tw-w-[80vw] tw-mt-8 tw-bg-white tw-shadow-lg tw-rounded-2xl tw-pl-10">
+            <thead>
+                <tr class="tw-bg-gray-200">
+                    <th class="tw-px-4 tw-py-2 tw-text-left">File Name</th>
+                    <th class="tw-px-4 tw-py-2 tw-text-left">Created At</th>
+                    <th class="tw-px-4 tw-py-2 tw-text-left">Download</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let attachment of attachments" >
+                    <td class="tw-px-4 tw-py-2 tw-flex tw-items-center tw-gap-2">
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PDF" src="assets/pdf.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.XLSX" src="assets/xlsx.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PNG" src="assets/png.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.DOCX" src="assets/docx.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PPTX" src="assets/pptx.png" />
+                        {{ attachment.name }}
+                    </td>
+                    <td class="tw-px-4 tw-py-2">{{ attachment.uploadedAt | date:'short' }}</td>
+                    <td class="tw-px-4 tw-py-2">
+                        <a (click)="downloadAttachment(attachment)" class="tw-cursor-pointer">
+                            <i class="material-icons tw-text-xl tw-text-black">downloading</i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
