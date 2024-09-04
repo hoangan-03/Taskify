@@ -30,7 +30,7 @@ import {
   MatAutocompleteSelectedEvent,
 } from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
-import { InfoIconComponent } from '../../info-icon/info-icon.component';
+import { InfoIconComponent } from '../../components/info-icon/info-icon.component';
 import { HttpClient } from '@angular/common/http';
 import { TaskService } from '../services/task.service';
 import {
@@ -41,7 +41,7 @@ import {
   Project,
   User,
 } from '../models/task.model';
-
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-todo',
   standalone: true,
@@ -177,7 +177,7 @@ export class TodoComponent {
   categoryControl = new FormControl('', [Validators.required]);
   tagControl = new FormControl('', [Validators.required]);
   showModal: boolean = false;
-  baseUrl = 'http://localhost:5187';
+  baseUrl = environment.BASE_URL;
   isInfoBoxVisible: boolean = false;
   isInfoBox2Visible: boolean = false;
   isInfoBox3Visible: boolean = false;

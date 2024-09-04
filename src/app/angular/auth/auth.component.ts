@@ -5,7 +5,8 @@ import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-
+import { environment } from '../../../environments/environment';
+declare const google: any;
 export function fullNameValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
@@ -49,7 +50,10 @@ export class AuthComponent implements OnInit {
     this.isLoginView = !this.isLoginView;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+    this.initializeGoogleSignIn();
+  }
 
   onLoginSubmit() {
     if (this.loginForm.valid) {
@@ -57,9 +61,7 @@ export class AuthComponent implements OnInit {
       this.authService.login(email, password).subscribe(
         (response: any) => {
           console.log('Login successful', response);
-          // Store user information in session storage
           localStorage.setItem('user', JSON.stringify(response));
-          // Handle successful login, e.g., store token and navigate
           this.router.navigate(['/angular/todo']);
           alert("Login successful");
         },
@@ -76,10 +78,8 @@ export class AuthComponent implements OnInit {
       console.log("register",this.registerForm.value);
       this.authService.register(fullname,email, password).subscribe(
         (response: any) => {
-          console.log('Registration successful', response);
           this.toggleView();
           alert("Registration successful");
-          // Handle successful registration, e.g., store token and navigate
         },
         error => {
           console.error('Registration failed', error);
@@ -87,35 +87,39 @@ export class AuthComponent implements OnInit {
       );
     }
   }
+  onGoogleLogin() {
+    console.log('Prompting Google Sign-In');
+    google.accounts.id.prompt((notification: any) => {
+      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+        console.error('Google Sign-In was not displayed or was skipped', notification);
+      }
+    });
+  }
 
-  // onGoogleLogin() {
-  //   // Assuming you have a method to get the Google token
-  //   this.getGoogleToken().then(tokenId => {
-  //     this.authService.googleLogin(tokenId).subscribe(
-  //       (response: UserDTO) => {
-  //         console.log('Google login successful', response);
-  //         // Handle successful Google login, e.g., store token and navigate
-  //         this.router.navigate(['/dashboard']);
-  //       },
-  //       error => {
-  //         console.error('Google login failed', error);
-  //       }
-  //     );
-  //   }).catch(error => {
-  //     console.error('Google login failed', error);
-  //   });
-  // }
+  private initializeGoogleSignIn(): void {
+    console.log('Initializing Google Sign-In');
+    google.accounts.id.initialize({
+      client_id: environment.CLIENT_ID,
+      callback: this.handleCredentialResponse.bind(this)
+    });
+  }
 
-  // private getGoogleToken(): Promise<string> {
-  //   // Implement the logic to get the Google token here
-  //   return new Promise((resolve, reject) => {
-  //     // Example: Using Google Sign-In API
-  //     gapi.auth2.getAuthInstance().signIn().then(googleUser:user => {
-  //       const tokenId = googleUser.getAuthResponse().id_token;
-  //       resolve(tokenId);
-  //     }).catch(error => {
-  //       reject(error);
-  //     });
-  //   });
-  // }
+  private handleCredentialResponse(response: any): void {
+    console.log('Credential response received', response);
+    if (response.credential) {
+      const tokenId = response.credential;
+      this.authService.googleLogin(tokenId).subscribe(
+        (response: any) => {
+          console.log('Google login successful', response);
+          localStorage.setItem('user', JSON.stringify(response));
+          this.router.navigate(['/angular/todo']);
+        },
+        error => {
+          console.error('Google login failed', error);
+        }
+      );
+    } else {
+      console.error('No credential received', response);
+    }
+  }
 }

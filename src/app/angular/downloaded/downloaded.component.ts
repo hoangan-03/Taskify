@@ -4,6 +4,8 @@ import { SignalRService } from '../services/signalr.service';
 import { TaskService } from '../services/task.service';
 import { User, Attachment, AttachmentType } from '../models/task.model';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+
 @Component({
   selector: 'app-downloaded',
   standalone: true,
@@ -12,7 +14,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DownloadedComponent{
     AttachmentType = AttachmentType;
-    baseUrl = 'http://localhost:5187';
+    private baseUrl = environment.BASE_URL;
     attachments: Attachment[] = [];
     constructor( private taskService: TaskService, private http: HttpClient,) { }
     downloadAttachment(attachment: any) {

@@ -24,10 +24,10 @@ import {
   MatAutocompleteSelectedEvent,
 } from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
-import { InfoIconComponent } from '../../info-icon/info-icon.component';
+import { InfoIconComponent } from '../../components/info-icon/info-icon.component';
 import { HttpClient } from '@angular/common/http';
 import { TaskService } from '../services/task.service';
-
+import { environment } from '../../../environments/environment';
 import {
   AttachmentType,
   CommentState,
@@ -38,6 +38,7 @@ import {
   Color,
   Task,
 } from '../models/task.model';
+import { env } from 'process';
 
 @Component({
   selector: 'app-side-nav',
@@ -66,7 +67,8 @@ import {
   providers: [provideNativeDateAdapter(), DatePipe],
 })
 export class CalendarComponent {
-  baseUrl = 'http://localhost:5187';
+  
+  baseUrl = environment.BASE_URL;
   constructor(
     private http: HttpClient,
     private taskService: TaskService,

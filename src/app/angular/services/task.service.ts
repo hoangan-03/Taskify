@@ -3,12 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Task, Project, User, Comment, Event, Message, Attachment } from '../models/task.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
-  private baseUrl = 'http://localhost:5187';
+  // private baseUrl = 'http://localhost:5187';
+  private baseUrl = environment.BASE_URL;
   private taskUrl = this.baseUrl + '/api/tasks';
   private projectUrl = this.baseUrl + '/api/projects';
   private userUrl = this.baseUrl + '/api/users';

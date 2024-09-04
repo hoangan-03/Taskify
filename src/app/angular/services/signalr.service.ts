@@ -2,12 +2,12 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { Observable, Subject } from 'rxjs';
-
+import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class SignalRService {
-  private baseUrl = 'http://localhost:5187';
+  private baseUrl = environment.BASE_URL;
   private apiUrl = this.baseUrl + '/chathub';
   private hubConnection: signalR.HubConnection;
   private messageReceived = new Subject<{ user: string, message: string, senderId: number, receiverId: number }>();
