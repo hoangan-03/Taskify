@@ -3,6 +3,123 @@
       'tw-bg-black tw-bg-opacity-80 tw-z-[999] tw-block': showModal,
       'tw-hidden': !showModal
     }"></div>
+
+  <div *ngIf="showUpdateModal"
+    class="tw-fixed tw-z-[1000] tw-flex tw-flex-col tw-py-8 tw-px-12 tw-top-[50%] tw-left-[50%] tw--translate-x-[50%] tw--translate-y-[50%] tw-h-[620px] tw-overflow-y-scroll tw-w-[800px] tw-bg-gray-100 tw-rounded-3xl tw-gap-2">
+    <div
+      class="tw-flex tw-flex-row tw-justify-between tw-items-center tw-w-full tw-mb-3 tw-border-b-2 tw-border-black/40">
+      <h2 class="tw-text-xl tw-text-black tw-font-bold">Update Task</h2>
+      <button (click)="closeUpdateModal()"
+        class="tw-w-10 tw-h-10 tw-self-end tw-shadow-2xl tw-rounded-full tw-flex tw-justify-center tw-items-center hover:tw-bg-white tw-p-3">
+        <i class="material-icons tw-cursor-pointer tw-rounded-full tw-text-4xl">close</i>
+      </button>
+    </div>
+    <form class="tw-w-full">
+      <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
+        <app-info-icon infoText="It should be descriptive and clear." title="Task Name" type="Required"></app-info-icon>
+        <mat-form-field class="tw-w-full">
+          <input class="tw-px-2 tw-h-[45px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg" type="text" matInput
+            [formControl]="updateTaskNameControl" placeholder="Feed my dog named Peterson" />
+        </mat-form-field>
+      </div>
+    </form>
+    <form class="tw-w-full">
+      <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
+        <app-info-icon infoText="A detailed description helps others understand your task better."
+          title="Task Description" type="Optional"></app-info-icon>
+        <mat-form-field class="tw-w-full">
+          <input class="tw-px-2 tw-h-[75px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg" type="text" matInput
+            [formControl]="updateTaskDescriptionControl" placeholder="My dog Peterson is" />
+        </mat-form-field>
+      </div>
+    </form>
+    <form class="tw-w-full">
+      <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
+        <app-info-icon infoText="A task must belong to a project" title="Project" type="Required"></app-info-icon>
+        <mat-form-field>
+          <mat-label>Project</mat-label>
+          <mat-select [formControl]="updateProjectControl">
+            <mat-option *ngFor="let project of projectGroups" [value]="project.title">
+              {{ project.title }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+    <form class="tw-w-full">
+      <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
+        <app-info-icon infoText="You can skip this field if self-assigning." title="Assigner"
+          type="Optional"></app-info-icon>
+        <mat-form-field>
+          <mat-label>Assigner</mat-label>
+          <mat-select [formControl]="assignerUpdateControl">
+            <mat-option *ngFor="let assigner of Users" [value]="assigner.fullName">
+              {{ assigner.fullName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+    <form class="tw-w-full">
+      <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
+        <app-info-icon infoText="You can skip this field if self-assigning." title="Assignee"
+          type="Optional"></app-info-icon>
+        <mat-form-field>
+          <mat-label>Assignee</mat-label>
+          <mat-select [formControl]="assigneeUpdateControl">
+            <mat-option *ngFor="let assignee of Users" [value]="assignee.fullName">
+              {{ assignee.fullName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+    <form class="tw-w-full">
+      <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
+        <app-info-icon infoText="Choose a last day of this task" title="Deadline" type="Required"></app-info-icon>
+        <mat-form-field>
+          <mat-label>Choose a day</mat-label>
+          <input matInput [matDatepicker]="picker" [formControl]="updateDeadlineControl" />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </form>
+    <form class="tw-w-full">
+      <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
+        <app-info-icon infoText="Choose categories of this task" title="Category" type="Required"></app-info-icon>
+        <mat-chip-listbox class="mat-mdc-chip-set-stacked" aria-label="Categories" multiple
+          [formControl]="updateCategoryControl">
+          <mat-chip-option *ngFor="let category of categories; trackBy: trackByCategory" [value]="category">{{ category
+            }}</mat-chip-option>
+        </mat-chip-listbox>
+      </div>
+    </form>
+    <form class="tw-w-full">
+      <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
+        <!-- File Upload Section -->
+        <div class="tw-flex tw-flex-col tw-gap-3">
+          <app-info-icon infoText="Upload your attachments for this task" title="Attachments"
+            type="Optional"></app-info-icon>
+          <input type="file" [formControl]="updateFileControl" (change)="onUpdateFileSelected($event)"
+            (change)="onUpdateFileControlled($event)" multiple />
+        </div>
+        <div *ngFor="let file of selectedUpdateFiles; let i = index">
+          <mat-form-field class="tw-w-full">
+            <mat-label>File Name {{ i + 1 }}</mat-label>
+            <input matInput [value]="file.name"
+              class="tw-px-2 tw-h-[75px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg" type="text" />
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+
+    <button (click)="submitUpdateForm()"
+      class="tw-w-[120px] tw-px-10 tw-h-10 tw-bg-sky-700 hover:tw-bg-sky-500 tw-text-white tw-rounded-xl tw-py-3 tw-text-lg tw-font-bold tw-flex tw-items-center tw-self-center tw-justify-center">
+      Update
+    </button>
+  </div>
   <div *ngIf="showModal"
     class="tw-fixed tw-z-[1000] tw-flex tw-flex-col tw-py-8 tw-px-12 tw-top-[50%] tw-left-[50%] tw--translate-x-[50%] tw--translate-y-[50%] tw-h-[620px] tw-overflow-y-scroll tw-w-[800px] tw-bg-gray-100 tw-rounded-3xl tw-gap-2">
     <div
@@ -209,7 +326,7 @@
             class="tw-cursor-pointer tw-text-yellow-400 material-icons">star</i>
           <i *ngIf="task.state !== 2" (click)="toggleTaskState(task, 0); $event.stopPropagation()"
             class="material-icons tw-cursor-pointer tw-text-yellow-400">star_border</i>
-          <i (click)="toggleTaskState(task, 0); $event.stopPropagation()"
+          <i (click)="openUpdateModal(task.id); $event.stopPropagation()"
             class="material-icons tw-text-sky-700 tw-cursor-pointer">edit</i>
           <i (click)="deleteTask(task.id); $event.stopPropagation()"
             class="material-icons tw-cursor-pointer tw-text-sky-700">delete_sweep</i>

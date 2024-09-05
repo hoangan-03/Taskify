@@ -165,6 +165,54 @@ export class TodoComponent {
       ? this.allTags.filter((tag) => tag.toLowerCase().includes(currentTag))
       : this.allTags.slice();
   });
+  showUpdateModal = false;
+  assignerUpdateControl = new FormControl('', [Validators.required]);
+  assigneeUpdateControl = new FormControl('', [Validators.required]);
+  updateTaskNameControl = new FormControl('', Validators.required);
+  updateTaskDescriptionControl = new FormControl('');
+  updateDeadlineControl = new FormControl('', Validators.required);
+  updateCategoryControl = new FormControl([], Validators.required);
+  updateProjectControl = new FormControl('', Validators.required);
+  updateFileControl = new FormControl('');
+  fileNameUpdateControl = new FormControl('', [Validators.required]);
+  controlUpdateFiles: File[] = [];
+  selectedUpdateFiles: { name: string; type: number }[] = [];
+  currentUpdateId: number = 0;
+
+  openUpdateModal(id: number) {
+    this.showUpdateModal = true;
+    this.currentUpdateId = id;
+  }
+
+  closeUpdateModal() {
+    this.showUpdateModal = false;
+  }
+  onUpdateFileControlled(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.controlUpdateFiles = Array.from(input.files);
+    }
+  }
+  onUpdateFileSelected(event: any) {
+    const files = event.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const attachmentType = this.getAttachmentType(file.name);
+        this.selectedUpdateFiles.push({
+          name: file.name,
+          type: attachmentType !== undefined ? attachmentType : -1,
+        });
+      }
+      this.fileNameUpdateControl.setValue(
+        this.selectedUpdateFiles.map((file) => file.name).join(', ')
+      );
+    }
+  }
+
+
+
+
   fileControl = new FormControl('', [Validators.required]);
   fileNameControl = new FormControl('', [Validators.required]);
   selectedFiles: { name: string; type: number }[] = [];
@@ -272,6 +320,69 @@ export class TodoComponent {
         console.error('Error uploading file:', file.name, error);
         throw error;
       });
+  }
+  async submitUpdateForm() {
+    const selectedProjectName = this.updateProjectControl.value;
+    const selectedProject = this.projectGroups.find(
+      (project) => project.title === selectedProjectName
+    );
+    const projectId = selectedProject ? selectedProject.projectId : null;
+
+    const selectedAssignerName = this.assignerUpdateControl.value;
+    const selectedAssigner = this.Users.find(
+      (user) => user.fullName === selectedAssignerName
+    );
+    const assignerId = selectedAssigner ? selectedAssigner.userId : null;
+
+    const selectedAssigneeName = this.assigneeUpdateControl.value;
+    const selectedAssignee = this.Users.find(
+      (user) => user.fullName === selectedAssigneeName
+    );
+    const assigneeId = selectedAssignee ? selectedAssignee.userId : null;
+
+    try {
+      const attachmentUrls = await Promise.all(
+        this.controlUpdateFiles.map((file) => this.uploadAttachment(file))
+      );
+      const formData = {
+        title: this.updateTaskNameControl.value,
+        description: this.updateTaskDescriptionControl.value ?? '',
+        assignerId: assignerId ?? 1,
+        assigneeId: assigneeId ?? 1,
+        deadline: this.updateDeadlineControl.value
+          ? new Date(this.updateDeadlineControl.value).toISOString()
+          : null,
+        type: this.updateCategoryControl.value,
+        projectid: projectId,
+        attachments: attachmentUrls.map((url, index) => ({
+          Name: this.selectedUpdateFiles[index].name,
+          FileType: this.selectedUpdateFiles[index].type,
+          Url: url,
+        })),
+      };
+      this.http.put(`${this.baseUrl}/api/tasks/modify/${this.currentUpdateId}`, formData).subscribe({
+        next: (response) => {
+          this.closeUpdateModal();
+          this.fetchTasks();
+        },
+        error: (error) => {
+          if (error.error instanceof ErrorEvent) {
+            console.error('Client-side error:', error.error.message);
+          } else {
+            console.error('Server-side error:', error);
+            try {
+              const errorResponse = JSON.parse(error.error);
+              console.error('Error response:', errorResponse);
+            } catch (e) {
+              console.error('Non-JSON error response:', error.error);
+            }
+          }
+          console.log("this", formData);
+        },
+      });
+    } catch (error) {
+      console.error('Error uploading attachments:', error);
+    }
   }
   async submitForm() {
     const getRandomColor = () => {
