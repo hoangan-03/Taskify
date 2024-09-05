@@ -2,7 +2,7 @@
     <div class="tw-flex tw-flex-col tw-pl-12 tw-pt-16 tw-gap-3">
         <h1 class="tw-text-black tw-font-bold tw-text-2xl">Your downloaded materials</h1>
         <h1 class="tw-text-gray-600 tw-font-normal tw-text-base">Manages all your team's attachments here</h1>
-        
+
         <table class="tw-w-[80vw] tw-mt-8 tw-bg-white tw-shadow-lg tw-rounded-2xl tw-pl-10">
             <thead>
                 <tr class="tw-bg-gray-200">
@@ -12,13 +12,32 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let attachment of attachments" >
+                <tr *ngFor="let attachment of attachments">
                     <td class="tw-px-4 tw-py-2 tw-flex tw-items-center tw-gap-2">
-                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PDF" src="assets/icons/pdf.png" />
-                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.XLSX" src="assets/icons/xlsx.png" />
-                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PNG" src="assets/icons/png.png" />
-                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.DOCX" src="assets/icons/docx.png" />
-                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PPTX" src="assets/icons/pptx.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PDF"
+                            src="assets/icons/pdf.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.XLSX"
+                            src="assets/icons/xlsx.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PNG"
+                            src="assets/icons/png.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.DOCX"
+                            src="assets/icons/docx.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PPTX"
+                            src="assets/icons/pptx.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.JPG"
+                            src="assets/icons/jpg.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.DOC"
+                            src="assets/icons/doc.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.XLS"
+                            src="assets/icons/xls.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PPT"
+                            src="assets/icons/ppt.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.XML"
+                            src="assets/icons/xml.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.MD"
+                            src="assets/icons/md.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.UNKNOWN"
+                            src="assets/icons/unknown.png" />
                         {{ attachment.name }}
                     </td>
                     <td class="tw-px-4 tw-py-2">{{ attachment.uploadedAt | date:'short' }}</td>
