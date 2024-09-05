@@ -273,11 +273,11 @@
     <div *ngIf="selectedTask?.attachments" class="tw-flex tw-flex-row tw-gap-3 tw-w-full tw-h-auto">
       <div *ngFor="let attachment of selectedTask?.attachments || []" (click)="downloadAttachment(attachment)"
         class="tw-flex tw-cursor-pointer tw-flex-col tw-gap-1 tw-px-3 tw-py-2 tw-justify-center tw-w-auto tw-h-[120px] tw-border-2 tw-border-gray-400/40 tw-rounded-2xl tw-items-start tw-mt-2">
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PDF" src="assets/pdf.png" />
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.XLSX" src="assets/xlsx.png" />
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PNG" src="assets/png.png" />
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.DOCX" src="assets/docx.png" />
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PPTX" src="assets/pptx.png" />
+        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PDF" src="assets/icons/pdf.png" />
+        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.XLSX" src="assets/icons/xlsx.png" />
+        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PNG" src="assets/icons/png.png" />
+        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.DOCX" src="assets/icons/docx.png" />
+        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PPTX" src="assets/icons/pptx.png" />
         <p class="tw-text-lg tw-font-bold tw-text-black">
           {{ attachment.name }}
         </p>

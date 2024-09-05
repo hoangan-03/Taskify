@@ -27,7 +27,7 @@
       <div class="tw-text-base tw-cursor-pointer   tw-flex tw-flex-row tw-p-2 tw-rounded-xl tw-items-center tw-gap-1"
         *ngFor="let user of users" (click)="selectUser(user)"
         [ngClass]="{ 'tw-bg-sky-100': selectedUser?.userId === user.userId }">
-        <img src="assets/boy.png" alt="Avatar" class="tw-w-8 tw-h-8 tw-rounded-full tw-mr-2">
+        <img src="assets/icons/boy.png" alt="Avatar" class="tw-w-8 tw-h-8 tw-rounded-full tw-mr-2">
         {{ user.fullName }}
       </div>
     </div>

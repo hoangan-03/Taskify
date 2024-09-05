@@ -14,11 +14,11 @@
             <tbody>
                 <tr *ngFor="let attachment of attachments" >
                     <td class="tw-px-4 tw-py-2 tw-flex tw-items-center tw-gap-2">
-                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PDF" src="assets/pdf.png" />
-                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.XLSX" src="assets/xlsx.png" />
-                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PNG" src="assets/png.png" />
-                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.DOCX" src="assets/docx.png" />
-                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PPTX" src="assets/pptx.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PDF" src="assets/icons/pdf.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.XLSX" src="assets/icons/xlsx.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PNG" src="assets/icons/png.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.DOCX" src="assets/icons/docx.png" />
+                        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PPTX" src="assets/icons/pptx.png" />
                         {{ attachment.name }}
                     </td>
                     <td class="tw-px-4 tw-py-2">{{ attachment.uploadedAt | date:'short' }}</td>
