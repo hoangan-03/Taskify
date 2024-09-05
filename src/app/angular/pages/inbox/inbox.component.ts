@@ -1,8 +1,8 @@
 import { Component, ViewChild, ElementRef, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SignalRService } from '../services/signalr.service';
-import { TaskService } from '../services/task.service';
-import { User, Message } from '../models/task.model';
+import { SignalRService } from '../../services/signalr.service';
+import { TaskService } from '../../services/task.service';
+import { User, Message } from '../../models/task.model';
 
 @Component({
   selector: 'app-inbox',

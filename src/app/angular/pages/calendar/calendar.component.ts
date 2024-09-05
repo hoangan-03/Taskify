@@ -1,4 +1,4 @@
-import { EventUser } from './../models/task.model';
+import { EventUser } from '../../models/task.model';
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatRadioModule } from '@angular/material/radio';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { FormFieldComponent } from '../../components/form-field/app-form-field.component';
+import { FormFieldComponent } from '../../../components/form-field/app-form-field.component';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatInputModule } from '@angular/material/input';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
@@ -24,10 +24,10 @@ import {
   MatAutocompleteSelectedEvent,
 } from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
-import { InfoIconComponent } from '../../components/info-icon/info-icon.component';
+import { InfoIconComponent } from '../../../components/info-icon/info-icon.component';
 import { HttpClient } from '@angular/common/http';
-import { TaskService } from '../services/task.service';
-import { environment } from '../../../environments/environment';
+import { TaskService } from '../../services/task.service';
+import { environment } from '../../../../environments/environment';
 import {
   AttachmentType,
   CommentState,
@@ -37,7 +37,7 @@ import {
   Event,
   Color,
   Task,
-} from '../models/task.model';
+} from '../../models/task.model';
 import { env } from 'process';
 
 @Component({

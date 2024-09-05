@@ -1,4 +1,4 @@
-import { TaskState } from './../models/task.model';
+import { TaskState } from '../../models/task.model';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,7 +21,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
-import { FormFieldComponent } from '../../components/form-field/app-form-field.component';
+import { FormFieldComponent } from '../../../components/form-field/app-form-field.component';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { computed, signal } from '@angular/core';
@@ -30,9 +30,9 @@ import {
   MatAutocompleteSelectedEvent,
 } from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
-import { InfoIconComponent } from '../../components/info-icon/info-icon.component';
+import { InfoIconComponent } from '../../../components/info-icon/info-icon.component';
 import { HttpClient } from '@angular/common/http';
-import { TaskService } from '../services/task.service';
+import { TaskService } from '../../services/task.service';
 import {
   Task,
   AttachmentType,
@@ -40,8 +40,8 @@ import {
   Comment,
   Project,
   User,
-} from '../models/task.model';
-import { environment } from '../../../environments/environment';
+} from '../../models/task.model';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-todo',
   standalone: true,
