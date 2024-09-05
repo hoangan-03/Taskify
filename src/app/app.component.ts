@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, Event } from '@angular/router';
-import { SideNavComponent } from './angular/side-nav/side-nav.component';
-import { AuthComponent } from './angular/auth/auth.component';
+import { SideNavComponent } from './angular/components/side-nav/side-nav.component';
+import { AuthComponent } from './angular/components/auth/auth.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';

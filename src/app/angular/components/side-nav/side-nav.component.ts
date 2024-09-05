@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
-import { TaskService } from './../services/task.service';
+import { TaskService } from '../../services/task.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
