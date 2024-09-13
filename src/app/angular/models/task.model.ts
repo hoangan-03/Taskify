@@ -90,6 +90,8 @@ export interface Task {
   type: string[];
   projectId?: string;
   project?: Project;
+  assignerId: number;
+  assigneeId: number;
   userId?: string;
   user?: User;
   taskTags: TaskTag[];

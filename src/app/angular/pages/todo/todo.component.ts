@@ -171,7 +171,7 @@ export class TodoComponent {
   updateTaskNameControl = new FormControl('', Validators.required);
   updateTaskDescriptionControl = new FormControl('');
   updateDeadlineControl = new FormControl('', Validators.required);
-  updateCategoryControl = new FormControl([], Validators.required);
+  updateCategoryControl = new FormControl<string[]>([], Validators.required);
   updateProjectControl = new FormControl('', Validators.required);
   updateFileControl = new FormControl('');
   fileNameUpdateControl = new FormControl('', [Validators.required]);
@@ -179,10 +179,34 @@ export class TodoComponent {
   selectedUpdateFiles: { name: string; type: number }[] = [];
   currentUpdateId: number = 0;
 
-  openUpdateModal(id: number) {
-    this.showUpdateModal = true;
-    this.currentUpdateId = id;
-  }
+       openUpdateModal(id: number) {
+      this.showUpdateModal = true;
+      this.currentUpdateId = id;
+      const currentTask = this.tasks.find(task => task.id === this.currentUpdateId);
+    
+      if (currentTask) {
+        const currentProjectName = currentTask.projectName;
+        const selectedProject = this.projectGroups.find(
+          (project) => project.title === currentProjectName
+        );
+        const currentAssignerId = currentTask.assignerId;
+        const selectedAssignerName = this.Users.find(
+          (user) => user.userId === currentAssignerId
+        );
+        const currentAssigneeId = currentTask.assigneeId;
+        const selectedAssigneeName = this.Users.find(
+          (user) => user.userId === currentAssigneeId
+        );    
+        this.updateTaskNameControl.setValue(currentTask.title);
+        this.updateTaskDescriptionControl.setValue(currentTask.description ?? null);
+        this.updateDeadlineControl.setValue(currentTask.deadline);
+        this.updateCategoryControl.setValue(currentTask.type);
+        this.assignerUpdateControl.setValue(selectedAssignerName ? selectedAssignerName.fullName : null);
+        this.assigneeUpdateControl.setValue(selectedAssigneeName ? selectedAssigneeName.fullName : null);
+        this.updateProjectControl.setValue(selectedProject ? selectedProject.title : null);
+
+      }
+    }
 
   closeUpdateModal() {
     this.showUpdateModal = false;
