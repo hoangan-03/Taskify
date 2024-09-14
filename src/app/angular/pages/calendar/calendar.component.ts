@@ -38,7 +38,7 @@ import {
   Color,
   Task,
 } from '../../models/task.model';
-import { env } from 'process';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-side-nav',
@@ -62,6 +62,7 @@ import { env } from 'process';
     MatAutocompleteModule,
     InfoIconComponent,
     NgxMaterialTimepickerModule,
+    MatDatepicker,
   ],
   templateUrl: './calendar.component.html',
   providers: [provideNativeDateAdapter(), DatePipe],
@@ -101,6 +102,10 @@ export class CalendarComponent {
   showModal: boolean = false;
   currentDate: Date = new Date();
   currentHour: string = '';
+  monthControl = new FormControl(new Date(2024, 0, 1)); 
+
+
+
   openModal(date: Date, hour: string) {
     this.showModal = true;
     this.currentDate = date;
@@ -343,6 +348,32 @@ export class CalendarComponent {
         this.currentWeekIndex = parseInt(storedIndex, 10);
       }
     } 
+  }
+  selectMonth(): void {
+    const monthPicker = document.querySelector('.month-picker .mat-datepicker-toggle') as HTMLElement;
+    if (monthPicker) {
+      monthPicker.click();
+    }
+  }
+
+  chosenMonthHandler(normalizedMonth: Date, datepicker: MatDatepicker<Date>): void {
+    const firstDayOfMonth = new Date(normalizedMonth.getFullYear(), normalizedMonth.getMonth(), 1);
+    const lastDayOfMonth = new Date(normalizedMonth.getFullYear(), normalizedMonth.getMonth() + 1, 0);
+  
+    this.weeks = [];
+    let current = firstDayOfMonth;
+    while (current <= lastDayOfMonth) {
+      const weekStart = new Date(current);
+      const weekEnd = new Date(current);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+      this.weeks.push({ start: weekStart, end: weekEnd });
+      current.setDate(current.getDate() + 7);
+    }
+  
+    this.currentWeekIndex = 0;
+    this.saveCurrentWeekIndex();
+    this.monthControl.setValue(normalizedMonth);
+    datepicker.close();
   }
   ngOnInit(): void {
     this.fetchEvents();

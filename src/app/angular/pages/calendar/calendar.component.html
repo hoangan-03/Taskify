@@ -192,7 +192,9 @@
   <div
     class="tw-w-full tw-h-auto tw-flex tw-flex-row tw-px-10 tw-border-b-2 tw-py-3 tw-justify-between tw-items-center"
   >
-    <h1 class="tw-text-xl tw-text-black">Jan 2024</h1>
+    <h1 class="tw-text-xl tw-text-black">
+      {{ weeks[currentWeekIndex].start | date : "MMM yyyy" }}
+    </h1>
     <div class="tw-flex tw-flex-row tw-gap-2 tw-justify-center tw-items-center">
       <div
         class="tw-w-7 tw-h-7 tw-cursor-pointer tw-border-2 tw-flex tw-justify-center tw-items-center tw-rounded-full tw-p-4"
@@ -200,7 +202,10 @@
       >
         <i class="material-icons">chevron_left</i>
       </div>
-      <h1 *ngIf="weeks && weeks[currentWeekIndex]" class="tw-text-xl tw-text-black">
+      <h1
+        *ngIf="weeks && weeks[currentWeekIndex]"
+        class="tw-text-xl tw-text-black"
+      >
         {{ weeks[currentWeekIndex].start | date : "dd MMM" }} -
         {{ weeks[currentWeekIndex].end | date : "dd MMM yyyy" }}
       </h1>
@@ -211,12 +216,26 @@
         <i class="material-icons">chevron_right</i>
       </div>
     </div>
-    <button
-      class="tw-flex tw-w-auto tw-px-4 tw-py-2 tw-bg-sky-800 tw-items-center tw-flex-row tw-gap-2 tw-rounded-xl"
-    >
-      <i class="tw-invert material-icons">add_circle</i>
-      <h1 class="tw-text-white tw-text-lg tw-font-semibold">New activity</h1>
-    </button>
+    <div class="tw-flex tw-flex-col tw-gap-2 tw-items-center">
+      <div class="tw-text-lg tw-font-bold">Quick selection</div>
+    <mat-form-field class="tw-hidden">
+      <input
+        matInput
+        [matDatepicker]="monthPicker"
+        [formControl]="monthControl"
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="monthPicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker
+        #monthPicker
+        startView="multi-year"
+        (monthSelected)="chosenMonthHandler($event, monthPicker)"
+        panelClass="month-picker"
+      ></mat-datepicker>
+    </mat-form-field>
+  </div>
   </div>
   <div class="tw-w-full tw-h-full tw-overflow-auto">
     <div class="tw-grid tw-grid-cols-8 tw-gap-0 tw-p-4">
@@ -255,7 +274,7 @@
             <div
               *ngIf="
                 event &&
-      event.date &&
+                event.date &&
                 isDateInCurrentWeek(getDateObject(event.date)) &&
                 getDayNameFromDate(getDateObject(event.date)) === day.name &&
                 event.startTime === hour

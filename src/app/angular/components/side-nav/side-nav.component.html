@@ -40,12 +40,12 @@
     <h3 class="tw-text-lg tw-text-gray-500">Account</h3>
 
      <ng-container *ngIf="isLoggedIn">
-      <button
+      <!-- <button
         class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
         [class.tw-bg-white]="activeRoute === '/angular/trash'" (click)="onInbox()">
         <i class="material-icons">settings</i>
         <h1 class="tw-text-black tw-text-lg tw-font-semibold">Settings</h1>
-      </button>
+      </button> -->
       <button
         class="tw-flex tw-w-full tw-px-4 tw-py-2 hover:tw-bg-white tw-justify-start tw-items-center tw-flex-row tw-gap-3 tw-rounded-xl"
         [class.tw-bg-white]="activeRoute === '/angular/downloaded'" (click)="onDownloaded()">

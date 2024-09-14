@@ -179,34 +179,43 @@ export class TodoComponent {
   selectedUpdateFiles: { name: string; type: number }[] = [];
   currentUpdateId: number = 0;
 
-       openUpdateModal(id: number) {
-      this.showUpdateModal = true;
-      this.currentUpdateId = id;
-      const currentTask = this.tasks.find(task => task.id === this.currentUpdateId);
-    
-      if (currentTask) {
-        const currentProjectName = currentTask.projectName;
-        const selectedProject = this.projectGroups.find(
-          (project) => project.title === currentProjectName
-        );
-        const currentAssignerId = currentTask.assignerId;
-        const selectedAssignerName = this.Users.find(
-          (user) => user.userId === currentAssignerId
-        );
-        const currentAssigneeId = currentTask.assigneeId;
-        const selectedAssigneeName = this.Users.find(
-          (user) => user.userId === currentAssigneeId
-        );    
-        this.updateTaskNameControl.setValue(currentTask.title);
-        this.updateTaskDescriptionControl.setValue(currentTask.description ?? null);
-        this.updateDeadlineControl.setValue(currentTask.deadline);
-        this.updateCategoryControl.setValue(currentTask.type);
-        this.assignerUpdateControl.setValue(selectedAssignerName ? selectedAssignerName.fullName : null);
-        this.assigneeUpdateControl.setValue(selectedAssigneeName ? selectedAssigneeName.fullName : null);
-        this.updateProjectControl.setValue(selectedProject ? selectedProject.title : null);
+  openUpdateModal(id: number) {
+    this.showUpdateModal = true;
+    this.currentUpdateId = id;
+    const currentTask = this.tasks.find(
+      (task) => task.id === this.currentUpdateId
+    );
 
-      }
+    if (currentTask) {
+      const currentProjectName = currentTask.projectName;
+      const selectedProject = this.projectGroups.find(
+        (project) => project.title === currentProjectName
+      );
+      const currentAssignerId = currentTask.assignerId;
+      const selectedAssignerName = this.Users.find(
+        (user) => user.userId === currentAssignerId
+      );
+      const currentAssigneeId = currentTask.assigneeId;
+      const selectedAssigneeName = this.Users.find(
+        (user) => user.userId === currentAssigneeId
+      );
+      this.updateTaskNameControl.setValue(currentTask.title);
+      this.updateTaskDescriptionControl.setValue(
+        currentTask.description ?? null
+      );
+      this.updateDeadlineControl.setValue(currentTask.deadline);
+      this.updateCategoryControl.setValue(currentTask.type);
+      this.assignerUpdateControl.setValue(
+        selectedAssignerName ? selectedAssignerName.fullName : null
+      );
+      this.assigneeUpdateControl.setValue(
+        selectedAssigneeName ? selectedAssigneeName.fullName : null
+      );
+      this.updateProjectControl.setValue(
+        selectedProject ? selectedProject.title : null
+      );
     }
+  }
 
   closeUpdateModal() {
     this.showUpdateModal = false;
@@ -233,9 +242,6 @@ export class TodoComponent {
       );
     }
   }
-
-
-
 
   fileControl = new FormControl('', [Validators.required]);
   fileNameControl = new FormControl('', [Validators.required]);
@@ -384,26 +390,31 @@ export class TodoComponent {
           Url: url,
         })),
       };
-      this.http.put(`${this.baseUrl}/api/tasks/modify/${this.currentUpdateId}`, formData).subscribe({
-        next: (response) => {
-          this.closeUpdateModal();
-          this.fetchTasks();
-        },
-        error: (error) => {
-          if (error.error instanceof ErrorEvent) {
-            console.error('Client-side error:', error.error.message);
-          } else {
-            console.error('Server-side error:', error);
-            try {
-              const errorResponse = JSON.parse(error.error);
-              console.error('Error response:', errorResponse);
-            } catch (e) {
-              console.error('Non-JSON error response:', error.error);
+      this.http
+        .put(
+          `${this.baseUrl}/api/tasks/modify/${this.currentUpdateId}`,
+          formData
+        )
+        .subscribe({
+          next: (response) => {
+            this.closeUpdateModal();
+            this.fetchTasks();
+          },
+          error: (error) => {
+            if (error.error instanceof ErrorEvent) {
+              console.error('Client-side error:', error.error.message);
+            } else {
+              console.error('Server-side error:', error);
+              try {
+                const errorResponse = JSON.parse(error.error);
+                console.error('Error response:', errorResponse);
+              } catch (e) {
+                console.error('Non-JSON error response:', error.error);
+              }
             }
-          }
-          console.log("this", formData);
-        },
-      });
+            console.log('this', formData);
+          },
+        });
     } catch (error) {
       console.error('Error uploading attachments:', error);
     }
