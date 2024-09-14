@@ -278,6 +278,15 @@ export class TodoComponent {
     this.fetchUsers();
     this.fetchComments();
   }
+  getTodayDate(): string {
+    const today = new Date();
+    return this.datePipe.transform(today, 'dd MMMM YYYY') || '';
+  }
+  addOneDay(dateString: string): string {
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + 1);
+    return this.datePipe.transform(date, 'dd-MM-yyyy') || '';
+  }
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {

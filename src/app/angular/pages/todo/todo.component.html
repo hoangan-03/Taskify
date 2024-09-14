@@ -1,45 +1,81 @@
-<section class="tw-w-screen tw-h-auto tw-relative tw-pl-[200px] tw-flex tw-flex-row">
-  <div class="tw-absolute tw-w-full tw-top-0 tw-left-0 tw-h-full tw-hidden" [ngClass]="{
+<section
+  class="tw-w-screen tw-h-auto tw-relative tw-pl-[200px] tw-flex tw-flex-row"
+>
+  <div
+    class="tw-absolute tw-w-full tw-top-0 tw-left-0 tw-h-full tw-hidden"
+    [ngClass]="{
       'tw-bg-black tw-bg-opacity-80 tw-z-[999] tw-block': showModal,
       'tw-hidden': !showModal
-    }"></div>
+    }"
+  ></div>
 
-  <div *ngIf="showUpdateModal"
-    class="tw-fixed tw-z-[1000] tw-flex tw-flex-col tw-py-8 tw-px-12 tw-top-[50%] tw-left-[50%] tw--translate-x-[50%] tw--translate-y-[50%] tw-h-[620px] tw-overflow-y-scroll tw-w-[800px] tw-bg-gray-100 tw-rounded-3xl tw-gap-2">
+  <div
+    *ngIf="showUpdateModal"
+    class="tw-fixed tw-z-[1000] tw-flex tw-flex-col tw-py-8 tw-px-12 tw-top-[50%] tw-left-[50%] tw--translate-x-[50%] tw--translate-y-[50%] tw-h-[620px] tw-overflow-y-scroll tw-w-[800px] tw-bg-gray-100 tw-rounded-3xl tw-gap-2"
+  >
     <div
-      class="tw-flex tw-flex-row tw-justify-between tw-items-center tw-w-full tw-mb-3 tw-border-b-2 tw-border-black/40">
+      class="tw-flex tw-flex-row tw-justify-between tw-items-center tw-w-full tw-mb-3 tw-border-b-2 tw-border-black/40"
+    >
       <h2 class="tw-text-xl tw-text-black tw-font-bold">Update Task</h2>
-      <button (click)="closeUpdateModal()"
-        class="tw-w-10 tw-h-10 tw-self-end tw-shadow-2xl tw-rounded-full tw-flex tw-justify-center tw-items-center hover:tw-bg-white tw-p-3">
-        <i class="material-icons tw-cursor-pointer tw-rounded-full tw-text-4xl">close</i>
+      <button
+        (click)="closeUpdateModal()"
+        class="tw-w-10 tw-h-10 tw-self-end tw-shadow-2xl tw-rounded-full tw-flex tw-justify-center tw-items-center hover:tw-bg-white tw-p-3"
+      >
+        <i class="material-icons tw-cursor-pointer tw-rounded-full tw-text-4xl"
+          >close</i
+        >
       </button>
     </div>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="It should be descriptive and clear." title="Task Name" type="Required"></app-info-icon>
+        <app-info-icon
+          infoText="It should be descriptive and clear."
+          title="Task Name"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field class="tw-w-full">
-          <input class="tw-px-2 tw-h-[45px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg" type="text" matInput
-            [formControl]="updateTaskNameControl" placeholder="Feed my dog named Peterson" />
+          <input
+            class="tw-px-2 tw-h-[45px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
+            type="text"
+            matInput
+            [formControl]="updateTaskNameControl"
+            placeholder="Feed my dog named Peterson"
+          />
         </mat-form-field>
       </div>
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="A detailed description helps others understand your task better."
-          title="Task Description" type="Optional"></app-info-icon>
+        <app-info-icon
+          infoText="A detailed description helps others understand your task better."
+          title="Task Description"
+          type="Optional"
+        ></app-info-icon>
         <mat-form-field class="tw-w-full">
-          <input class="tw-px-2 tw-h-[75px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg" type="text" matInput
-            [formControl]="updateTaskDescriptionControl" placeholder="My dog Peterson is" />
+          <input
+            class="tw-px-2 tw-h-[75px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
+            type="text"
+            matInput
+            [formControl]="updateTaskDescriptionControl"
+            placeholder="My dog Peterson is"
+          />
         </mat-form-field>
       </div>
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="A task must belong to a project" title="Project" type="Required"></app-info-icon>
+        <app-info-icon
+          infoText="A task must belong to a project"
+          title="Project"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field>
           <mat-label>Project</mat-label>
           <mat-select [formControl]="updateProjectControl">
-            <mat-option *ngFor="let project of projectGroups" [value]="project.title">
+            <mat-option
+              *ngFor="let project of projectGroups"
+              [value]="project.title"
+            >
               {{ project.title }}
             </mat-option>
           </mat-select>
@@ -48,12 +84,18 @@
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="You can skip this field if self-assigning." title="Assigner"
-          type="Optional"></app-info-icon>
+        <app-info-icon
+          infoText="You can skip this field if self-assigning."
+          title="Assigner"
+          type="Optional"
+        ></app-info-icon>
         <mat-form-field>
           <mat-label>Assigner</mat-label>
           <mat-select [formControl]="assignerUpdateControl">
-            <mat-option *ngFor="let assigner of Users" [value]="assigner.fullName">
+            <mat-option
+              *ngFor="let assigner of Users"
+              [value]="assigner.fullName"
+            >
               {{ assigner.fullName }}
             </mat-option>
           </mat-select>
@@ -62,12 +104,18 @@
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="You can skip this field if self-assigning." title="Assignee"
-          type="Optional"></app-info-icon>
+        <app-info-icon
+          infoText="You can skip this field if self-assigning."
+          title="Assignee"
+          type="Optional"
+        ></app-info-icon>
         <mat-form-field>
           <mat-label>Assignee</mat-label>
           <mat-select [formControl]="assigneeUpdateControl">
-            <mat-option *ngFor="let assignee of Users" [value]="assignee.fullName">
+            <mat-option
+              *ngFor="let assignee of Users"
+              [value]="assignee.fullName"
+            >
               {{ assignee.fullName }}
             </mat-option>
           </mat-select>
@@ -76,23 +124,45 @@
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="Choose a last day of this task" title="Deadline" type="Required"></app-info-icon>
+        <app-info-icon
+          infoText="Choose a last day of this task"
+          title="Deadline"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field>
           <mat-label>Choose a day</mat-label>
-          <input matInput [matDatepicker]="picker" [formControl]="updateDeadlineControl" />
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [formControl]="updateDeadlineControl"
+          />
           <mat-hint>MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="Choose categories of this task" title="Category" type="Required"></app-info-icon>
-        <mat-chip-listbox class="mat-mdc-chip-set-stacked" aria-label="Categories" multiple
-          [formControl]="updateCategoryControl">
-          <mat-chip-option *ngFor="let category of categories; trackBy: trackByCategory" [value]="category">{{ category
-            }}</mat-chip-option>
+        <app-info-icon
+          infoText="Choose categories of this task"
+          title="Category"
+          type="Required"
+        ></app-info-icon>
+        <mat-chip-listbox
+          class="mat-mdc-chip-set-stacked"
+          aria-label="Categories"
+          multiple
+          [formControl]="updateCategoryControl"
+        >
+          <mat-chip-option
+            *ngFor="let category of categories; trackBy: trackByCategory"
+            [value]="category"
+            >{{ category }}</mat-chip-option
+          >
         </mat-chip-listbox>
       </div>
     </form>
@@ -100,63 +170,107 @@
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
         <!-- File Upload Section -->
         <div class="tw-flex tw-flex-col tw-gap-3">
-          <app-info-icon infoText="Upload your attachments for this task" title="Attachments"
-            type="Optional"></app-info-icon>
-          <input type="file" [formControl]="updateFileControl" (change)="onUpdateFileSelected($event)"
-            (change)="onUpdateFileControlled($event)" multiple />
+          <app-info-icon
+            infoText="Upload your attachments for this task"
+            title="Attachments"
+            type="Optional"
+          ></app-info-icon>
+          <input
+            type="file"
+            [formControl]="updateFileControl"
+            (change)="onUpdateFileSelected($event)"
+            (change)="onUpdateFileControlled($event)"
+            multiple
+          />
         </div>
         <div *ngFor="let file of selectedUpdateFiles; let i = index">
           <mat-form-field class="tw-w-full">
             <mat-label>File Name {{ i + 1 }}</mat-label>
-            <input matInput [value]="file.name"
-              class="tw-px-2 tw-h-[75px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg" type="text" />
+            <input
+              matInput
+              [value]="file.name"
+              class="tw-px-2 tw-h-[75px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
+              type="text"
+            />
           </mat-form-field>
         </div>
       </div>
     </form>
 
-    <button (click)="submitUpdateForm()"
-      class="tw-w-[120px] tw-px-10 tw-h-10 tw-bg-sky-700 hover:tw-bg-sky-500 tw-text-white tw-rounded-xl tw-py-3 tw-text-lg tw-font-bold tw-flex tw-items-center tw-self-center tw-justify-center">
+    <button
+      (click)="submitUpdateForm()"
+      class="tw-w-[120px] tw-px-10 tw-h-10 tw-bg-sky-700 hover:tw-bg-sky-500 tw-text-white tw-rounded-xl tw-py-3 tw-text-lg tw-font-bold tw-flex tw-items-center tw-self-center tw-justify-center"
+    >
       Update
     </button>
   </div>
-  <div *ngIf="showModal"
-    class="tw-fixed tw-z-[1000] tw-flex tw-flex-col tw-py-8 tw-px-12 tw-top-[50%] tw-left-[50%] tw--translate-x-[50%] tw--translate-y-[50%] tw-h-[620px] tw-overflow-y-scroll tw-w-[800px] tw-bg-gray-100 tw-rounded-3xl tw-gap-2">
+  <div
+    *ngIf="showModal"
+    class="tw-fixed tw-z-[1000] tw-flex tw-flex-col tw-py-8 tw-px-12 tw-top-[50%] tw-left-[50%] tw--translate-x-[50%] tw--translate-y-[50%] tw-h-[620px] tw-overflow-y-scroll tw-w-[800px] tw-bg-gray-100 tw-rounded-3xl tw-gap-2"
+  >
     <div
-      class="tw-flex tw-flex-row tw-justify-between tw-items-center tw-w-full tw-mb-3 tw-border-b-2 tw-border-black/40">
+      class="tw-flex tw-flex-row tw-justify-between tw-items-center tw-w-full tw-mb-3 tw-border-b-2 tw-border-black/40"
+    >
       <h2 class="tw-text-xl tw-text-black tw-font-bold">Add Task</h2>
-      <button (click)="closeModal()"
-        class="tw-w-10 tw-h-10 tw-self-end tw-shadow-2xl tw-rounded-full tw-flex tw-justify-center tw-items-center hover:tw-bg-white tw-p-3">
-        <i class="material-icons tw-cursor-pointer tw-rounded-full tw-text-4xl">close</i>
+      <button
+        (click)="closeModal()"
+        class="tw-w-10 tw-h-10 tw-self-end tw-shadow-2xl tw-rounded-full tw-flex tw-justify-center tw-items-center hover:tw-bg-white tw-p-3"
+      >
+        <i class="material-icons tw-cursor-pointer tw-rounded-full tw-text-4xl"
+          >close</i
+        >
       </button>
     </div>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="It should be descriptive and clear." title="Task Name" type="Required"></app-info-icon>
+        <app-info-icon
+          infoText="It should be descriptive and clear."
+          title="Task Name"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field class="tw-w-full">
-          <input class="tw-px-2 tw-h-[45px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg" type="text" matInput
-            [formControl]="taskNameControl" placeholder="Feed my dog named Peterson" />
+          <input
+            class="tw-px-2 tw-h-[45px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
+            type="text"
+            matInput
+            [formControl]="taskNameControl"
+            placeholder="Feed my dog named Peterson"
+          />
         </mat-form-field>
       </div>
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="A detailed description helps others understand your task better."
-          title="Task Description" type="Optional"></app-info-icon>
+        <app-info-icon
+          infoText="A detailed description helps others understand your task better."
+          title="Task Description"
+          type="Optional"
+        ></app-info-icon>
         <mat-form-field class="tw-w-full">
-          <input class="tw-px-2 tw-h-[75px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg" type="text" matInput
-            [formControl]="taskDescriptionControl" placeholder="My dog Peterson is" />
+          <input
+            class="tw-px-2 tw-h-[75px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
+            type="text"
+            matInput
+            [formControl]="taskDescriptionControl"
+            placeholder="My dog Peterson is"
+          />
         </mat-form-field>
       </div>
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="You can skip this field if self-assigning." title="Assigner"
-          type="Optional"></app-info-icon>
+        <app-info-icon
+          infoText="You can skip this field if self-assigning."
+          title="Assigner"
+          type="Optional"
+        ></app-info-icon>
         <mat-form-field>
           <mat-label>Assigner</mat-label>
           <mat-select [formControl]="assignerControl">
-            <mat-option *ngFor="let assigner of Users" [value]="assigner.fullName">
+            <mat-option
+              *ngFor="let assigner of Users"
+              [value]="assigner.fullName"
+            >
               {{ assigner.fullName }}
             </mat-option>
           </mat-select>
@@ -165,12 +279,18 @@
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="You can skip this field if self-assigning." title="Assignee"
-          type="Optional"></app-info-icon>
+        <app-info-icon
+          infoText="You can skip this field if self-assigning."
+          title="Assignee"
+          type="Optional"
+        ></app-info-icon>
         <mat-form-field>
           <mat-label>Assignee</mat-label>
           <mat-select [formControl]="assigneeControl">
-            <mat-option *ngFor="let assignee of Users" [value]="assignee.fullName">
+            <mat-option
+              *ngFor="let assignee of Users"
+              [value]="assignee.fullName"
+            >
               {{ assignee.fullName }}
             </mat-option>
           </mat-select>
@@ -179,11 +299,18 @@
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="A task must belong to a project" title="Project" type="Required"></app-info-icon>
+        <app-info-icon
+          infoText="A task must belong to a project"
+          title="Project"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field>
           <mat-label>Project</mat-label>
           <mat-select [formControl]="projectControl">
-            <mat-option *ngFor="let project of projectGroups" [value]="project.title">
+            <mat-option
+              *ngFor="let project of projectGroups"
+              [value]="project.title"
+            >
               {{ project.title }}
             </mat-option>
           </mat-select>
@@ -192,29 +319,55 @@
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="Choose a last day of this task" title="Deadline" type="Required"></app-info-icon>
+        <app-info-icon
+          infoText="Choose a last day of this task"
+          title="Deadline"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field>
           <mat-label>Choose a day</mat-label>
-          <input matInput [matDatepicker]="picker" [formControl]="deadlineControl" />
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [formControl]="deadlineControl"
+          />
           <mat-hint>MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="Choose categories of this task" title="Category" type="Required"></app-info-icon>
-        <mat-chip-listbox class="mat-mdc-chip-set-stacked" aria-label="Categories" multiple
-          [formControl]="categoryControl">
-          <mat-chip-option *ngFor="let category of categories; trackBy: trackByCategory" [value]="category">{{ category
-            }}</mat-chip-option>
+        <app-info-icon
+          infoText="Choose categories of this task"
+          title="Category"
+          type="Required"
+        ></app-info-icon>
+        <mat-chip-listbox
+          class="mat-mdc-chip-set-stacked"
+          aria-label="Categories"
+          multiple
+          [formControl]="categoryControl"
+        >
+          <mat-chip-option
+            *ngFor="let category of categories; trackBy: trackByCategory"
+            [value]="category"
+            >{{ category }}</mat-chip-option
+          >
         </mat-chip-listbox>
       </div>
     </form>
     <form class="tw-w-full">
       <div class="tw-w-full tw-flex tw-flex-col tw-gap-2 tw-mx-0">
-        <app-info-icon infoText="Select some tags for this task" title="Tags" type="Required"></app-info-icon>
+        <app-info-icon
+          infoText="Select some tags for this task"
+          title="Tags"
+          type="Required"
+        ></app-info-icon>
         <mat-form-field class="example-chip-list">
           <mat-label>Favorite tags</mat-label>
           <mat-chip-grid #chipGrid aria-label="Tag selection">
@@ -227,116 +380,202 @@
             </mat-chip-row>
             }
           </mat-chip-grid>
-          <input name="currentTag" placeholder="New Tag..." #fruitInput [(ngModel)]="currentTag"
-            [matChipInputFor]="chipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            (matChipInputTokenEnd)="add($event)" />
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-            <ng-container *ngFor="let tag of filteredTags(); trackBy: trackByTag">
+          <input
+            name="currentTag"
+            placeholder="New Tag..."
+            #fruitInput
+            [(ngModel)]="currentTag"
+            [matChipInputFor]="chipGrid"
+            [matAutocomplete]="auto"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="add($event)"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="selected($event)"
+          >
+            <ng-container
+              *ngFor="let tag of filteredTags(); trackBy: trackByTag"
+            >
               <mat-option [value]="tag">{{ tag }}</mat-option>
             </ng-container>
           </mat-autocomplete>
         </mat-form-field>
         <!-- File Upload Section -->
         <div class="tw-flex tw-flex-col tw-gap-3">
-          <app-info-icon infoText="Upload your attachments for this task" title="Attachments"
-            type="Optional"></app-info-icon>
-          <input type="file" [formControl]="fileControl" (change)="onFileSelected($event)"
-            (change)="onFileControlled($event)" multiple />
+          <app-info-icon
+            infoText="Upload your attachments for this task"
+            title="Attachments"
+            type="Optional"
+          ></app-info-icon>
+          <input
+            type="file"
+            [formControl]="fileControl"
+            (change)="onFileSelected($event)"
+            (change)="onFileControlled($event)"
+            multiple
+          />
         </div>
         <div *ngFor="let file of selectedFiles; let i = index">
           <mat-form-field class="tw-w-full">
             <mat-label>File Name {{ i + 1 }}</mat-label>
-            <input matInput [value]="file.name"
-              class="tw-px-2 tw-h-[75px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg" type="text" />
+            <input
+              matInput
+              [value]="file.name"
+              class="tw-px-2 tw-h-[75px] tw-w-full tw-border-2 tw-border-gray-300 tw-rounded-lg"
+              type="text"
+            />
           </mat-form-field>
         </div>
       </div>
     </form>
 
-    <button (click)="submitForm()"
-      class="tw-w-[120px] tw-px-10 tw-h-10 tw-bg-sky-700 hover:tw-bg-sky-500 tw-text-white tw-rounded-xl tw-py-3 tw-text-lg tw-font-bold tw-flex tw-items-center tw-self-center tw-justify-center">
+    <button
+      (click)="submitForm()"
+      class="tw-w-[120px] tw-px-10 tw-h-10 tw-bg-sky-700 hover:tw-bg-sky-500 tw-text-white tw-rounded-xl tw-py-3 tw-text-lg tw-font-bold tw-flex tw-items-center tw-self-center tw-justify-center"
+    >
       Submit
     </button>
   </div>
 
-  <div class="tw-w-[50%] tw-h-full tw-flex tw-flex-col tw-gap-3 tw-px-10 tw-py-10 tw-overflow-y-auto">
+  <div
+    class="tw-w-[50%] tw-h-full tw-flex tw-flex-col tw-gap-3 tw-px-10 tw-py-10 tw-overflow-y-auto"
+  >
     <div class="tw-h-auto tw-w-full tw-flex tw-flex-col tw-gap-2">
-      <h3 class="tw-text-lg tw-text-gray-600">General + To do</h3>
       <h3 class="tw-text-3xl tw-text-black tw-font-bold">To do</h3>
     </div>
 
-    <div class="tw-h-auto tw-w-full tw-flex tw-flex-row tw-justify-between tw-items-center">
-      <h3 class="tw-text-2xl tw-text-gray-600 tw-font-bold">Today, June 25</h3>
-      <button class="tw-flex tw-w-auto tw-px-4 tw-py-2 tw-bg-sky-800 tw-items-center tw-flex-row tw-gap-2 tw-rounded-xl"
-        (click)="openModal()">
+        <div
+      class="tw-h-auto tw-w-full tw-flex tw-flex-row tw-justify-between tw-items-center"
+    >
+      <h3 class="tw-text-2xl tw-text-gray-600 tw-font-bold">Today, {{ getTodayDate() }}</h3>
+      <button
+        class="tw-flex tw-w-auto tw-px-4 tw-py-2 tw-bg-sky-800 tw-items-center tw-flex-row tw-gap-2 tw-rounded-xl"
+        (click)="openModal()"
+      >
         <i class="tw-invert material-icons">add_circle</i>
         <h1 class="tw-text-white tw-text-lg tw-font-semibold">New task</h1>
       </button>
     </div>
 
-    <div class="tw-flex tw-flex-col tw-gap-3 tw-justify-center tw-items-center" cdkDropList
-      (cdkDropListDropped)="drop($event)">
-      <div *ngFor="let task of sortTasks(tasks); let i = index" cdkDrag
+    <div
+      class="tw-flex tw-flex-col tw-gap-3 tw-justify-center tw-items-center"
+      cdkDropList
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div
+        *ngFor="let task of sortTasks(tasks); let i = index"
+        cdkDrag
         class="tw-w-full tw-bg-white tw-cursor-pointer tw-overflow-hidden tw-flex tw-flex-row tw-h-auto tw-justify-start tw-gap-6 tw-items-start tw-px-4 tw-py-4 tw-shadow-lg tw-rounded-lg tw-p-5 tw-border-2"
-        [class.tw-border-blue-600]="selectedTask === task" [class.tw-bg-gray-200]="task.state === 1"
-        (click)="selectTask(task)">
-        <input [checked]="task.state === 1" type="checkbox" (click)="toggleTaskState(task, 1); $event.stopPropagation()"
-          class="tw-form-checkbox tw-h-5 tw-min-w-5 tw-mt-1" />
-        <div class="tw-flex tw-flex-col tw-gap-2 tw-w-[80%] tw-overflow-hidden tw-justify-start tw-items-start">
-          <h2 [class.tw-text-strikethrough]="task.state === 1" [class.tw-text-gray-400]="task.state === 1"
-            class="tw-text-xl tw-font-bold">
+        [class.tw-border-blue-600]="selectedTask === task"
+        [class.tw-bg-gray-200]="task.state === 1"
+        (click)="selectTask(task)"
+      >
+        <input
+          [checked]="task.state === 1"
+          type="checkbox"
+          (click)="toggleTaskState(task, 1); $event.stopPropagation()"
+          class="tw-form-checkbox tw-h-5 tw-min-w-5 tw-mt-1"
+        />
+        <div
+          class="tw-flex tw-flex-col tw-gap-2 tw-w-[80%] tw-overflow-hidden tw-justify-start tw-items-start"
+        >
+          <h2
+            [class.tw-text-strikethrough]="task.state === 1"
+            [class.tw-text-gray-400]="task.state === 1"
+            class="tw-text-xl tw-font-bold"
+          >
             {{ task.title }}
           </h2>
-          <div *ngIf="task.state !== 1" class="tw-flex tw-flex-row tw-gap-6 tw-w-auto tw-justify-start">
-            <div class="tw-flex tw-flex-row tw-justify-center tw-items-center tw-gap-1">
-              <i class="material-icons tw-text-base tw-text-gray-400">attachment</i>
+          <div
+            *ngIf="task.state !== 1"
+            class="tw-flex tw-flex-row tw-gap-6 tw-w-auto tw-justify-start"
+          >
+            <div
+              class="tw-flex tw-flex-row tw-justify-center tw-items-center tw-gap-1"
+            >
+              <i class="material-icons tw-text-base tw-text-gray-400"
+                >attachment</i
+              >
               <p class="tw-text-base tw-text-gray-400">
                 {{ task.attachments.length }}
               </p>
             </div>
-            <div class="tw-flex tw-flex-row tw-justify-center tw-items-center tw-gap-1">
-              <i class="material-icons tw-text-base tw-text-gray-400">comment</i>
+            <div
+              class="tw-flex tw-flex-row tw-justify-center tw-items-center tw-gap-1"
+            >
+              <i class="material-icons tw-text-base tw-text-gray-400"
+                >comment</i
+              >
               <p class="tw-text-base tw-text-gray-400">
                 {{ task.attachments.length }}
               </p>
             </div>
-            <div class="tw-flex tw-flex-row tw-justify-center tw-items-center tw-gap-1">
-              <i class="material-icons tw-text-base tw-text-gray-400">calendar_today</i>
+            <div
+              class="tw-flex tw-flex-row tw-justify-center tw-items-center tw-gap-1"
+            >
+              <i class="material-icons tw-text-base tw-text-gray-400"
+                >calendar_today</i
+              >
               <p class="tw-text-base tw-text-gray-400">
-                {{ task.deadline.substring(0, 10) }}
+                {{ addOneDay(task.deadline.substring(0, 10)) }}
               </p>
             </div>
           </div>
-          <div *ngIf="task.state !== 1"
-            class="tw-flex tw-w-full tw-py-1 tw-flex-row tw-gap-2 tw-justify-start tw-items-center">
-            <div *ngFor="let tag of task.taskTags | slice : 0 : 3" [ngStyle]="{
+          <div
+            *ngIf="task.state !== 1"
+            class="tw-flex tw-w-full tw-py-1 tw-flex-row tw-gap-2 tw-justify-start tw-items-center"
+          >
+            <div
+              *ngFor="let tag of task.taskTags | slice : 0 : 3"
+              [ngStyle]="{
                 'border-color': tag.color,
                 color: tag.color
               }"
-              class="tw-flex tw-px-4 tw-py-1 tw-flex-row tw-gap-1 tw-rounded-3xl tw-border-2 tw-bg-white tw-justify-center tw-items-center">
-              <h1 class="tw-text-base tw-font-semibold tw-flex tw-w-auto tw-justify-center tw-items-center">
+              class="tw-flex tw-px-4 tw-py-1 tw-flex-row tw-gap-1 tw-rounded-3xl tw-border-2 tw-bg-white tw-justify-center tw-items-center"
+            >
+              <h1
+                class="tw-text-base tw-font-semibold tw-flex tw-w-auto tw-justify-center tw-items-center"
+              >
                 {{ tag.name }}
               </h1>
             </div>
           </div>
         </div>
-        <div *ngIf="task.state !== 1"
-          class="tw-flex tw-flex-col tw-gap-3 tw-h-full tw-w-auto tw-justify-center tw-items-center">
-          <i *ngIf="task.state === 2" (click)="toggleTaskState(task, 0); $event.stopPropagation()"
-            class="tw-cursor-pointer tw-text-yellow-400 material-icons">star</i>
-          <i *ngIf="task.state !== 2" (click)="toggleTaskState(task, 0); $event.stopPropagation()"
-            class="material-icons tw-cursor-pointer tw-text-yellow-400">star_border</i>
-          <i (click)="openUpdateModal(task.id); $event.stopPropagation()"
-            class="material-icons tw-text-sky-700 tw-cursor-pointer">edit</i>
-          <i (click)="deleteTask(task.id); $event.stopPropagation()"
-            class="material-icons tw-cursor-pointer tw-text-sky-700">delete_sweep</i>
+        <div
+          *ngIf="task.state !== 1"
+          class="tw-flex tw-flex-col tw-gap-3 tw-h-full tw-w-auto tw-justify-center tw-items-center"
+        >
+          <i
+            *ngIf="task.state === 2"
+            (click)="toggleTaskState(task, 0); $event.stopPropagation()"
+            class="tw-cursor-pointer tw-text-yellow-400 material-icons"
+            >star</i
+          >
+          <i
+            *ngIf="task.state !== 2"
+            (click)="toggleTaskState(task, 0); $event.stopPropagation()"
+            class="material-icons tw-cursor-pointer tw-text-yellow-400"
+            >star_border</i
+          >
+          <i
+            (click)="openUpdateModal(task.id); $event.stopPropagation()"
+            class="material-icons tw-text-sky-700 tw-cursor-pointer"
+            >edit</i
+          >
+          <i
+            (click)="deleteTask(task.id); $event.stopPropagation()"
+            class="material-icons tw-cursor-pointer tw-text-sky-700"
+            >delete_sweep</i
+          >
         </div>
       </div>
     </div>
   </div>
 
   <div
-    class="tw-w-[50%] tw-top-0 tw-h-screen tw-flex tw-sticky tw-flex-col tw-gap-5 tw-px-4 tw-py-10 tw-overflow-x-hidden">
+    class="tw-w-[50%] tw-top-0 tw-h-screen tw-flex tw-sticky tw-flex-col tw-gap-4 tw-px-4 tw-py-10 tw-overflow-x-hidden"
+  >
     <h3 *ngIf="selectedTask" class="tw-text-gray-400 tw-text-xl">
       {{ selectedTask.projectName }}
     </h3>
@@ -350,58 +589,140 @@
       Select a task to see details
     </h2>
 
-    <div *ngIf="selectedTask" class="tw-flex tw-flex-col tw-gap-5 tw-justify-center tw-items-start tw-mt-10">
-      <div class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl">
+    <div
+      *ngIf="selectedTask"
+      class="tw-flex tw-flex-col tw-gap-5 tw-justify-center tw-items-start tw-mt-2"
+    >
+      <div
+        class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl"
+      >
         <h2 class="tw-text-gray-400 tw-w-[100px]">Created at</h2>
-        <h3 *ngIf="selectedTask" class="tw-text-black tw-font-semibold tw-text-xl tw-text-justify">
+        <h3
+          *ngIf="selectedTask"
+          class="tw-text-black tw-font-semibold tw-text-xl tw-text-justify"
+        >
           {{ selectedTask.createdAt | date : "dd MMM yyyy" }}
         </h3>
       </div>
-      <div class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl">
+      <div
+        class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl"
+      >
         <h2 class="tw-text-gray-400 tw-w-[100px]">Deadline</h2>
-        <h3 *ngIf="selectedTask" class="tw-text-black tw-font-semibold tw-text-xl tw-text-justify">
+        <h3
+          *ngIf="selectedTask"
+          class="tw-text-black tw-font-semibold tw-text-xl tw-text-justify"
+        >
           {{ selectedTask.deadline | date : "dd MMM yyyy" }}
         </h3>
       </div>
 
-      <div class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl">
+      <div
+        class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl"
+      >
         <h2 class="tw-text-gray-400 tw-w-[100px]">Category</h2>
-        <h3 *ngIf="selectedTask" class="tw-text-black tw-font-semibold tw-text-xl tw-text-justify">
+        <h3
+          *ngIf="selectedTask"
+          class="tw-text-black tw-font-semibold tw-text-xl tw-text-justify"
+        >
           {{ selectedTask.type.join(", ") }}
         </h3>
       </div>
-      <div class="tw-flex tw-flex-row tw-flex-wrap tw-justify-start tw-items-center tw-gap-3 tw-text-xl">
-        <div *ngFor="let tag of selectedTask.taskTags" [ngStyle]="{
+      <div
+        class="tw-flex tw-flex-row tw-flex-wrap tw-justify-start tw-items-center tw-gap-3 tw-text-xl"
+      >
+        <div
+          *ngFor="let tag of selectedTask.taskTags"
+          [ngStyle]="{
             'border-color': tag.color,
             color: tag.color
           }"
-          class="tw-flex tw-w-auto tw-px-4 tw-py-1 tw-flex-row tw-gap-2 tw-rounded-3xl tw-border-2 tw-bg-white tw-justify-center tw-items-center">
-          <h1 class="tw-text-base tw-font-semibold tw-flex tw-justify-center tw-items-center">
+          class="tw-flex tw-w-auto tw-px-4 tw-py-1 tw-flex-row tw-gap-2 tw-rounded-3xl tw-border-2 tw-bg-white tw-justify-center tw-items-center"
+        >
+          <h1
+            class="tw-text-base tw-font-semibold tw-flex tw-justify-center tw-items-center"
+          >
             {{ tag.name }}
           </h1>
         </div>
       </div>
     </div>
-    <div *ngIf="selectedTask" class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-2 tw-mt-2">
+    <div
+      *ngIf="selectedTask"
+      class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-2 tw-mt-2"
+    >
       <i class="material-icons tw-text-xl tw-text-black">attachment</i>
       <p class="tw-text-xl tw-text-black">Attachments</p>
     </div>
 
-    <div *ngIf="selectedTask?.attachments" class="tw-flex tw-flex-row tw-gap-3 tw-w-full tw-h-auto">
-      <div *ngFor="let attachment of selectedTask?.attachments || []" (click)="downloadAttachment(attachment)"
-        class="tw-flex tw-cursor-pointer tw-flex-col tw-gap-1 tw-px-3 tw-py-2 tw-justify-center tw-w-auto tw-h-[120px] tw-border-2 tw-border-gray-400/40 tw-rounded-2xl tw-items-start tw-mt-2">
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PDF" src="assets/icons/pdf.png" />
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.XLSX" src="assets/icons/xlsx.png" />
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PNG" src="assets/icons/png.png" />
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.DOCX" src="assets/icons/docx.png" />
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PPTX" src="assets/icons/pptx.png" />
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.JPG" src="assets/icons/jpg.png" />
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.DOC" src="assets/icons/doc.png" />
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.XLS" src="assets/icons/xls.png" />
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.PPT" src="assets/icons/ppt.png" />
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.XML" src="assets/icons/xml.png" />
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.MD" src="assets/icons/md.png" />
-        <img class="tw-w-8 tw-h-auto" *ngIf="attachment.fileType === AttachmentType.UNKNOWN" src="assets/icons/unknown.png" />
+    <div
+      *ngIf="selectedTask?.attachments"
+      class="tw-flex tw-flex-row tw-gap-3 tw-w-full tw-h-auto"
+    >
+      <div
+        *ngFor="let attachment of selectedTask?.attachments || []"
+        (click)="downloadAttachment(attachment)"
+        class="tw-flex tw-cursor-pointer tw-flex-col tw-gap-1 tw-px-3 tw-py-2 tw-justify-center tw-w-auto tw-h-[120px] tw-border-2 tw-border-gray-400/40 tw-rounded-2xl tw-items-start tw-mt-2"
+      >
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.fileType === AttachmentType.PDF"
+          src="assets/icons/pdf.png"
+        />
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.fileType === AttachmentType.XLSX"
+          src="assets/icons/xlsx.png"
+        />
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.fileType === AttachmentType.PNG"
+          src="assets/icons/png.png"
+        />
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.fileType === AttachmentType.DOCX"
+          src="assets/icons/docx.png"
+        />
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.fileType === AttachmentType.PPTX"
+          src="assets/icons/pptx.png"
+        />
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.fileType === AttachmentType.JPG"
+          src="assets/icons/jpg.png"
+        />
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.fileType === AttachmentType.DOC"
+          src="assets/icons/doc.png"
+        />
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.fileType === AttachmentType.XLS"
+          src="assets/icons/xls.png"
+        />
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.fileType === AttachmentType.PPT"
+          src="assets/icons/ppt.png"
+        />
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.fileType === AttachmentType.XML"
+          src="assets/icons/xml.png"
+        />
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.fileType === AttachmentType.MD"
+          src="assets/icons/md.png"
+        />
+        <img
+          class="tw-w-8 tw-h-auto"
+          *ngIf="attachment.fileType === AttachmentType.UNKNOWN"
+          src="assets/icons/unknown.png"
+        />
         <p class="tw-text-lg tw-font-bold tw-text-black">
           {{ attachment.name }}
         </p>
@@ -411,18 +732,32 @@
       </div>
     </div>
 
-    <div *ngIf="selectedTask" class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-2 tw-mt-4">
+    <div
+      *ngIf="selectedTask"
+      class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-2 tw-mt-4"
+    >
       <i class="material-icons tw-text-xl tw-text-black">comment</i>
       <p class="tw-text-xl tw-text-black">Comments</p>
     </div>
 
-    <div *ngIf="selectedTask?.comments" class="tw-flex tw-flex-col tw-gap-3 tw-w-full tw-h-auto">
-      <div [ngClass]="{
+    <div
+      *ngIf="selectedTask?.comments"
+      class="tw-flex tw-flex-col tw-gap-3 tw-w-full tw-h-auto"
+    >
+      <div
+        [ngClass]="{
           'tw-bg-green-200': comment.state === CommentState.checkedd
-        }" *ngFor="let comment of selectedTask?.comments || []" (click)="toggleCommentState(comment)"
-        class="tw-cursor-pointer tw-flex tw-flex-row tw-w-full tw-h-auto tw-border-2 tw-border-gray-400/40 tw-bg-gray-200 tw-rounded-lg tw-items-start tw-justify-between tw-mt-2 tw-px-4 tw-py-2">
-        <div class="tw-flex tw-flex-col tw-gap-1 tw-justify-start tw-items-start tw-w-[95%] tw-h-full">
-          <div class="tw-flex tw-flex-row tw-items-center tw-w-full tw-justify-between tw-pr-5">
+        }"
+        *ngFor="let comment of selectedTask?.comments || []"
+        (click)="toggleCommentState(comment)"
+        class="tw-cursor-pointer tw-flex tw-flex-row tw-w-full tw-h-auto tw-border-2 tw-border-gray-400/40 tw-bg-gray-200 tw-rounded-lg tw-items-start tw-justify-between tw-mt-2 tw-px-4 tw-py-2"
+      >
+        <div
+          class="tw-flex tw-flex-col tw-gap-1 tw-justify-start tw-items-start tw-w-[95%] tw-h-full"
+        >
+          <div
+            class="tw-flex tw-flex-row tw-items-center tw-w-full tw-justify-between tw-pr-5"
+          >
             <p class="tw-text-lg tw-font-bold tw-text-black">
               {{ comment.userName }}
             </p>
@@ -434,19 +769,33 @@
             {{ comment.commentText }}
           </p>
         </div>
-        <i class="material-icons tw-text-2xl tw-text-green-600"
-          *ngIf="comment.state === CommentState.checkedd">check_circle</i>
+        <i
+          class="material-icons tw-text-2xl tw-text-green-600"
+          *ngIf="comment.state === CommentState.checkedd"
+          >check_circle</i
+        >
 
-        <i class="material-icons tw-text-2xl tw-text-gray-600"
-          *ngIf="comment.state === CommentState.uncheckedd">incomplete_circle</i>
+        <i
+          class="material-icons tw-text-2xl tw-text-gray-600"
+          *ngIf="comment.state === CommentState.uncheckedd"
+          >incomplete_circle</i
+        >
       </div>
     </div>
-    <div *ngIf="selectedTask" class="tw-flex tw-flex-col tw-gap-3 tw-w-full tw-h-auto tw-mt-4">
+    <div
+      *ngIf="selectedTask"
+      class="tw-flex tw-flex-col tw-gap-3 tw-w-full tw-h-auto tw-mt-4"
+    >
       <div class="textarea-wrapper tw-relative tw-w-full">
-        <textarea [(ngModel)]="newCommentText" placeholder="Add a comment. Use @ for referencing."
-          class="tw-w-full tw-h-12 tw-p-3 tw-border tw-rounded-full tw-flex tw-border-gray-300 no-outline"></textarea>
-        <button (click)="addComment()"
-          class="add-comment-button tw-w-8 tw-h-8 tw-flex tw-justify-center tw-items-center tw-bg-gray-300 tw-transition-all tw-duration-300 hover:tw-bg-sky-700 tw-text-white tw-rounded-full tw-absolute tw-right-2 tw-top-1/2 tw-transform tw--translate-y-1/2">
+        <textarea
+          [(ngModel)]="newCommentText"
+          placeholder="Add a comment. Use @ for referencing."
+          class="tw-w-full tw-h-12 tw-p-3 tw-border tw-rounded-full tw-flex tw-border-gray-300 no-outline"
+        ></textarea>
+        <button
+          (click)="addComment()"
+          class="add-comment-button tw-w-8 tw-h-8 tw-flex tw-justify-center tw-items-center tw-bg-gray-300 tw-transition-all tw-duration-300 hover:tw-bg-sky-700 tw-text-white tw-rounded-full tw-absolute tw-right-2 tw-top-1/2 tw-transform tw--translate-y-1/2"
+        >
           <i class="material-icons">upload</i>
         </button>
       </div>
