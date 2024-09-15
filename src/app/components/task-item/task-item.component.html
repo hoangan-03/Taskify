@@ -1,0 +1,102 @@
+<div
+  cdkDrag
+  class="tw-w-[600px] tw-bg-white tw-cursor-pointer tw-overflow-hidden tw-flex tw-flex-row tw-h-auto tw-justify-start tw-gap-6 tw-items-start tw-px-4 tw-py-4 tw-shadow-lg tw-rounded-lg tw-p-5 tw-border-2"
+  [class.tw-border-blue-600]="selectedTask === task"
+  [class.tw-bg-gray-200]="task.state === 1"
+  (click)="selectTask.emit(task)"
+>
+  <input
+    [checked]="task.state === 1"
+    type="checkbox"
+    (click)="toggleTaskState.emit({ task, state: 1 }); $event.stopPropagation()"
+    class="tw-form-checkbox tw-h-5 tw-min-w-5 tw-mt-1"
+  />
+  <div
+    class="tw-flex tw-flex-col tw-gap-2 tw-w-[80%] tw-overflow-hidden tw-justify-start tw-items-start"
+  >
+    <h2
+      [class.tw-text-strikethrough]="task.state === 1"
+      [class.tw-text-gray-400]="task.state === 1"
+      class="tw-text-xl tw-font-bold"
+    >
+      {{ task.title }}
+    </h2>
+    <div
+      *ngIf="task.state !== 1"
+      class="tw-flex tw-flex-row tw-gap-6 tw-w-auto tw-justify-start"
+    >
+      <div
+        class="tw-flex tw-flex-row tw-justify-center tw-items-center tw-gap-1"
+      >
+        <i class="material-icons tw-text-base tw-text-gray-400">attachment</i>
+        <p class="tw-text-base tw-text-gray-400">
+          {{ task.attachments.length }}
+        </p>
+      </div>
+      <div
+        class="tw-flex tw-flex-row tw-justify-center tw-items-center tw-gap-1"
+      >
+        <i class="material-icons tw-text-base tw-text-gray-400">comment</i>
+        <p class="tw-text-base tw-text-gray-400">
+          {{ task.attachments.length }}
+        </p>
+      </div>
+      <div
+        class="tw-flex tw-flex-row tw-justify-center tw-items-center tw-gap-1"
+      >
+        <i class="material-icons tw-text-base tw-text-gray-400"
+          >calendar_today</i
+        >
+        <p class="tw-text-base tw-text-gray-400">
+          {{ addOneDay(task.deadline.substring(0, 10)) }}
+        </p>
+      </div>
+    </div>
+    <div
+      *ngIf="task.state !== 1"
+      class="tw-flex tw-w-full tw-py-1 tw-flex-row tw-gap-2 tw-justify-start tw-items-center"
+    >
+      <div
+        *ngFor="let tag of task.taskTags | slice : 0 : 3"
+        [ngStyle]="{
+          'border-color': tag.color,
+          color: tag.color
+        }"
+        class="tw-flex tw-px-4 tw-py-1 tw-flex-row tw-gap-1 tw-rounded-3xl tw-border-2 tw-bg-white tw-justify-center tw-items-center"
+      >
+        <h1
+          class="tw-text-base tw-font-semibold tw-flex tw-w-auto tw-justify-center tw-items-center"
+        >
+          {{ tag.name }}
+        </h1>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="task.state !== 1"
+    class="tw-flex tw-flex-col tw-gap-3 tw-h-full tw-w-auto tw-justify-center tw-items-center"
+  >
+    <i
+      *ngIf="task.state === 2"
+      (click)="toggleTaskState.emit({ task, state: 0 }); $event.stopPropagation()"
+      class="tw-cursor-pointer tw-text-yellow-400 material-icons"
+      >star</i
+    >
+    <i
+      *ngIf="task.state !== 2"
+      (click)="toggleTaskState.emit({ task, state: 0 }); $event.stopPropagation()"
+      class="material-icons tw-cursor-pointer tw-text-yellow-400"
+      >star_border</i
+    >
+    <i
+      (click)="openUpdateModal.emit(task.id); $event.stopPropagation()"
+      class="material-icons tw-text-sky-700 tw-cursor-pointer"
+      >edit</i
+    >
+    <i
+      (click)="deleteTask.emit(task.id); $event.stopPropagation()"
+      class="material-icons tw-cursor-pointer tw-text-sky-700"
+      >delete_sweep</i
+    >
+  </div>
+</div>

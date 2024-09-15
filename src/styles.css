@@ -52,3 +52,6 @@ ngx-material-timepicker-content{
 body {
     font-family: 'sofia', sans-serif;
 }
+.tw-text-strikethrough {
+    text-decoration: line-through;
+  }

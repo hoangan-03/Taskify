@@ -2,6 +2,7 @@ import { TaskState } from '../../models/task.model';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
+
 import { FormControl, Validators } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -21,6 +22,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
+import { TaskItemComponent } from '../../../components/task-item/task-item.component';
 import { FormFieldComponent } from '../../../components/form-field/app-form-field.component';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
@@ -42,6 +44,14 @@ import {
   User,
 } from '../../models/task.model';
 import { environment } from '../../../../environments/environment';
+import { MatTabsModule } from '@angular/material/tabs';
+import { UpdateTaskModalComponent } from '../../../components/update-task-modal/update-task-modal.component';
+import { AddTaskModalComponent } from '../../../components/add-task-modal/add-task-modal.component';
+
+
+
+
+
 @Component({
   selector: 'app-todo',
   standalone: true,
@@ -59,10 +69,14 @@ import { environment } from '../../../../environments/environment';
     MatRadioModule,
     MatInputModule,
     FormFieldComponent,
+    TaskItemComponent,
     MatChipsModule,
     MatAutocompleteModule,
     InfoIconComponent,
     DragDropModule,
+    MatTabsModule,
+    UpdateTaskModalComponent,
+    AddTaskModalComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNativeDateAdapter(), DatePipe],
@@ -76,7 +90,7 @@ export class TodoComponent {
     private taskService: TaskService,
     private cdr: ChangeDetectorRef,
     private datePipe: DatePipe
-  ) {}
+  ) { }
   readonly announcer = inject(LiveAnnouncer);
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly currentTag = model('');
@@ -266,17 +280,51 @@ export class TodoComponent {
   CommentState = CommentState;
   TaskState = TaskState;
   tasks: Task[] = [];
+  tasksAssignedToCurrentUser: Task[] = [];
   selectedTask: Task | null = null;
   projectGroups: Project[] = [];
   Users: User[] = [];
   Comments: Comment[] = [];
   newCommentText: string = '';
+  isSlideOut = true;
+  activeRoute: string = '';
+  currentUser: any;
+  isLoggedIn: boolean = false;
 
   ngOnInit(): void {
+    this.loadCurrentUser();
     this.fetchTasks();
     this.fetchProjectGroups();
     this.fetchUsers();
     this.fetchComments();
+  }
+
+  filterTasksAssignedToCurrentUser(): void {
+    if (this.currentUser) {
+      this.tasksAssignedToCurrentUser = this.tasks.filter(task => task.assigneeId === this.currentUser!.userId);
+    }
+  }
+
+  loadCurrentUser(): void {
+    if (typeof localStorage !== 'undefined') {
+      const userString = localStorage.getItem('user');
+      console.log("userstring", userString);
+      if (userString) {
+        const user = JSON.parse(userString);
+        const userId = user.id;
+        this.taskService.getUserById(userId).subscribe(
+          (data) => {
+            this.currentUser = data;
+            this.isLoggedIn = true;
+            console.log('this.currentUser', this.currentUser);
+            this.filterTasksAssignedToCurrentUser();
+          },
+          (error) => {
+            console.error('Error fetching user info', error);
+          }
+        );
+      }
+    }
   }
   getTodayDate(): string {
     const today = new Date();
@@ -640,6 +688,7 @@ export class TodoComponent {
               attachments: task.attachments.$values,
             };
           });
+          this.filterTasksAssignedToCurrentUser();
           this.cdr.detectChanges();
         } else {
           console.error('Unexpected response format', response);
