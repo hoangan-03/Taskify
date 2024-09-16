@@ -5,12 +5,17 @@
   [class.tw-bg-gray-200]="task.state === 1"
   (click)="selectTask.emit(task)"
 >
-  <input
-    [checked]="task.state === 1"
-    type="checkbox"
-    (click)="toggleTaskState.emit({ task, state: 1 }); $event.stopPropagation()"
-    class="tw-form-checkbox tw-h-5 tw-min-w-5 tw-mt-1"
-  />
+  <ng-container *ngIf="task.assigneeId === currentUserId; else placeholder">
+    <input
+      [checked]="task.state === 1"
+      type="checkbox"
+      (click)="toggleTaskState.emit({ task, state: 1 }); $event.stopPropagation()"
+      class="tw-form-checkbox tw-h-5 tw-min-w-5 tw-mt-1"
+    />
+  </ng-container>
+  <ng-template #placeholder>
+    <div class="tw-h-5 tw-min-w-5 tw-mt-1"></div>
+  </ng-template>
   <div
     class="tw-flex tw-flex-col tw-gap-2 tw-w-[80%] tw-overflow-hidden tw-justify-start tw-items-start"
   >
@@ -48,7 +53,17 @@
           >calendar_today</i
         >
         <p class="tw-text-base tw-text-gray-400">
-          {{ addOneDay(task.deadline.substring(0, 10)) }}
+          {{ addOneDay(task.deadline.substring(0, 10)) | date : "dd MMM yyyy"  }}
+        </p>
+      </div>
+      <div
+        class="tw-flex tw-flex-row tw-justify-center tw-items-center tw-gap-1"
+      >
+        <i class="material-icons tw-text-base tw-text-gray-400"
+          >person_pin_circle</i
+        >
+        <p class="tw-text-base tw-text-gray-400">
+          {{ getAssigneeNameById(task.assigneeId) }}
         </p>
       </div>
     </div>

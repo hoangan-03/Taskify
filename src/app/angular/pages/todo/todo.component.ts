@@ -290,6 +290,7 @@ export class TodoComponent {
   activeRoute: string = '';
   currentUser: any;
   isLoggedIn: boolean = false;
+  loading: boolean = true; 
 
   ngOnInit(): void {
     this.loadCurrentUser();
@@ -318,9 +319,13 @@ export class TodoComponent {
             this.isLoggedIn = true;
             console.log('this.currentUser', this.currentUser);
             this.filterTasksAssignedToCurrentUser();
+            this.loading = false;
+            this.cdr.detectChanges();
           },
           (error) => {
             console.error('Error fetching user info', error);
+            this.loading = false;
+            this.cdr.detectChanges();
           }
         );
       }
@@ -594,6 +599,16 @@ export class TodoComponent {
     moveItemInArray(sortedTasks, event.previousIndex, event.currentIndex);
     this.tasks = sortedTasks;
     this.saveTaskOrder();
+  }
+  getAssigneeNameById(id: number): string {
+    const user = this.Users.find(user => user.userId === id);
+    console.log("The user", user?.fullName)
+    return user ? user.fullName : 'Unknown';
+  }
+  getAssignerNameById(id: number): string {
+    const user = this.Users.find(user => user.userId === id);
+    console.log("The user", user?.fullName)
+    return user ? user.fullName : 'Unknown';
   }
   saveTaskOrder() {
     const taskOrder = this.tasks.map((task, index) => ({
