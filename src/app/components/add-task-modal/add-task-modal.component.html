@@ -96,7 +96,7 @@
         <mat-form-field class="example-chip-list">
           <mat-label>Favorite tags</mat-label>
           <mat-chip-grid #chipGrid aria-label="Tag selection">
-            <mat-chip-row *ngFor="let tag of tags; let i = index" (removed)="remove.emit(tag)">
+            <mat-chip-row *ngFor="let tag of tags;  let i = index" (removed)="remove.emit(tag)">
               {{ tag }}
               <button matChipRemove [attr.aria-label]="'remove ' + tag">
                 <mat-icon>cancel</mat-icon>
@@ -110,10 +110,12 @@
             <mat-option *ngFor="let tag of filteredTags; trackBy: trackByTag" [value]="tag">{{ tag }}</mat-option>
           </mat-autocomplete>
         </mat-form-field>
-        <div class="tw-flex tw-flex-col tw-gap-3">
-          <app-info-icon infoText="Upload your attachments for this task" title="Attachments"
-            type="Optional"></app-info-icon>
-          <input type="file" [formControl]="fileControl" (change)="onFileSelected.emit($event)"
+                <div class="tw-flex tw-flex-col tw-gap-3">
+          <app-info-icon infoText="Upload your attachments for this task" title="Attachments" type="Optional"></app-info-icon>
+          <label for="file-upload" class="custom-file-upload">
+            Select files for attachments
+          </label>
+          <input id="file-upload" type="file" [formControl]="fileControl" (change)="onFileSelected.emit($event)"
             (change)="onFileControlled.emit($event)" multiple />
         </div>
         <div *ngFor="let file of selectedFiles; let i = index">
@@ -126,7 +128,7 @@
       </div>
     </form>
     <button (click)="submitForm.emit()"
-      class="tw-w-[120px] tw-px-10 tw-h-10 tw-bg-sky-700 hover:tw-bg-sky-500 tw-text-white tw-rounded-xl tw-py-3 tw-text-lg tw-font-bold tw-flex tw-items-center tw-self-center tw-justify-center">
+      class="tw-w-[120px] tw-mt-4 tw-px-10 tw-h-10 tw-bg-sky-700 hover:tw-bg-sky-500 tw-text-white tw-rounded-xl tw-py-3 tw-text-lg tw-font-bold tw-flex tw-items-center tw-self-center tw-justify-center">
       Submit
     </button>
   </div>
