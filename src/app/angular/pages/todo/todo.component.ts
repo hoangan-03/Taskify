@@ -309,7 +309,6 @@ export class TodoComponent {
   loadCurrentUser(): void {
     if (typeof localStorage !== 'undefined') {
       const userString = localStorage.getItem('user');
-      console.log("userstring", userString);
       if (userString) {
         const user = JSON.parse(userString);
         const userId = user.id;
@@ -317,7 +316,6 @@ export class TodoComponent {
           (data) => {
             this.currentUser = data;
             this.isLoggedIn = true;
-            console.log('this.currentUser', this.currentUser);
             this.filterTasksAssignedToCurrentUser();
             this.loading = false;
             this.cdr.detectChanges();

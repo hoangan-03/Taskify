@@ -26,7 +26,6 @@ export class TaskItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchUsers();
-    console.log("thisId",this.currentUserId);
   }
   
   fetchUsers(): void {
@@ -50,7 +49,6 @@ export class TaskItemComponent implements OnInit {
 
   getAssigneeNameById(id: number): string {
     const user = this.Users.find(user => user.userId === id);
-    console.log("The user", user?.fullName);
     return user ? user.fullName : 'Loading...';
   }
 
