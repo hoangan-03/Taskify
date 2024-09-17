@@ -33,13 +33,37 @@
         <h1 class="tw-text-white tw-text-lg tw-font-semibold">New task</h1>
       </button>
     </div>
-        <mat-tab-group class="tw-w-full">
+        <div class="tw-w-full tw-flex tw-flex-row tw-gap-2 tw-mx-0 tw-z-[2]">
+      <!-- Filter by Category -->
+      <mat-form-field>
+        <mat-label>Filter by Category</mat-label>
+        <mat-select [(ngModel)]="selectedCategories" (selectionChange)="applyFilters()" multiple>
+          <mat-option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    
+      <!-- Filter by Project -->
+      <mat-form-field>
+        <mat-label>Filter by Project</mat-label>
+        <mat-select [(ngModel)]="selectedProject" (selectionChange)="applyFilters()">
+          <mat-option [value]="''">All Projects</mat-option>
+          <mat-option *ngFor="let project of projectGroups" [value]="project.title">
+            {{ project.title }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    
+    <mat-tab-group class="tw-w-full">
       <mat-tab label="All Tasks" class="tw-w-full">
         <div *ngIf="loading" class="tw-flex tw-justify-center tw-items-center tw-w-full tw-h-auto tw-mt-3">
           Loading your organization's tasks...
         </div>
-        <div *ngIf="!loading" class="tw-flex tw-flex-col tw-w-full tw-gap-3 tw-justify-center tw-items-center" cdkDropList (cdkDropListDropped)="drop($event)">
-          <app-task-item *ngFor="let task of sortTasks(tasks); let i = index" [task]="task"
+        <div *ngIf="!loading" class="tw-flex tw-flex-col tw-w-full tw-gap-3 tw-justify-center tw-items-center"
+          cdkDropList (cdkDropListDropped)="drop($event)">
+          <app-task-item *ngFor="let task of filteredTasks; let i = index" [task]="task"
             [selectedTask]="selectedTask!" (selectTask)="selectTask($event)"
             (toggleTaskState)="toggleTaskState($event.task, $event.state)" (openUpdateModal)="openUpdateModal($event)"
             (deleteTask)="deleteTask($event)" [currentUserId]="currentUser.userId" cdkDrag>
@@ -50,8 +74,9 @@
         <div *ngIf="loading" class="tw-flex tw-justify-center tw-items-center tw-w-full tw-h-full">
           Loading...
         </div>
-        <div *ngIf="!loading" class="tw-flex tw-flex-col tw-w-full tw-gap-3 tw-justify-center tw-items-center" cdkDropList (cdkDropListDropped)="drop($event)">
-          <app-task-item *ngFor="let task of sortTasks(tasksAssignedToCurrentUser); let i = index" [task]="task"
+        <div *ngIf="!loading" class="tw-flex tw-flex-col tw-w-full tw-gap-3 tw-justify-center tw-items-center"
+          cdkDropList (cdkDropListDropped)="drop($event)">
+          <app-task-item *ngFor="let task of filteredTasksAssignedToCurrentUser; let i = index" [task]="task"
             [selectedTask]="selectedTask!" (selectTask)="selectTask($event)"
             (toggleTaskState)="toggleTaskState($event.task, $event.state)" (openUpdateModal)="openUpdateModal($event)"
             (deleteTask)="deleteTask($event)" [currentUserId]="currentUser.userId" cdkDrag>
@@ -104,7 +129,7 @@
             {{ selectedTask.deadline | date : "dd MMM yyyy" }}
           </h3>
         </div>
-        
+
       </div>
       <div class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl">
         <h2 class="tw-text-gray-400 tw-w-[100px]">State</h2>

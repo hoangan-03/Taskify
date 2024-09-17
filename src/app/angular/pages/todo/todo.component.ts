@@ -193,6 +193,32 @@ export class TodoComponent {
   selectedUpdateFiles: { name: string; type: number }[] = [];
   currentUpdateId: number = 0;
 
+
+  selectedCategories: string[] = [];
+  selectedProject: string = '';
+  filteredTasks: Task[] = [];
+filteredTasksAssignedToCurrentUser: Task[] = [];
+  
+
+  applyFilters(): void {
+    this.filteredTasks = this.filterTasks(this.sortTasks(this.tasks));
+    this.filteredTasksAssignedToCurrentUser = this.filterTasks(this.sortTasks(this.tasksAssignedToCurrentUser));
+  }
+  
+  filterTasks(tasks: Task[]): Task[] {
+    return tasks.filter((task) => {
+      const matchesCategory = this.selectedCategories.length
+        ? Array.isArray(task.type)
+          ? task.type.some((type) => this.selectedCategories.includes(type))
+          : this.selectedCategories.includes(task.type)
+        : true;
+      const matchesProject = this.selectedProject
+        ? task.projectName === this.selectedProject
+        : true;
+      return matchesCategory && matchesProject;
+    });
+  }
+
   openUpdateModal(id: number) {
     this.showUpdateModal = true;
     this.currentUpdateId = id;
@@ -299,13 +325,11 @@ export class TodoComponent {
     this.fetchUsers();
     this.fetchComments();
   }
-
   filterTasksAssignedToCurrentUser(): void {
     if (this.currentUser) {
       this.tasksAssignedToCurrentUser = this.tasks.filter(task => task.assigneeId === this.currentUser!.userId);
     }
   }
-
   loadCurrentUser(): void {
     if (typeof localStorage !== 'undefined') {
       const userString = localStorage.getItem('user');
@@ -317,6 +341,7 @@ export class TodoComponent {
             this.currentUser = data;
             this.isLoggedIn = true;
             this.filterTasksAssignedToCurrentUser();
+            this.applyFilters();
             this.loading = false;
             this.cdr.detectChanges();
           },
