@@ -39,12 +39,11 @@
         <div *ngIf="loading" class="tw-flex tw-justify-center tw-items-center tw-w-full tw-h-auto tw-mt-3">
           Loading your organization's tasks...
         </div>
-        <div *ngIf="!loading" class="tw-flex tw-flex-col tw-w-full tw-gap-3 tw-justify-center tw-items-center" cdkDropList
-          (cdkDropListDropped)="drop($event)">
+        <div *ngIf="!loading" class="tw-flex tw-flex-col tw-w-full tw-gap-3 tw-justify-center tw-items-center" cdkDropList (cdkDropListDropped)="drop($event)">
           <app-task-item *ngFor="let task of sortTasks(tasks); let i = index" [task]="task"
             [selectedTask]="selectedTask!" (selectTask)="selectTask($event)"
             (toggleTaskState)="toggleTaskState($event.task, $event.state)" (openUpdateModal)="openUpdateModal($event)"
-            (deleteTask)="deleteTask($event)" [currentUserId]="currentUser.userId" >
+            (deleteTask)="deleteTask($event)" [currentUserId]="currentUser.userId" cdkDrag>
           </app-task-item>
         </div>
       </mat-tab>
@@ -52,18 +51,16 @@
         <div *ngIf="loading" class="tw-flex tw-justify-center tw-items-center tw-w-full tw-h-full">
           Loading...
         </div>
-        <div *ngIf="!loading" class="tw-flex tw-flex-col tw-w-full tw-gap-3 tw-justify-center tw-items-center" cdkDropList
-          (cdkDropListDropped)="drop($event)">
+        <div *ngIf="!loading" class="tw-flex tw-flex-col tw-w-full tw-gap-3 tw-justify-center tw-items-center" cdkDropList (cdkDropListDropped)="drop($event)">
           <app-task-item *ngFor="let task of sortTasks(tasksAssignedToCurrentUser); let i = index" [task]="task"
             [selectedTask]="selectedTask!" (selectTask)="selectTask($event)"
             (toggleTaskState)="toggleTaskState($event.task, $event.state)" (openUpdateModal)="openUpdateModal($event)"
-            (deleteTask)="deleteTask($event)" [currentUserId]="currentUser.userId">
+            (deleteTask)="deleteTask($event)" [currentUserId]="currentUser.userId" cdkDrag>
           </app-task-item>
         </div>
       </mat-tab>
     </mat-tab-group>
   </div>
-
   <div
     class="tw-w-[50%] tw-top-0 tw-h-screen tw-flex tw-sticky tw-flex-col tw-gap-4 tw-px-4 tw-py-10 tw-overflow-x-hidden">
     <h3 *ngIf="selectedTask" class="tw-text-gray-400 tw-text-xl">
@@ -108,6 +105,13 @@
             {{ selectedTask.deadline | date : "dd MMM yyyy" }}
           </h3>
         </div>
+        
+      </div>
+      <div class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl">
+        <h2 class="tw-text-gray-400 tw-w-[100px]">State</h2>
+        <h3 *ngIf="selectedTask" class="tw-text-black tw-font-semibold tw-text-xl tw-text-justify">
+          {{ selectedTask.state === 1 ? 'Completed' : 'In progress' }}
+        </h3>
       </div>
 
       <div class="tw-flex tw-flex-row tw-justify-start tw-items-center tw-gap-8 tw-text-xl">
