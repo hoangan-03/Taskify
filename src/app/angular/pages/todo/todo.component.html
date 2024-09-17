@@ -37,7 +37,7 @@
       <!-- Filter by Category -->
       <mat-form-field>
         <mat-label>Filter by Category</mat-label>
-        <mat-select [(ngModel)]="selectedCategories" (selectionChange)="applyFilters()" multiple>
+        <mat-select [(ngModel)]="filteredCate" (selectionChange)="applyFilters()" multiple>
           <mat-option *ngFor="let category of categories" [value]="category">
             {{ category }}
           </mat-option>
@@ -47,7 +47,7 @@
       <!-- Filter by Project -->
       <mat-form-field>
         <mat-label>Filter by Project</mat-label>
-        <mat-select [(ngModel)]="selectedProject" (selectionChange)="applyFilters()">
+        <mat-select [(ngModel)]="filteredPro" (selectionChange)="applyFilters()">
           <mat-option [value]="''">All Projects</mat-option>
           <mat-option *ngFor="let project of projectGroups" [value]="project.title">
             {{ project.title }}

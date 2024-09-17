@@ -193,27 +193,26 @@ export class TodoComponent {
   selectedUpdateFiles: { name: string; type: number }[] = [];
   currentUpdateId: number = 0;
 
-
-  selectedCategories: string[] = [];
-  selectedProject: string = '';
+  filteredCate: string[] = [];
+  filteredPro: string = '';
   filteredTasks: Task[] = [];
-filteredTasksAssignedToCurrentUser: Task[] = [];
-  
+  filteredTasksAssignedToCurrentUser: Task[] = [];
 
   applyFilters(): void {
     this.filteredTasks = this.filterTasks(this.sortTasks(this.tasks));
     this.filteredTasksAssignedToCurrentUser = this.filterTasks(this.sortTasks(this.tasksAssignedToCurrentUser));
+    this.cdr.detectChanges();
   }
-  
+
   filterTasks(tasks: Task[]): Task[] {
     return tasks.filter((task) => {
-      const matchesCategory = this.selectedCategories.length
+      const matchesCategory = this.filteredCate.length
         ? Array.isArray(task.type)
-          ? task.type.some((type) => this.selectedCategories.includes(type))
-          : this.selectedCategories.includes(task.type)
+          ? task.type.some((type) => this.filteredCate.includes(type))
+          : this.filteredCate.includes(task.type)
         : true;
-      const matchesProject = this.selectedProject
-        ? task.projectName === this.selectedProject
+      const matchesProject = this.filteredPro
+        ? task.projectName === this.filteredPro
         : true;
       return matchesCategory && matchesProject;
     });
@@ -316,7 +315,7 @@ filteredTasksAssignedToCurrentUser: Task[] = [];
   activeRoute: string = '';
   currentUser: any;
   isLoggedIn: boolean = false;
-  loading: boolean = true; 
+  loading: boolean = true;
 
   ngOnInit(): void {
     this.loadCurrentUser();
@@ -341,7 +340,6 @@ filteredTasksAssignedToCurrentUser: Task[] = [];
             this.currentUser = data;
             this.isLoggedIn = true;
             this.filterTasksAssignedToCurrentUser();
-            this.applyFilters();
             this.loading = false;
             this.cdr.detectChanges();
           },
@@ -726,6 +724,7 @@ filteredTasksAssignedToCurrentUser: Task[] = [];
               attachments: task.attachments.$values,
             };
           });
+          this.applyFilters();
           this.filterTasksAssignedToCurrentUser();
           this.cdr.detectChanges();
         } else {
@@ -798,6 +797,7 @@ filteredTasksAssignedToCurrentUser: Task[] = [];
             this.selectedTask = null;
           }
           this.fetchTasks();
+          
         },
         (error) => {
           console.error('Error deleting task:', error);
