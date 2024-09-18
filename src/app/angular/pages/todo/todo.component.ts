@@ -852,7 +852,7 @@ export class TodoComponent {
         state: 1,
         timeline: new Date().toISOString(),
         taskId: this.selectedTask.id,
-        userId: '1',
+        userId: this.currentUser.userId,
       };
       this.http
         .post<Comment>(`${this.baseUrl}/api/comments`, newComment)
