@@ -3,6 +3,28 @@
       'tw-bg-black tw-bg-opacity-80 tw-z-[999] tw-block': showModal,
       'tw-hidden': !showModal
     }"></div>
+    <div *ngIf="showProjectModal" class="tw-fixed tw-inset-0 tw-flex tw-items-center tw-justify-center tw-bg-black/50 tw-z-[10000]">
+    <div class="tw-bg-white tw-p-8 tw-rounded-2xl tw-shadow-xl">
+      <h2 class="tw-text-xl tw-font-semibold tw-mb-4">Add New Project</h2>
+      <form [formGroup]="projectForm" (ngSubmit)="submitProjectForm()">
+        <mat-form-field class="tw-w-full">
+          <mat-label>Project Title</mat-label>
+          <input matInput formControlName="title" required>
+        </mat-form-field>
+        <mat-form-field class="tw-w-full">
+          <mat-label>Project Description</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+        <div class="tw-flex tw-justify-end tw-gap-4 tw-mt-4">
+          <button class="tw-text-black hover:tw-underline hover:tw-text-rose-700" mat-button type="button"
+            (click)="closeProjectModal()">Cancel</button>
+          <button
+            class="tw-bg-gray-700 tw-px-5 tw-py-1 tw-text-white tw-rounded-2xl hover:tw-bg-sky-800 tw-cursor-pointer"
+            mat-button type="submit" [disabled]="projectForm.invalid">Add Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
   <app-update-task-modal [showUpdateModal]="showUpdateModal" [updateTaskNameControl]="updateTaskNameControl"
     [updateTaskDescriptionControl]="updateTaskDescriptionControl" [updateProjectControl]="updateProjectControl"
     [assignerUpdateControl]="assignerUpdateControl" [assigneeUpdateControl]="assigneeUpdateControl"
@@ -32,21 +54,26 @@
         <i class="tw-invert material-icons">add_circle</i>
         <h1 class="tw-text-white tw-text-lg tw-font-semibold">New task</h1>
       </button>
+      <button
+        class="tw-flex tw-w-auto tw-px-4 tw-py-2 tw-bg-cyan-800 tw-items-center tw-flex-row tw-gap-2 tw-rounded-xl"
+        (click)="openProjectModal()">
+        <i class="tw-invert material-icons">library_add</i>
+        <h1 class="tw-text-white tw-text-lg tw-font-semibold">New project</h1>
+      </button>
+
     </div>
-        <div class="tw-w-full tw-flex tw-flex-row tw-gap-2 tw-mx-0 tw-z-[2]">
-      <!-- Filter by Category -->
+    <div class="tw-w-full tw-flex tw-flex-row tw-gap-2 tw-mx-0 tw-z-[2]">
       <mat-form-field>
-        <mat-label>Filter by Category</mat-label>
+        <mat-label>Category Includes</mat-label>
         <mat-select [(ngModel)]="filteredCate" (selectionChange)="applyFilters()" multiple>
           <mat-option *ngFor="let category of categories" [value]="category">
             {{ category }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-    
-      <!-- Filter by Project -->
+
       <mat-form-field>
-        <mat-label>Filter by Project</mat-label>
+        <mat-label>Project Filter</mat-label>
         <mat-select [(ngModel)]="filteredPro" (selectionChange)="applyFilters()">
           <mat-option [value]="''">All Projects</mat-option>
           <mat-option *ngFor="let project of projectGroups" [value]="project.title">
@@ -54,8 +81,15 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Before</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="filteredDeadline" (dateChange)="applyFilters()">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
     </div>
-    
+
     <mat-tab-group class="tw-w-full">
       <mat-tab label="All Tasks" class="tw-w-full">
         <div *ngIf="loading" class="tw-flex tw-justify-center tw-items-center tw-w-full tw-h-auto tw-mt-3">
@@ -63,10 +97,10 @@
         </div>
         <div *ngIf="!loading" class="tw-flex tw-flex-col tw-w-full tw-gap-3 tw-justify-center tw-items-center"
           cdkDropList (cdkDropListDropped)="drop($event)">
-          <app-task-item *ngFor="let task of filteredTasks; let i = index" [task]="task"
-            [selectedTask]="selectedTask!" (selectTask)="selectTask($event)"
-            (toggleTaskState)="toggleTaskState($event.task, $event.state)" (openUpdateModal)="openUpdateModal($event)"
-            (deleteTask)="deleteTask($event)" [currentUserId]="currentUser.userId" cdkDrag>
+          <app-task-item *ngFor="let task of filteredTasks; let i = index" [task]="task" [selectedTask]="selectedTask!"
+            (selectTask)="selectTask($event)" (toggleTaskState)="toggleTaskState($event.task, $event.state)"
+            (openUpdateModal)="openUpdateModal($event)" (deleteTask)="deleteTask($event)"
+            [currentUserId]="currentUser.userId" cdkDrag>
           </app-task-item>
         </div>
       </mat-tab>

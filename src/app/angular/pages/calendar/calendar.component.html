@@ -196,12 +196,12 @@
       {{ weeks[currentWeekIndex].start | date : "MMM yyyy" }}
     </h1>
     <div class="tw-flex tw-flex-row tw-gap-2 tw-justify-center tw-items-center">
-      <div
-        class="tw-w-7 tw-h-7 tw-cursor-pointer tw-border-2 tw-flex tw-justify-center tw-items-center tw-rounded-full tw-p-4"
+      <button
+        class="tw-w-7 tw-h-7 tw-cursor-pointer tw-border-2 tw-flex tw-justify-center tw-items-center tw-rounded-full tw-p-4 hover:tw-bg-gray-100"
         (click)="previousWeek()"
       >
         <i class="material-icons">chevron_left</i>
-      </div>
+      </button>
       <h1
         *ngIf="weeks && weeks[currentWeekIndex]"
         class="tw-text-xl tw-text-black"
@@ -209,33 +209,33 @@
         {{ weeks[currentWeekIndex].start | date : "dd MMM" }} -
         {{ weeks[currentWeekIndex].end | date : "dd MMM yyyy" }}
       </h1>
-      <div
-        class="tw-w-7 tw-h-7 tw-cursor-pointer tw-border-2 tw-flex tw-justify-center tw-items-center tw-rounded-full tw-p-4"
+      <button
+        class="tw-w-7 tw-h-7 tw-cursor-pointer tw-border-2 tw-flex tw-justify-center tw-items-center tw-rounded-full tw-p-4 hover:tw-bg-gray-100"
         (click)="nextWeek()"
       >
         <i class="material-icons">chevron_right</i>
-      </div>
+      </button>
     </div>
     <div class="tw-flex tw-flex-col tw-gap-2 tw-items-center">
       <div class="tw-text-lg tw-font-bold">Quick selection</div>
-    <mat-form-field class="tw-hidden">
-      <input
-        matInput
-        [matDatepicker]="monthPicker"
-        [formControl]="monthControl"
-      />
-      <mat-datepicker-toggle
-        matSuffix
-        [for]="monthPicker"
-      ></mat-datepicker-toggle>
-      <mat-datepicker
-        #monthPicker
-        startView="multi-year"
-        (monthSelected)="chosenMonthHandler($event, monthPicker)"
-        panelClass="month-picker"
-      ></mat-datepicker>
-    </mat-form-field>
-  </div>
+      <mat-form-field class="tw-hidden">
+        <input
+          matInput
+          [matDatepicker]="monthPicker"
+          [formControl]="monthControl"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="monthPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker
+          #monthPicker
+          startView="multi-year"
+          (monthSelected)="chosenMonthHandler($event, monthPicker)"
+          panelClass="month-picker"
+        ></mat-datepicker>
+      </mat-form-field>
+    </div>
   </div>
   <div class="tw-w-full tw-h-full tw-overflow-auto">
     <div class="tw-grid tw-grid-cols-8 tw-gap-0 tw-p-4">
@@ -360,12 +360,13 @@
                   <div
                     class="tw-flex tw-flew-row tw-px-6 tw-justify-start tw-gap-4 tw-items-center"
                   >
-                    <i class="material-icons tw-text-xl">account_circle</i>
+                    <i class="material-icons tw-text-xl">today</i>
                     <h2>{{ event.date }}</h2>
                   </div>
 
-                  <div
+                                    <div
                     class="tw-flex tw-flew-row tw-px-6 tw-justify-start tw-gap-4 tw-items-center hover:tw-bg-gray-100"
+                    [matTooltip]="getEventUsersNames(event.eventUsers.$values)"
                   >
                     <i class="material-icons tw-text-xl">people_alt</i>
                     <h2 *ngIf="event.eventUsers && event.eventUsers.$values">
@@ -378,7 +379,7 @@
                   >
                     <i class="material-icons tw-text-xl">account_circle</i>
                     <h2 *ngIf="event.eventUsers && event.eventUsers.$values">
-                      {{ event.creatorId }}
+                      {{ getAssignerNameById(event.creatorId!) }}
                     </h2>
                   </div>
                 </div>

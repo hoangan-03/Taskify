@@ -39,6 +39,8 @@ import {
   Task,
 } from '../../models/task.model';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 @Component({
   selector: 'app-side-nav',
@@ -63,6 +65,7 @@ import { MatDatepicker } from '@angular/material/datepicker';
     InfoIconComponent,
     NgxMaterialTimepickerModule,
     MatDatepicker,
+    MatTooltipModule
   ],
   templateUrl: './calendar.component.html',
   providers: [provideNativeDateAdapter(), DatePipe],
@@ -255,6 +258,18 @@ export class CalendarComponent {
         console.error('Error fetching users', error);
       }
     );
+  }
+  getEventUsersNames(eventUsers: any[]): string {
+    console.log("The event users", eventUsers)
+    if (!eventUsers) {
+      return '';
+    }
+    return eventUsers.map(user => user.fullName).join(', ');
+  }
+  getAssignerNameById(id: number): string {
+    const user = this.usersList.find(user => user.userId === id);
+    console.log("The user", user?.fullName)
+    return user ? user.fullName : 'Unknown';
   }
 
   getRowSpan(task: any): number {

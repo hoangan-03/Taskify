@@ -2,8 +2,8 @@ import { TaskState } from '../../models/task.model';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
-import { FormControl, Validators } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { JsonPipe } from '@angular/common';
@@ -77,6 +77,7 @@ import { AddTaskModalComponent } from '../../../components/add-task-modal/add-ta
     MatTabsModule,
     UpdateTaskModalComponent,
     AddTaskModalComponent,
+    MatDialogModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNativeDateAdapter(), DatePipe],
@@ -196,6 +197,7 @@ export class TodoComponent {
   filteredCate: string[] = [];
   filteredPro: string = '';
   filteredTasks: Task[] = [];
+  filteredDeadline: Date | null = null;
   filteredTasksAssignedToCurrentUser: Task[] = [];
 
   applyFilters(): void {
@@ -214,7 +216,10 @@ export class TodoComponent {
       const matchesProject = this.filteredPro
         ? task.projectName === this.filteredPro
         : true;
-      return matchesCategory && matchesProject;
+      const matchesDeadline = this.filteredDeadline
+        ? new Date(task.deadline) <= this.filteredDeadline
+        : true;
+      return matchesCategory && matchesProject && matchesDeadline;
     });
   }
 
@@ -308,6 +313,39 @@ export class TodoComponent {
   tasksAssignedToCurrentUser: Task[] = [];
   selectedTask: Task | null = null;
   projectGroups: Project[] = [];
+  showProjectModal = false;
+  projectForm = new FormGroup({
+    title: new FormControl('', Validators.required),
+    description: new FormControl('')
+  });
+
+  openProjectModal(): void {
+    this.showProjectModal = true;
+  }
+
+  closeProjectModal(): void {
+    this.showProjectModal = false;
+  }
+
+  submitProjectForm(): void {
+    if (this.projectForm.valid) {
+      const newProject = {
+        title: this.projectForm.value.title ?? '', 
+        description: this.projectForm.value.description ?? '', 
+        createAt: new Date().toISOString(),
+        tasks: [] 
+      };
+      this.http.post(`${this.baseUrl}/api/projects`, newProject).subscribe({
+        next: (project) => {
+          this.closeProjectModal();
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('Error creating project:', error);
+        }
+      });
+    }
+  }
   Users: User[] = [];
   Comments: Comment[] = [];
   newCommentText: string = '';
@@ -323,6 +361,7 @@ export class TodoComponent {
     this.fetchProjectGroups();
     this.fetchUsers();
     this.fetchComments();
+
   }
   filterTasksAssignedToCurrentUser(): void {
     if (this.currentUser) {
@@ -340,6 +379,7 @@ export class TodoComponent {
             this.currentUser = data;
             this.isLoggedIn = true;
             this.filterTasksAssignedToCurrentUser();
+            this.applyFilters();
             this.loading = false;
             this.cdr.detectChanges();
           },
@@ -797,7 +837,7 @@ export class TodoComponent {
             this.selectedTask = null;
           }
           this.fetchTasks();
-          
+
         },
         (error) => {
           console.error('Error deleting task:', error);
